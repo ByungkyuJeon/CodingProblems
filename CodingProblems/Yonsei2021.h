@@ -5,6 +5,7 @@
 #include <vector>
 #include <array>
 #include <unordered_map>
+#include <algorithm>
 
 // 첫 줄에 알파벳 대소문자 및 숫자, 그리고 공백으로 구성된 문자열이 들어온다. 이 문자열의 길이는 $10\ 000$자 이하다.
 // 문자열의 맨 앞이나 맨 뒤는 공백이 아님이 보장된다.
@@ -197,8 +198,59 @@ void Problem_2()
 
 }
 
+
+std::string getSuffix(const std::string& str)
+{
+	return str.substr(str.size() - (str.size() / 2), (str.size() / 2));
+}
+
+std::string getPrefix(const std::string& str)
+{
+	return str.substr(0, (str.size() / 2));
+}
+
+std::string getReversedString(const std::string& str)
+{
+	std::string reversedStr;
+	reversedStr.reserve(str.size());
+
+	for (int idx = str.size() - 1; idx >= 0; idx--)
+	{
+		reversedStr.push_back(str[idx]);
+	}
+
+	return reversedStr;
+}
+
+bool isAkaraka(const std::string& str)
+{
+	if (str.size() == 1) { return 1; }
+
+	std::string pfxStr = getPrefix(str);
+	std::string sfxStr = getSuffix(str);
+
+	if(str == getReversedString(str)
+		&& pfxStr == getReversedString(pfxStr)
+		&& sfxStr == getReversedString(sfxStr))
+	{
+		return isAkaraka(pfxStr) && isAkaraka(sfxStr);
+	}
+
+	return 0;
+}
+
+void Problem_3()
+{
+	std::string inputStr;
+	std::cin >> inputStr;
+
+	if (isAkaraka(inputStr)) { std::cout << "AKARAKA"; }
+	else { std::cout << "IPSELENTI"; }
+}
+
 void ExecuteYonsei2021()
 {
 	//Problem_1();
-	Problem_2();
+	//Problem_2();
+	Problem_3();
 }
