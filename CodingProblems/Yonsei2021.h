@@ -6,6 +6,7 @@
 #include <array>
 #include <unordered_map>
 #include <algorithm>
+#include <utility>
 
 // 첫 줄에 알파벳 대소문자 및 숫자, 그리고 공백으로 구성된 문자열이 들어온다. 이 문자열의 길이는 $10\ 000$자 이하다.
 // 문자열의 맨 앞이나 맨 뒤는 공백이 아님이 보장된다.
@@ -239,6 +240,17 @@ bool isAkaraka(const std::string& str)
 	return 0;
 }
 
+/*
+* AKARAKA(아카라카)는 컴퓨터 과학적 관점으로 바라봤을 때, 튜링도 기립 박수를 치고 갈 가히 최고의 구호라 할 수 있다. AKARAKA는 그 자체로도 팰린드롬이고, 접두사이자 접미사인 AKA가 또한 팰린드롬이기 때문이다.
+
+신촌에서는 AKARAKA같은 특성을 가진 팰린드롬을, 아카라카 팰린드롬이라 아래와 같이 정의한다.
+
+문자열 $S$가 팰린드롬이다. 팰린드롬이란 거꾸로 뒤집어 읽어도 같은 문자열을 뜻한다.
+문자열 $S$의 길이를 $|S|$라 할 때, 
+ 
+$\lfloor\frac{|S|}{2}\rfloor$ 길이의 접두사와 접미사가 모두 아카라카 팰린드롬이다. 만약 $|S| = 1$이면, $S$는 아카라카 팰린드롬이다.
+임의의 문자열이 주어졌을 때, 그 문자열이 아카라카 팰린드롬인지 알아보자. 만약 알아내지 못하면, 졸업할 때까지 아카라카를 못 갈지도 모른다!
+*/
 void Problem_3()
 {
 	std::string inputStr;
@@ -248,9 +260,366 @@ void Problem_3()
 	else { std::cout << "IPSELENTI"; }
 }
 
+/*
+국렬이는 연세대학교 신입생 프로그래밍 경진대회를 개최한 기념으로 공학관 근처 $N \times N$ 크기의 운동장에서 화석 발굴 이벤트를 진행하려고 했다. 
+그러나 공학관 내의 무수히 많은 실험으로 인해 운동장의 일부가 인체에 매우 위험한 물질로 오염되었기에 이 이벤트는 취소되었다. 
+다행히 우수한 연세대학교 신입생들의 도움을 받아서 오염되지 않은 흙을 공학관 근처 언덕으로 옮기는 작업을 마무리했다. 
+덕분에 국렬이는 드디어 화석 발굴 이벤트를 진행할 수 있게 되었다.
+
+화석은 그림과 같이 정사각형 크기의 달팽이 형태로, 한 변의 길이는 무조건 $4k+1$ 꼴이다. 화석의 중심은 위에서 $2k+1$칸, 왼쪽에서 $2k+1$칸 떨어진 칸을 의미한다. ($k$는 양의 정수)
+
+화석 발굴 이벤트는 공학관 근처 운동장에 묻힌 화석을 찾는 이벤트이다. 당신은 주어진 흙 속에서 화석들을 전부 찾아내야 한다.
+
+첫 번째 줄에 운동장의 한 변의 길이를 의미하는 양의 정수 $N$이 주어진다. ($5 \le N \le 1\,250$)
+
+두 번째 줄부터 $N$개의 줄에 걸쳐서 운동장에 대한 정보가 주어진다. .은 흙만 있는 칸을 의미하고, #은 화석이 있는 칸을 의미한다. 입력으로 들어오는 화석의 형태는 언제나 달팽이 형태로만 나온다.
+
+운동장에 최소 $1$개 이상의 화석이 묻혀있으며, 화석들은 붙어있거나 운동장 밖으로 빠져나온 경우는 주어지지 않는다.
+
+첫 번째 줄에 화석의 개수를 출력한다.
+
+두 번째 줄부터 각 줄에 화석의 중심의 위치의 행 번호와 열 번호, 화석의 한 변의 길이, 그리고 화석의 방향을 출력한다.
+화석의 정보는 화석의 중심 위치의 행 번호가 작은 것부터, 행 번호가 같은 경우 열 번호가 작은 것부터 출력한다.
+*/
+struct Fossil
+{
+public:
+
+	Fossil() : mX{ 0 }, mY{ 0 }, mLength{ 0 }, mDirection{ "" }{}
+	Fossil(const std::pair<int, int>& inCenter, int inLength) : mX{ inCenter.first }, mY{ inCenter.second }, mLength{ inLength }, mDirection{ "" }{}
+
+	int mX;
+	int mY;
+	int mLength;
+	std::string mDirection;
+};
+
+bool operator<(const Fossil& lhs, const Fossil& rhs)
+{
+	if (lhs.mX == rhs.mX)
+	{
+		return lhs.mY < rhs.mY;
+	}
+	else
+	{
+		return lhs.mX < rhs.mX;
+	}
+}
+
+int N;
+std::array<int, 4> columnMovement{ 1, -1, 0, 0 };
+std::array<int, 4> rowMovement{ 0, 0, 1, -1 };
+std::vector<std::string> field;
+std::vector<Fossil> fossils;
+std::vector<int> directions;
+std::vector<int> lengths;
+std::pair<int, int> upperLeftPoint = std::make_pair(0, 0);
+
+int getLength(int x, int y)
+{
+	return 1;
+}
+
+void findPrimaryDot(int x, int y)
+{
+	if (x + 1 >= N || x - 1 < 0
+		|| y + 1 >= N || y - 1 < 0)
+	{
+		return;
+	}
+
+	std::pair<int, int> secondaryDot = std::make_pair(-1, -1);
+
+	// check if tile is primary dot
+	int dotCount = 0;
+	for (int movementIdx = 0; movementIdx < 4; movementIdx++)
+	{
+		if (field[x + rowMovement[movementIdx]][y + columnMovement[movementIdx]] == '.')
+		{
+			if (dotCount++ > 0)
+			{
+				return;
+			}
+			secondaryDot.first = x + rowMovement[movementIdx];
+			secondaryDot.second = y + columnMovement[movementIdx];
+		}
+	}
+
+	Fossil tempFossil;
+	std::pair<int, int> thirdDot = std::make_pair(-1, -1);
+
+	// primary, secondary dot found
+	if (x == secondaryDot.first)
+	{
+		if (y > secondaryDot.second)
+		{
+			tempFossil.mDirection.append("U");
+		}
+		else
+		{
+			tempFossil.mDirection.append("D");
+		}
+
+		for (int movementIdx = 0; movementIdx < 2; movementIdx++)
+		{
+			if (field[x + rowMovement[movementIdx]][y + columnMovement[movementIdx]] == '.')
+			{
+				thirdDot.first = x + rowMovement[movementIdx];
+				thirdDot.second = y + columnMovement[movementIdx];
+				if(movementIdx == 0){ tempFossil.mDirection.append("R"); }
+				else { tempFossil.mDirection.append("L"); }
+			}
+		}
+
+		tempFossil.mX = thirdDot.first - (secondaryDot.first - x);
+		tempFossil.mY = thirdDot.second - (secondaryDot.second - y);
+
+		// get length
+	}
+	else
+	{
+		if (y > secondaryDot.second)
+		{
+			tempFossil.mDirection.append("R");
+		}
+		else
+		{
+			tempFossil.mDirection.append("L");
+		}
+
+		for (int movementIdx = 2; movementIdx < 4; movementIdx++)
+		{
+			if (field[x + rowMovement[movementIdx]][y + columnMovement[movementIdx]] == '.')
+			{
+				thirdDot.first = x + rowMovement[movementIdx];
+				thirdDot.second = y + columnMovement[movementIdx];
+				if (movementIdx == 2) { tempFossil.mDirection.append("D"); }
+				else { tempFossil.mDirection.append("U"); }
+			}
+		}
+
+		tempFossil.mX = thirdDot.first - (secondaryDot.first - x);
+		tempFossil.mY = thirdDot.second - (secondaryDot.second - y);
+
+		// get length
+	}
+
+	fossils.emplace_back(std::move(tempFossil));
+}
+
+void Problem_4_Trial()
+{
+	std::cin >> N;
+	std::string inputBuffer;
+	std::getline(std::cin, inputBuffer);
+
+	for (int counter = N; counter > 0; counter--)
+	{
+		std::getline(std::cin, inputBuffer);
+		field.emplace_back(std::move(inputBuffer));
+	}
+
+	for (size_t outerIdx = 0; outerIdx < N; outerIdx++)
+	{
+		for (size_t innerIdx = 0; innerIdx < N; innerIdx++)
+		{
+			findPrimaryDot(outerIdx, innerIdx);
+		}
+	}
+
+	for (const auto& elem : fossils)
+	{
+		std::cout << elem.mX << " " << elem.mY << " " << elem.mLength << " " << elem.mDirection << "\n";
+	}
+}
+
+int ReverseDirection(int inDirec)
+{
+	switch (inDirec)
+	{
+	case(0):
+		return 1;
+	case(1):
+		return 0;
+	case(2):
+		return 3;
+		break;
+	case(3):
+		return 2;
+		break;
+	default:
+		return -1;
+	}
+}
+
+void SetDirection(std::string& str, int inDirec)
+{
+	switch (inDirec)
+	{
+	case(0):
+		str.append("R");
+		break;
+	case(1):
+		str.append("L");
+		break;
+	case(2):
+		str.append("D");
+		break;
+	case(3):
+		str.append("U");
+		break;
+	default:
+		break;
+	}
+}
+
+std::pair<int, int> findCenter(const std::pair<int, int>& inNextPoint)
+{
+	int LoopCounter = 0;
+
+	for (int direnctionIdx = *(directions.end() - 1);;)
+	{
+		if (!(inNextPoint.first + rowMovement[direnctionIdx] < 0 || inNextPoint.first + rowMovement[direnctionIdx] >= N
+			|| inNextPoint.second + columnMovement[direnctionIdx] < 0 || inNextPoint.second + columnMovement[direnctionIdx] >= N)
+			&& field[inNextPoint.first + rowMovement[direnctionIdx]][inNextPoint.second + columnMovement[direnctionIdx]] == '#')
+		{
+			field[inNextPoint.first][inNextPoint.second] = '.';
+
+			if (direnctionIdx != *(directions.end() - 1))
+			{
+				directions.emplace_back(direnctionIdx);
+				lengths.emplace_back(2);
+			}
+			else
+			{
+				(*(lengths.end() - 1))++;
+			}
+			if (upperLeftPoint.first > inNextPoint.first + rowMovement[direnctionIdx]) { upperLeftPoint.first = inNextPoint.first + rowMovement[direnctionIdx]; }
+			if (upperLeftPoint.second > inNextPoint.second + columnMovement[direnctionIdx]) { upperLeftPoint.second = inNextPoint.second + columnMovement[direnctionIdx]; }
+
+			return findCenter(std::make_pair(inNextPoint.first + rowMovement[direnctionIdx], inNextPoint.second + columnMovement[direnctionIdx]));
+		}
+
+		LoopCounter++;
+
+		if (LoopCounter == 4)
+		{
+			break;
+		}
+		else if(direnctionIdx == 3)
+		{
+			direnctionIdx = 0;
+		}
+		else
+		{
+			direnctionIdx++;
+		}
+	}
+	field[inNextPoint.first][inNextPoint.second] = '.';
+	return inNextPoint;
+}
+
+void findEdge(int x, int y)
+{
+	int dotCount = 0;
+	std::pair<int, int> nextPoint = std::make_pair(-1, -1);
+	upperLeftPoint.first = x;
+	upperLeftPoint.second = y;
+
+	for (int direnctionIdx = 0; direnctionIdx < 4; direnctionIdx++)
+	{
+		if (x + rowMovement[direnctionIdx] < 0 || x + rowMovement[direnctionIdx] >= N
+			|| y + columnMovement[direnctionIdx] < 0 || y + columnMovement[direnctionIdx] >= N)
+		{
+			dotCount++;
+		}
+		else if (field[x + rowMovement[direnctionIdx]][y + columnMovement[direnctionIdx]] == '.')
+		{
+			dotCount++;
+		}
+		else
+		{
+			nextPoint.first = x + rowMovement[direnctionIdx];
+			nextPoint.second = y + columnMovement[direnctionIdx];
+			directions.emplace_back(direnctionIdx);
+			lengths.emplace_back(2);
+			if (upperLeftPoint.first > nextPoint.first) { upperLeftPoint.first = nextPoint.first; }
+			if (upperLeftPoint.second > nextPoint.second) { upperLeftPoint.second = nextPoint.second; }
+		}
+	}
+
+	if (dotCount != 3) 
+	{ 
+		directions.clear();
+		lengths.clear();
+		return; 
+	}
+
+	field[x][y] = '.';
+	std::pair<int, int> endPoint = findCenter(std::make_pair(nextPoint.first, nextPoint.second));
+	int distanceToCenter = 0;
+
+	if (*(lengths.begin()) > *(lengths.end() - 1))
+	{
+		distanceToCenter = (((lengths[0] - 1) / 4) * 2) + 1;
+		fossils.emplace_back(Fossil(std::make_pair(upperLeftPoint.first + distanceToCenter, upperLeftPoint.second + distanceToCenter), lengths[0]));
+
+		SetDirection((*(fossils.end() - 1)).mDirection, ReverseDirection(*(directions.end() - 1)));
+		SetDirection((*(fossils.end() - 1)).mDirection, *(directions.end() - 2));
+	}
+	else
+	{
+		distanceToCenter = ((((*(lengths.end() - 1)) - 1) / 4) * 2) + 1;
+		fossils.emplace_back(Fossil(std::make_pair(upperLeftPoint.first + distanceToCenter, upperLeftPoint.second + distanceToCenter), *(lengths.end() - 1)));
+
+		SetDirection((*(fossils.end() - 1)).mDirection, *(directions.begin()));
+		SetDirection((*(fossils.end() - 1)).mDirection, ReverseDirection (*(directions.begin() + 1)));
+	}
+
+	directions.clear();
+	lengths.clear();
+}
+
+void Problem_4()
+{
+	std::ios_base::sync_with_stdio(false);
+	std::cin.tie(0);
+
+	std::cin >> N;
+	std::string inputBuffer;
+	std::cin.ignore();
+
+	for (int counter = N; counter > 0; counter--)
+	{
+		std::getline(std::cin, inputBuffer);
+		field.emplace_back(std::move(inputBuffer));
+	}
+
+	for (size_t x = 0; x < N; x++)
+	{
+		for (size_t y = 0; y < N; y++)
+		{
+			if (field[x][y] == '#')
+			{
+				findEdge(x, y);
+			}
+		}
+	}
+
+	std::sort(fossils.begin(), fossils.end());
+
+	std::cout << fossils.size() << "\n";
+
+	for (const auto& elem : fossils)
+	{
+		std::cout << elem.mX << " " << elem.mY << " " << elem.mLength << " " << elem.mDirection << "\n";
+	}
+}
+
 void ExecuteYonsei2021()
 {
 	//Problem_1();
 	//Problem_2();
-	Problem_3();
+	//Problem_3();
+	Problem_4();
 }
