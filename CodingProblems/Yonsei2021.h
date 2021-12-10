@@ -1,5 +1,6 @@
 #pragma once
 
+#include"TimeChecker.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -12,7 +13,7 @@
 // 문자열의 맨 앞이나 맨 뒤는 공백이 아님이 보장된다.
 // 문자열 안에 $D2$나 $d2$가 들어있다면 D2를 출력한다. 두 글자는 반드시 붙어있어야 하며, $D$/$d$와 $2$ 사이에 공백이 있어도 안 된다.
 // 만약 문자열 안에 해당 문자가 없다면 unrated를 출력한다.
-void Problem_1()
+void Problem_23303()
 {
 	std::string Str;
 	std::getline(std::cin, Str);
@@ -56,7 +57,7 @@ void Problem_1()
 
 모든 학생들이 최적의 방법을 사용해서 수업 교환을 완료했을 때, 원하는 수업을 수강하지 못하는 학생들의 수를 출력한다.
 */
-void Problem_2_Trial_1()
+void Problem_23305_Trial_1()
 {
 	int N, inputBuffer;
 	std::vector<int>::iterator itr;
@@ -97,7 +98,7 @@ void Problem_2_Trial_1()
 	std::cout << result << std::endl;
 }
 
-void Problem_2_Trial_2()
+void Problem_23305_Trial_2()
 {
 	std::ios_base::sync_with_stdio(false);
 	std::cin.tie(0);
@@ -140,7 +141,7 @@ void Problem_2_Trial_2()
 
 int countsOfA[1000000], countsOfB[1000000];
 
-void Problem_2_Trial_3()
+void Problem_23305_Trial_3()
 {
 	std::ios_base::sync_with_stdio(false);
 	std::cin.tie(0);
@@ -175,7 +176,7 @@ void Problem_2_Trial_3()
 
 int counts[1000000];
 
-void Problem_2()
+void Problem_23305()
 {
 	std::ios_base::sync_with_stdio(false);
 	std::cin.tie(NULL);
@@ -251,7 +252,7 @@ bool isAkaraka(const std::string& str)
 $\lfloor\frac{|S|}{2}\rfloor$ 길이의 접두사와 접미사가 모두 아카라카 팰린드롬이다. 만약 $|S| = 1$이면, $S$는 아카라카 팰린드롬이다.
 임의의 문자열이 주어졌을 때, 그 문자열이 아카라카 팰린드롬인지 알아보자. 만약 알아내지 못하면, 졸업할 때까지 아카라카를 못 갈지도 모른다!
 */
-void Problem_3()
+void Problem_23304()
 {
 	std::string inputStr;
 	std::cin >> inputStr;
@@ -407,7 +408,7 @@ void findPrimaryDot(int x, int y)
 	fossils.emplace_back(std::move(tempFossil));
 }
 
-void Problem_4_Trial()
+void Problem_23307_Trial()
 {
 	std::cin >> N;
 	std::string inputBuffer;
@@ -580,7 +581,7 @@ void findEdge(int x, int y)
 	lengths.clear();
 }
 
-void Problem_4()
+void Problem_23307()
 {
 	std::ios_base::sync_with_stdio(false);
 	std::cin.tie(0);
@@ -616,10 +617,218 @@ void Problem_4()
 	}
 }
 
+void Problem_23309_Trial_1()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(NULL);
+
+	int N, M, inputStationBuffer;
+	std::string inputWorkBuffer;
+	std::pair<int, int> workStationsBuffer;
+	std::cin >> N >> M;
+
+	std::list<int> stations;
+
+	for (size_t idx = N; idx > 0; idx--)
+	{
+		std::cin >> inputStationBuffer;
+		stations.emplace_back(inputStationBuffer);
+	}
+
+	std::list<int>::iterator tempItr_1, tempItr_2;
+
+	while (M-- > 0)
+	{
+		std::cin >> inputWorkBuffer;
+
+		if (inputWorkBuffer == "BN")
+		{
+			std::cin >> workStationsBuffer.first >> workStationsBuffer.second;
+			if (std::find(stations.begin(), stations.end(), workStationsBuffer.second) == stations.end())
+			{
+				tempItr_1 = std::find(stations.begin(), stations.end(), workStationsBuffer.first);
+
+				if ((tempItr_2 = std::next(tempItr_1, 1)) == stations.end())
+				{
+					tempItr_2 = stations.begin();
+				}
+
+				std::cout << *tempItr_2 << "\n";
+				stations.emplace(tempItr_2, workStationsBuffer.second);
+			}
+		}
+		else if (inputWorkBuffer == "BP")
+		{
+			std::cin >> workStationsBuffer.first >> workStationsBuffer.second;
+			if (std::find(stations.begin(), stations.end(), workStationsBuffer.second) == stations.end())
+			{
+				tempItr_1 = std::find(stations.begin(), stations.end(), workStationsBuffer.first);
+
+				if (tempItr_1 == stations.begin())
+				{
+					tempItr_2 = std::next(stations.end(), -1);
+				}
+				else
+				{
+					tempItr_2 = std::next(tempItr_1, -1);
+				}
+
+				std::cout << *tempItr_2 << "\n";
+				stations.emplace(tempItr_1, workStationsBuffer.second);
+			}
+		}
+		else if (inputWorkBuffer == "CN")
+		{
+			std::cin >> workStationsBuffer.first;
+			tempItr_1 = std::find(stations.begin(), stations.end(), workStationsBuffer.first);
+
+			if ((tempItr_2 = std::next(tempItr_1, 1)) == stations.end())
+			{
+				tempItr_2 = stations.begin();
+			}
+
+			std::cout << *tempItr_2 << "\n";
+
+			stations.erase(tempItr_2);
+		}
+		else if (inputWorkBuffer == "CP")
+		{
+			std::cin >> workStationsBuffer.first;
+			tempItr_1 = std::find(stations.begin(), stations.end(), workStationsBuffer.first);
+
+			if (tempItr_1 == stations.begin())
+			{
+				tempItr_2 = std::next(stations.end(), -1);
+			}
+			else
+			{
+				tempItr_2 = std::next(tempItr_1, -1);
+			}
+
+			std::cout << *tempItr_2 << "\n";
+
+			stations.erase(tempItr_2);
+		}
+	}
+}
+
+class Station
+{
+public:
+
+	Station() :mID{ 0 }, Next{ NULL }, Prev{ NULL }{}
+	Station(Station* inPrev, Station* inNext, int id) : mID{ id }, Next{ inNext }, Prev{ inPrev }{}
+
+	Station* Remove()
+	{
+		Prev->Next = Next;
+		Next->Prev = Prev;
+		return this;
+	}
+
+	int mID;
+	Station* Next;
+	Station* Prev;
+};
+
+double consumedTime;
+std::string io;
+std::unordered_map<int, Station*> lookupTable;
+
+std::chrono::steady_clock::time_point startTime;
+std::chrono::steady_clock::time_point endTime;
+
+void Problem_23309()
+{
+	// fast io
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(NULL);
+	std::cout.tie(NULL);
+
+	int N, M, inputStationBuffer;
+	std::string inputWorkBuffer;
+
+	Station* baseStation = new Station();
+	Station* currentStationBuffer = 0;
+
+	std::cin >> N >> M;
+	std::cin >> inputStationBuffer;
+
+	startTime = std::chrono::high_resolution_clock::now();
+
+	lookupTable[(baseStation->mID = inputStationBuffer)] = baseStation;
+	currentStationBuffer = baseStation;
+
+	for (size_t idx = N - 1; idx > 0; idx--)
+	{
+		std::cin >> inputStationBuffer;
+		currentStationBuffer->Next = new Station(currentStationBuffer, NULL, inputStationBuffer);
+		currentStationBuffer = currentStationBuffer->Next;
+		lookupTable[inputStationBuffer] = currentStationBuffer;
+	}
+
+	currentStationBuffer->Next = baseStation;
+	baseStation->Prev = currentStationBuffer;
+
+
+	while (M-- > 1)
+	{
+		std::cin >> inputWorkBuffer >> inputStationBuffer;
+
+		currentStationBuffer = lookupTable[inputStationBuffer];
+
+		if (inputWorkBuffer == "BN")
+		{
+			std::cin >> inputStationBuffer;
+
+			io.append(std::to_string(currentStationBuffer->Next->mID) + '\n');
+
+			currentStationBuffer->Next = new Station(currentStationBuffer, currentStationBuffer->Next, inputStationBuffer);
+			currentStationBuffer->Next->Next->Prev = currentStationBuffer->Next;
+			lookupTable[inputStationBuffer] = currentStationBuffer->Next;
+		}
+		else if (inputWorkBuffer == "BP")
+		{
+			std::cin >> inputStationBuffer;
+
+			io.append(std::to_string(currentStationBuffer->Prev->mID) + '\n');
+
+			currentStationBuffer->Prev = new Station(currentStationBuffer->Prev, currentStationBuffer, inputStationBuffer);
+			currentStationBuffer->Prev->Prev->Next = currentStationBuffer->Prev;
+			lookupTable[inputStationBuffer] = currentStationBuffer->Prev;
+		}
+		else if (inputWorkBuffer == "CN")
+		{
+			io.append(std::to_string(currentStationBuffer->Next->mID) + '\n');
+
+			lookupTable.erase(currentStationBuffer->Next->mID);
+			if (currentStationBuffer->Next == baseStation) { baseStation = currentStationBuffer; }
+			delete(currentStationBuffer->Next->Remove());
+		}
+		else if (inputWorkBuffer == "CP")
+		{
+			io.append(std::to_string(currentStationBuffer->Prev->mID) + '\n');
+
+			lookupTable.erase(currentStationBuffer->Prev->mID);
+			if (currentStationBuffer->Prev == baseStation) { baseStation = currentStationBuffer; }
+			delete(currentStationBuffer->Prev->Remove());
+		}
+	}
+
+	std::cout << io;
+
+	endTime = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double, std::milli> timeSpan = endTime - startTime;
+	std::cout << "consumed time : " << timeSpan.count() << " ms" << std::endl;
+}
+
+
 void ExecuteYonsei2021()
 {
 	//Problem_1();
 	//Problem_2();
 	//Problem_3();
-	Problem_4();
+	//Problem_4();
+
+	Problem_23309();
 }
