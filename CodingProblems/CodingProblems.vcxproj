@@ -143,6 +143,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaekjoonMathProblems.h" />
+    <ClInclude Include="TimeChecker.h" />
+    <ClInclude Include="Yonsei2021.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

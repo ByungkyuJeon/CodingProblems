@@ -1,7 +1,9 @@
 ﻿#include "BaekjoonMathProblems.h"
+#include "Yonsei2021.h"
 
 int main()
 {
-    ExecuteBaekjoonMathProblems();
+    //ExecuteBaekjoonMathProblems();
+    ExecuteYonsei2021();
 }
 
