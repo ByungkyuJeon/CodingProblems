@@ -48,14 +48,13 @@ void Math_3053()
 	int R;
 	std::cin >> R;
 
-	double euclidArea = pow(R, 2) * M_PI;
 	std::cout << std::fixed;
 	std::cout.precision(6);
-	std::cout << euclidArea << " " << pow(R * 2.0 / sqrt(2), 2) * M_PI << std::endl;
+	std::cout << pow(R, 2) * M_PI << '\n' << 2 * pow(R, 2);
 }
 
 void ExecuteBaekjoonMathProblems()
 {
 	//Math_2869();
-	Math_3053();
+	//Math_3053();
 }
