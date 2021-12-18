@@ -83,8 +83,47 @@ void Problem_11279()
 	std::cout << outputStr;
 }
 
+void Problem_1927()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+	std::cout.tie(nullptr);
+
+	int N, inputBuffer;
+	std::cin >> N;
+
+	std::string outputStr;
+	std::vector<int> heap;
+
+	while (N-- > 0)
+	{
+		std::cin >> inputBuffer;
+		if (inputBuffer)
+		{
+			heap.emplace_back(inputBuffer);
+			std::push_heap(heap.begin(), heap.end(), [](const int& lhs, const int& rhs) { return lhs > rhs; });
+			continue;
+		}
+		else
+		{
+			if (heap.size() > 0)
+			{
+				outputStr += std::to_string(heap[0]) + '\n';
+				std::pop_heap(heap.begin(), heap.end(), [](const int& lhs, const int& rhs) { return lhs > rhs; });
+				heap.pop_back();
+				continue;
+			}
+			outputStr += "0\n";
+		}
+
+	}
+
+	std::cout << outputStr;
+}
+
 void ExecuteDataStructure()
 {
 	//Problem_1874();
-	Problem_11279();
+	//Problem_11279();
+	Problem_1927();
 }
