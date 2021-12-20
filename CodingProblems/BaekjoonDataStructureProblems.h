@@ -223,11 +223,81 @@ void Problem_1715()
 	std::cout << N << '\n';
 }
 
+struct comp
+{
+	bool operator()(const std::pair<int, int>& lhs, const std::pair<int, int>& rhs)
+	{
+		return lhs.second < rhs.second;
+	}
+};
+
+void Problem_1202()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+	std::cout.tie(nullptr);
+
+	int N, K;
+	long long result = 0;
+	int inputBuffer[2];
+	std::cin >> N >> K;
+	
+	std::unordered_map<int, std::vector<std::pair<int, int>>> waitingJewels;
+	std::priority_queue<int, std::vector<int>, std::greater<int>> waitingKeyQueue;
+	std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, comp> jewels;
+	std::priority_queue<int, std::vector<int>, std::greater<int>> bags;
+
+	while (N-- > 0)
+	{
+		std::cin >> inputBuffer[0] >> inputBuffer[1];
+		if (inputBuffer[0] == 0)
+		{
+			jewels.emplace(std::make_pair(inputBuffer[0], inputBuffer[1]));
+		}
+		else
+		{
+			waitingJewels[inputBuffer[0]].emplace_back(std::make_pair(inputBuffer[0], inputBuffer[1]));
+		}
+	}
+
+	while (K-- > 0)
+	{
+		std::cin >> inputBuffer[0];
+		bags.emplace(inputBuffer[0]);
+	}
+
+	for (const auto& elem : waitingJewels)
+	{
+		waitingKeyQueue.emplace(elem.first);
+	}
+
+	while (!bags.empty())
+	{
+		while (!waitingKeyQueue.empty() && waitingKeyQueue.top() <= bags.top())
+		{
+			for (const auto& elem : waitingJewels[waitingKeyQueue.top()])
+			{
+				jewels.emplace(elem);
+			}
+			waitingKeyQueue.pop();
+		}
+
+		if (jewels.empty()) { bags.pop(); continue; }
+		result += jewels.top().second;
+		bags.pop();
+		jewels.pop();
+	}
+
+	std::cout << result << '\n';
+
+}
+
 void ExecuteDataStructure()
 {
 	//Problem_1874();
 	//Problem_11279();
 	//Problem_1927();
 	//Problem_1655();
-	Problem_1715();
+	//Problem_1715();
+	Problem_1202();
 }
