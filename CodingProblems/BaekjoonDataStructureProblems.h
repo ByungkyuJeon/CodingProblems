@@ -292,6 +292,73 @@ void Problem_1202()
 
 }
 
+int data_6549[100001];
+int segTree_6549[400000];
+long long result_6549;
+long long area;
+int N_6549;
+
+int makeSegTree_6549(int start, int end, int node)
+{
+	if (start == end) { return (segTree_6549[node] = start); }
+	int lhSeg, rhSeg;
+	int mid = start + ((end - start) / 2);
+
+	return (segTree_6549[node] = data_6549[(lhSeg = makeSegTree_6549(start, mid, 2 * node))] < data_6549[(rhSeg = makeSegTree_6549(mid + 1, end, 2 * node + 1))] ? lhSeg : rhSeg);
+}
+
+int getSegMin_6549(int start, int end, int node, int left, int right)
+{
+	if (right < start || left > end) return 0;
+
+	if (left <= start && right >= end) { return segTree_6549[node]; }
+	int mid = start + ((end - start) / 2);
+	int lhSeg = getSegMin_6549(start, mid, 2 * node, left, right);
+	int rhSeg = getSegMin_6549(mid + 1, end, 2 * node + 1, left, right);
+	return data_6549[lhSeg] < data_6549[rhSeg] ? lhSeg : rhSeg;
+}
+
+void process_6549(int startIdx, int EndIdx)
+{
+	if (startIdx > EndIdx) return;
+	if(startIdx == EndIdx)
+	{
+		if (startIdx > 0 && startIdx <= N_6549) { if (result_6549 < data_6549[startIdx]) { result_6549 = data_6549[startIdx]; } }
+		else { if (result_6549 < data_6549[EndIdx]) { result_6549 = data_6549[EndIdx]; } }
+		return;
+	}
+
+	int minIdx = getSegMin_6549(1, N_6549, 1, startIdx, EndIdx);
+
+	if (result_6549 < (area = (long long)data_6549[minIdx] * (EndIdx - startIdx + 1))) { result_6549 = area; }
+	
+	process_6549(startIdx, minIdx - 1);
+	process_6549(minIdx + 1, EndIdx);
+}
+
+// 히스토그램 최대 넓이 문제
+void Problem_6549()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string outputStr;
+	data_6549[0] = INT_MAX;
+
+	while (true)
+	{
+		std::cin >> N_6549;
+		if (N_6549 == 0) { break; }
+		for(int i = 1; i <= N_6549; i++){ std::cin >> data_6549[i]; }
+		result_6549 = 0;
+		makeSegTree_6549(1, N_6549, 1);
+		process_6549(1, N_6549);
+		outputStr += std::to_string(result_6549) + '\n';
+	}
+
+	std::cout << outputStr;
+}
+
 void ExecuteDataStructure()
 {
 	//Problem_1874();
@@ -299,5 +366,6 @@ void ExecuteDataStructure()
 	//Problem_1927();
 	//Problem_1655();
 	//Problem_1715();
-	Problem_1202();
+	//Problem_1202();
+	Problem_6549();
 }
