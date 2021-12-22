@@ -449,6 +449,7 @@ void Problem_2042()
 */
 
 // PROBLEM 2357
+/*
 int data_2357[100002];
 int maxSegTree_2357[400000];
 int minSegTree_2357[400000];
@@ -523,6 +524,58 @@ void Problem_2357()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 10868
+int data_10868[100002];
+int minSegTree_10868[400000];
+
+int makeMinSegTree(int start, int end, int node)
+{
+	if (start == end) { minSegTree_10868[node] = data_10868[start]; return minSegTree_10868[node]; }
+
+	int mid = start + (end - start) / 2;
+	int lhs = makeMinSegTree(start, mid, 2 * node);
+	int rhs = makeMinSegTree(mid + 1, end, 2 * node + 1);
+	minSegTree_10868[node] = lhs < rhs ? lhs : rhs;
+	return minSegTree_10868[node];
+}
+
+int getMinSegNode(int start, int end, int node, int left, int right)
+{
+	if (start > right || end < left) { return INT_MAX; }
+
+	if (start >= left && end <= right) { return minSegTree_10868[node]; }
+
+	int mid = start + (end - start) / 2;
+	int lhs = getMinSegNode(start, mid, 2 * node, left, right);
+	int rhs = getMinSegNode(mid + 1, end, 2 * node + 1, left, right);
+	return lhs < rhs ? lhs : rhs;
+}
+
+void Problem_10868()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int N, M, inputBuffer[2];
+	std::string outputStr;
+	std::cin >> N >> M;
+	for (int idx = 1; idx <= N; idx++)
+	{
+		std::cin >> data_10868[idx];
+	}
+	makeMinSegTree(1, N, 1);
+
+	while (M-- > 0)
+	{
+		std::cin >> inputBuffer[0] >> inputBuffer[1];
+
+		outputStr += std::to_string(getMinSegNode(1, N, 1, inputBuffer[0], inputBuffer[1])) + '\n';
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteDataStructure()
 {
@@ -534,5 +587,6 @@ void ExecuteDataStructure()
 	//Problem_1202();
 	//Problem_6549();
 	//Problem_2042();
-	Problem_2357();
+	//Problem_2357();
+	Problem_10868();
 }
