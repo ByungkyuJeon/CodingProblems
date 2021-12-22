@@ -2,6 +2,8 @@
 
 #include <stack>
 
+// PROBLEM 1874
+/*
 void Problem_1874()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -44,7 +46,10 @@ void Problem_1874()
 		std::cout << outputs_1874;
 	}
 }
+*/
 
+// PROBLEM 11279
+/*
 void Problem_11279()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -82,7 +87,10 @@ void Problem_11279()
 
 	std::cout << outputStr;
 }
+*/
 
+// PROBLEM 1927
+/*
 void Problem_1927()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -120,7 +128,10 @@ void Problem_1927()
 
 	std::cout << outputStr;
 }
+*/
 
+// PROBLEM 1655
+/*
 int max_heap[50001];
 int min_heap[50001];
 
@@ -191,7 +202,10 @@ void Problem_1655()
 
 	std::cout << outputStr;
 }
+*/
 
+// PROBLEM 1715
+/*
 void Problem_1715()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -222,8 +236,11 @@ void Problem_1715()
 
 	std::cout << N << '\n';
 }
+*/
 
-struct comp
+// PROBLEM 1202
+/*
+struct comp_1202
 {
 	bool operator()(const std::pair<int, int>& lhs, const std::pair<int, int>& rhs)
 	{
@@ -244,7 +261,7 @@ void Problem_1202()
 	
 	std::unordered_map<int, std::vector<std::pair<int, int>>> waitingJewels;
 	std::priority_queue<int, std::vector<int>, std::greater<int>> waitingKeyQueue;
-	std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, comp> jewels;
+	std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, comp_1202> jewels;
 	std::priority_queue<int, std::vector<int>, std::greater<int>> bags;
 
 	while (N-- > 0)
@@ -291,7 +308,10 @@ void Problem_1202()
 	std::cout << result << '\n';
 
 }
+*/
 
+// PROBLEM 6549
+/*
 int data_6549[100001];
 int segTree_6549[400000];
 long long result_6549;
@@ -358,6 +378,73 @@ void Problem_6549()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 2042
+int data_2042[1000002];
+long long segTree_2042[4000000];
+
+long long makeSegTree_2042(int start, int end, int node)
+{
+	if (start == end) { segTree_2042[node] = data_2042[start]; return segTree_2042[node]; }
+	int mid = start + ((end - start) / 2);
+
+	segTree_2042[node] = makeSegTree_2042(start, mid, 2 * node) + makeSegTree_2042(mid + 1, end, 2 * node + 1);
+	return segTree_2042[node];
+}
+
+long long modifySegTree(int start, int end, int node, int idx, long long val)
+{
+	if (start > idx || end < idx) { return segTree_2042[node]; }
+
+	if (start == end && start == idx) { segTree_2042[node] = val; return segTree_2042[node]; }
+
+	int mid = start + ((end - start) / 2);
+	segTree_2042[node] = modifySegTree(start, mid, 2 * node, idx, val) + modifySegTree(mid + 1, end, 2 * node + 1, idx, val);
+	return segTree_2042[node];
+}
+
+long long getSegNode(int start, int end, int node, int left, int right)
+{
+	if (left > end || right < start) { return 0; }
+
+	if (start >= left && end <= right) { return segTree_2042[node]; }
+
+	int mid = start + ((end - start) / 2);
+	return getSegNode(start, mid, 2 * node, left, right) + getSegNode(mid + 1, end, 2 * node + 1, left, right);
+}
+
+void Problem_2042()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int N, M, K, loopCount;
+	long long inputBuffer[3];
+	std::string outputStr;
+	std::cin >> N >> M >> K;
+	loopCount = M + K;
+	for (int idx = 1; idx <= N; idx++)
+	{
+		std::cin >> data_2042[idx];
+	}
+	makeSegTree_2042(1, N, 1);
+
+	while (loopCount-- > 0)
+	{
+		std::cin >> inputBuffer[0] >> inputBuffer[1] >> inputBuffer[2];
+		if (inputBuffer[0] == 1)
+		{
+			modifySegTree(1, N, 1, inputBuffer[1], inputBuffer[2]);
+		}
+		else
+		{
+			outputStr += std::to_string(getSegNode(1, N, 1, inputBuffer[1], inputBuffer[2])) + '\n';
+		}
+	}
+	
+	std::cout << outputStr;
+}
 
 void ExecuteDataStructure()
 {
@@ -367,5 +454,6 @@ void ExecuteDataStructure()
 	//Problem_1655();
 	//Problem_1715();
 	//Problem_1202();
-	Problem_6549();
+	//Problem_6549();
+	Problem_2042();
 }
