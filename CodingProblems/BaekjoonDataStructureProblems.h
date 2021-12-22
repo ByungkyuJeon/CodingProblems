@@ -527,6 +527,7 @@ void Problem_2357()
 */
 
 // PROBLEM 10868
+/*
 int data_10868[100002];
 int minSegTree_10868[400000];
 
@@ -576,6 +577,48 @@ void Problem_10868()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 12015
+int subsequence_12015[1000001];
+int counts_12015[1000001];
+
+int binarySearch_12015(int start, int end, int val)
+{
+	if (start == end) { return subsequence_12015[start] >= val ? start : start + 1; }
+	int mid = start + (end - start) / 2;
+	if (val == subsequence_12015[mid]) { return mid; }
+	else if (val < subsequence_12015[mid]) { return binarySearch_12015(start, mid, val); }
+	else { return binarySearch_12015(mid + 1, end, val); }
+}
+
+void Problem_12015()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int N, inputBuffer, result = 1;
+	std::cin >> N >> inputBuffer;
+	subsequence_12015[0] = inputBuffer;
+	counts_12015[0] = 1;
+	for (int idx = 1; idx < N; idx++)
+	{
+		std::cin >> inputBuffer;
+		if (subsequence_12015[result - 1] < inputBuffer)
+		{
+			subsequence_12015[result++] = inputBuffer;
+			counts_12015[idx] = binarySearch_12015(0, result - 1, inputBuffer) + 1;
+		}
+		else
+		{
+			counts_12015[idx] = binarySearch_12015(0, result - 1, inputBuffer) + 1;
+			subsequence_12015[counts_12015[idx] - 1] = inputBuffer;
+		}
+	}
+
+	std::cout << result << '\n';
+
+}
 
 void ExecuteDataStructure()
 {
@@ -588,5 +631,6 @@ void ExecuteDataStructure()
 	//Problem_6549();
 	//Problem_2042();
 	//Problem_2357();
-	Problem_10868();
+	//Problem_10868();
+	Problem_12015();
 }
