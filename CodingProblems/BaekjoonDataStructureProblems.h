@@ -381,6 +381,7 @@ void Problem_6549()
 */
 
 // PROBLEM 2042
+/*
 int data_2042[1000002];
 long long segTree_2042[4000000];
 
@@ -445,6 +446,83 @@ void Problem_2042()
 	
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 2357
+int data_2357[100002];
+int maxSegTree_2357[400000];
+int minSegTree_2357[400000];
+
+int makeMaxSegTree(int start, int end, int node)
+{
+	if (start == end) { maxSegTree_2357[node] = data_2357[start]; return maxSegTree_2357[node]; }
+
+	int mid = start + (end - start) / 2;
+	int lhs = makeMaxSegTree(start, mid, 2 * node);
+	int rhs = makeMaxSegTree(mid + 1, end, 2 * node + 1);
+	maxSegTree_2357[node] = lhs > rhs ? lhs : rhs;
+	return maxSegTree_2357[node];
+}
+
+int makeMinSegTree(int start, int end, int node)
+{
+	if (start == end) { minSegTree_2357[node] = data_2357[start]; return minSegTree_2357[node]; }
+
+	int mid = start + (end - start) / 2;
+	int lhs = makeMinSegTree(start, mid, 2 * node);
+	int rhs = makeMinSegTree(mid + 1, end, 2 * node + 1);
+	minSegTree_2357[node] = lhs < rhs ? lhs : rhs;
+	return minSegTree_2357[node];
+}
+
+int getMaxSegNode(int start, int end, int node, int left, int right)
+{
+	if (start > right || end < left) { return INT_MIN; }
+
+	if (start >= left && end <= right) { return maxSegTree_2357[node]; }
+
+	int mid = start + (end - start) / 2;
+	int lhs = getMaxSegNode(start, mid, 2 * node, left, right);
+	int rhs = getMaxSegNode(mid + 1, end, 2 * node + 1, left, right);
+	return lhs > rhs ? lhs : rhs;
+}
+
+int getMinSegNode(int start, int end, int node, int left, int right)
+{
+	if (start > right || end < left) { return INT_MAX; }
+
+	if (start >= left && end <= right) { return minSegTree_2357[node]; }
+
+	int mid = start + (end - start) / 2;
+	int lhs = getMinSegNode(start, mid, 2 * node, left, right);
+	int rhs = getMinSegNode(mid + 1, end, 2 * node + 1, left, right);
+	return lhs < rhs ? lhs : rhs;
+}
+
+void Problem_2357()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int N, M, inputBuffer[2];
+	std::string outputStr;
+	std::cin >> N >> M;
+	for (int idx = 1; idx <= N; idx++)
+	{
+		std::cin >> data_2357[idx];
+	}
+	makeMaxSegTree(1, N, 1);
+	makeMinSegTree(1, N, 1);
+
+	while (M-- > 0)
+	{
+		std::cin >> inputBuffer[0] >> inputBuffer[1];
+
+		outputStr += std::to_string(getMinSegNode(1, N, 1, inputBuffer[0], inputBuffer[1])) + " " + std::to_string(getMaxSegNode(1, N, 1, inputBuffer[0], inputBuffer[1])) + '\n';
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteDataStructure()
 {
@@ -455,5 +533,6 @@ void ExecuteDataStructure()
 	//Problem_1715();
 	//Problem_1202();
 	//Problem_6549();
-	Problem_2042();
+	//Problem_2042();
+	Problem_2357();
 }
