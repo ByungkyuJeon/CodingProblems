@@ -580,6 +580,7 @@ void Problem_10868()
 */
 
 // PROBLEM 12015
+/*
 int subsequence_12015[1000001];
 int counts_12015[1000001];
 
@@ -619,6 +620,86 @@ void Problem_12015()
 	std::cout << result << '\n';
 
 }
+*/
+
+// PROBLEM 14003
+struct data_14003
+{
+	data_14003() = default;
+	data_14003(data_14003* inParent, int inNum) : parent{ inParent }, num{ inNum } {}
+
+	data_14003* parent;
+	int num;
+};
+
+data_14003* subsequence_14003[1000001];
+data_14003 list_14003[1000001];
+int counts_14003[1000001];
+
+int binarySearch_14003(int start, int end, int val)
+{
+	if (start == end) { return subsequence_14003[start]->num >= val ? start : start + 1; }
+	int mid = start + (end - start) / 2;
+	if (val == subsequence_14003[mid]->num) { return mid; }
+	else if (val < subsequence_14003[mid]->num) { return binarySearch_14003(start, mid, val); }
+	else { return binarySearch_14003(mid + 1, end, val); }
+}
+
+void Problem_14003()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	data_14003* lastDataBuffer = nullptr;
+	std::string resultStr;
+	int N, inputBuffer, result = 1;
+	std::cin >> N >> inputBuffer;
+	list_14003[0] = data_14003(nullptr, inputBuffer);
+	subsequence_14003[0] = &list_14003[0];
+	counts_14003[0] = 1;
+	for (int idx = 1; idx < N; idx++)
+	{
+		std::cin >> inputBuffer;
+		if (subsequence_14003[result - 1]->num < inputBuffer)
+		{
+			list_14003[idx] = data_14003(subsequence_14003[result - 1], inputBuffer);
+			subsequence_14003[result] = &list_14003[idx];
+			result++;
+			counts_14003[idx] = binarySearch_14003(0, result - 1, inputBuffer) + 1;
+		}
+		else
+		{
+			counts_14003[idx] = binarySearch_14003(0, result - 1, inputBuffer) + 1;
+			if (counts_14003[idx] - 1 == 0) 
+			{ 
+				list_14003[idx] = data_14003(nullptr, inputBuffer);
+				subsequence_14003[counts_14003[idx] - 1] = &list_14003[idx];
+			}
+			else 
+			{ 
+				list_14003[idx] = data_14003(subsequence_14003[counts_14003[idx] - 2], inputBuffer);
+				subsequence_14003[counts_14003[idx] - 1] = &list_14003[idx];
+			}
+		}
+	}
+
+	lastDataBuffer = subsequence_14003[result - 1];
+	std::stack<int> resultStack;
+	resultStack.emplace(lastDataBuffer->num);
+	while ((lastDataBuffer = lastDataBuffer->parent) != nullptr)
+	{
+		resultStack.emplace(lastDataBuffer->num);
+	}
+	
+	while (!resultStack.empty())
+	{
+		resultStr += std::to_string(resultStack.top()) + ' ';
+		resultStack.pop();
+	}
+
+	std::cout << result << '\n' << resultStr << '\n';
+
+}
 
 void ExecuteDataStructure()
 {
@@ -632,5 +713,6 @@ void ExecuteDataStructure()
 	//Problem_2042();
 	//Problem_2357();
 	//Problem_10868();
-	Problem_12015();
+	//Problem_12015();
+	Problem_14003();
 }
