@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 
 // PROBLEM 3020
 /*
@@ -51,7 +52,7 @@ void Problem_3020()
 */
 
 // PROBLEM 2352
-
+/*
 int subsequence_2352[40001];
 
 int binarySearch_2352(int start, int end, int val)
@@ -90,9 +91,62 @@ void Problem_2352()
 	
 	std::cout << result;
 }
+*/
+
+// PROBLEM 1208
+int data_1208[41];
+std::unordered_map<int, int> subsequencesCount;
+long long result_1208;
+
+void processSubsequences_1208(int idx, int end, int val)
+{
+	if (idx == end)
+	{
+		subsequencesCount[val]++;
+		return;
+	}
+
+	processSubsequences_1208(idx + 1, end, val + data_1208[idx]);
+	processSubsequences_1208(idx + 1, end, val);
+}
+
+void processSubsequences_1208(int idx, int end, int val, int S)
+{
+	if (idx == end)
+	{
+		if (subsequencesCount.find(S - val) == subsequencesCount.end()) { return; }
+		result_1208 += subsequencesCount[S - val];
+		return;
+	}
+
+	processSubsequences_1208(idx + 1, end, val + data_1208[idx], S);
+	processSubsequences_1208(idx + 1, end, val, S);
+}
+
+void Problem_1208()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int N, S;
+
+	std::cin >> N >> S;
+
+	for (int idx = 0; idx < N; idx++)
+	{
+		std::cin >> data_1208[idx];
+	}
+
+	processSubsequences_1208(0, N / 2, 0);
+	processSubsequences_1208(N / 2, N, 0, S);
+
+	if (S == 0) { result_1208--; }
+	std::cout << result_1208 << '\n';
+}
 
 void ExecuteBinarySearch()
 {
 	//Problem_3020();
-	Problem_2352();
+	//Problem_2352();
+	Problem_1208();
 }
