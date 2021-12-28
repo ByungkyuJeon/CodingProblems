@@ -1,5 +1,6 @@
 #pragma once
 
+#include <unordered_map>
 #include <iostream>
 
 // PROBLEM 3020
@@ -94,6 +95,7 @@ void Problem_2352()
 */
 
 // PROBLEM 1208
+/*
 int data_1208[41];
 std::unordered_map<int, int> subsequencesCount;
 long long result_1208;
@@ -143,10 +145,101 @@ void Problem_1208()
 	if (S == 0) { result_1208--; }
 	std::cout << result_1208 << '\n';
 }
+*/
+
+// PROBLEM 1114
+
+int L_1114, K_1114, C_1114, cut_1114;
+std::vector<int> points_1114;
+
+bool process_1114(int mid)
+{
+	int sum = 0, subSum, cutCount = 0, cut;
+
+	for (int idx = points_1114.size(); idx >= 0; idx--)
+	{
+		if (idx == points_1114.size())
+		{
+			subSum = L_1114 - points_1114[idx - 1];
+		}
+		else if (idx == 0) { subSum = points_1114[idx]; }
+		else{ subSum = points_1114[idx] - points_1114[idx - 1]; }
+		if (subSum > mid)
+		{
+			return false;
+		}
+
+		sum += subSum;
+		if (sum > mid)
+		{
+			if (cutCount >= C_1114) { return false; }
+			cut = idx;
+			cutCount++;
+			sum = subSum;
+		}
+	}
+
+	if (C_1114 - cutCount > 0) { cut_1114 = 0; }
+	else { cut_1114 = cut; }
+	return true;
+}
+
+void Problem_1114()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::cin >> L_1114 >> K_1114 >> C_1114;
+	int buffer;
+	int start, end;
+
+	for (int i = 0; i < K_1114; i++) {
+		std::cin >> buffer;
+		points_1114.emplace_back(buffer);
+	}
+	std::sort(points_1114.begin(), points_1114.end());
+	points_1114.erase(std::unique(points_1114.begin(), points_1114.end()), points_1114.end());
+	if (points_1114.size() <= C_1114)
+	{
+		start = points_1114[0];
+		for (int idx = 1; idx < points_1114.size(); idx++)
+		{
+			buffer = points_1114[idx] - points_1114[idx - 1];
+			if (buffer > start)
+			{
+				start = buffer;
+			}
+		}
+		if (L_1114 - points_1114[points_1114.size() - 1] > start)
+		{
+			start = L_1114 - points_1114[points_1114.size() - 1];
+		}
+		std::cout << start << " " << points_1114[0];
+	}
+	else
+	{
+		start = 0, end = L_1114;
+		bool midResult = process_1114(start + (end - start) / 2);
+		while (true)
+		{
+			if (midResult){ end = start + (end - start) / 2; }
+			else{ start = start + (end - start) / 2; }
+			midResult = process_1114(start + (end - start) / 2);
+			if (end - start <= 1)
+			{
+				break;
+			}
+		}
+
+		if(midResult){ std::cout << start << ' ' << points_1114[cut_1114]; }
+		else{ std::cout << end << ' ' << points_1114[cut_1114]; }
+	}
+}
 
 void ExecuteBinarySearch()
 {
 	//Problem_3020();
 	//Problem_2352();
-	Problem_1208();
+	//Problem_1208();
+	Problem_1114();
 }
