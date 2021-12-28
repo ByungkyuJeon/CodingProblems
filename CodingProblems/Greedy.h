@@ -118,6 +118,7 @@ void Problem_1040()
 */
 
 // PROBLEM 23845
+/*
 int data_23845[200001];
 int counts_23845[100001];
 long long result;
@@ -193,9 +194,60 @@ void Problem_23845()
 
 	std::cout << " time : " << consumedTime << " ms";
 }
+*/
+
+// PROBLEM 1422
+std::vector<std::string> result_1422;
+std::string maxStr_1422 = "";
+
+void Problem_1422()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int K, N;
+	std::string tempStr;
+	std::cin >> K >> N;
+
+	for (int idx = 0; idx < K; idx++)
+	{
+		std::cin >> tempStr;
+		result_1422.emplace_back(tempStr);
+
+		if (maxStr_1422.size() == tempStr.size())
+		{
+			if (maxStr_1422 < tempStr)
+			{
+				maxStr_1422 = tempStr;
+			}
+		}
+		else if (maxStr_1422.size() < tempStr.size())
+		{
+			maxStr_1422 = tempStr;
+		}
+	}
+
+	N -= K;
+
+	while (N-- > 0)
+	{
+		result_1422.emplace_back(maxStr_1422);
+	}
+
+	std::sort(result_1422.begin(), result_1422.end(), [](const std::string& lhs, const std::string& rhs)
+		{
+			return lhs + rhs > rhs + lhs;
+		});
+
+	for (const auto& elem : result_1422)
+	{
+		std::cout << elem;
+	}
+}
 
 void ExecuteGreedy()
 {
 	//Problem_1040();
-	Problem_23845();
+	//Problem_23845();
+	Problem_1422();
 }
