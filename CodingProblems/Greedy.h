@@ -197,6 +197,7 @@ void Problem_23845()
 */
 
 // PROBLEM 1422
+/*
 std::vector<std::string> result_1422;
 std::string maxStr_1422 = "";
 
@@ -244,10 +245,123 @@ void Problem_1422()
 		std::cout << elem;
 	}
 }
+*/
+
+// PROBLEM 1374
+/*
+int data_1374[100001];
+
+struct comp_1374
+{
+	bool operator()(const std::pair<int, int>& lhs, const std::pair<int, int>& rhs)
+	{
+		return lhs.second > rhs.second;
+	}
+};
+
+void Problem_1374()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, comp_1374> startQueue;
+	std::priority_queue<int, std::vector<int>, std::greater<int>> endQueue;
+
+
+	int N, inputBuffer[3], result = 0;
+	std::cin >> N;
+
+	for (int idx = 0; idx < N; idx++)
+	{
+		std::cin >> inputBuffer[0] >> inputBuffer[1] >> inputBuffer[2];
+		startQueue.emplace(std::make_pair(inputBuffer[0], inputBuffer[1]));
+		data_1374[inputBuffer[0]] = inputBuffer[2];
+	}
+
+	while (!startQueue.empty())
+	{
+		if (endQueue.empty() || endQueue.top() > startQueue.top().second)
+		{
+			endQueue.emplace(data_1374[startQueue.top().first]);
+			startQueue.pop();
+		}
+		else
+		{
+			endQueue.pop();
+		}
+
+		if (result < endQueue.size()) { result = endQueue.size(); }
+	}
+
+	std::cout << result;
+}
+*/
+
+// PROBLEM 1379
+int data_1379[100001];
+int nums_1379[100001];
+
+struct comp_1379
+{
+	bool operator()(const std::pair<int, int>& lhs, const std::pair<int, int>& rhs) const
+	{
+		return lhs.second > rhs.second;
+	}
+};
+
+void Problem_1379()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(0);
+
+	std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, comp_1379> startQueue;
+	std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, comp_1379> endQueue;
+	std::priority_queue<int, std::vector<int>, std::greater<int>> numsQueue;
+	std::string outputStr;
+
+	int N, buffer, inputBuffer[2];
+	std::cin >> N;
+
+	for (int idx = 0; idx < N; idx++)
+	{
+		std::cin >> buffer >> inputBuffer[0] >> inputBuffer[1];
+		startQueue.emplace(std::make_pair(buffer, inputBuffer[0]));
+		data_1379[buffer] = inputBuffer[1];
+		numsQueue.emplace(idx + 1);
+	}
+
+	buffer = 0;
+	while (!startQueue.empty())
+	{
+		if (endQueue.empty() || endQueue.top().second > startQueue.top().second)
+		{
+			endQueue.emplace(std::make_pair(numsQueue.top(),data_1379[startQueue.top().first]));
+			nums_1379[startQueue.top().first] = numsQueue.top();
+			numsQueue.pop();
+			startQueue.pop();
+		}
+		else
+		{
+			numsQueue.emplace(endQueue.top().first);
+			endQueue.pop();
+		}
+
+		if (buffer < endQueue.size()) { buffer = endQueue.size(); }
+	}
+
+	std::cout << buffer << '\n';
+	for(buffer = 1; buffer <= N; buffer++)
+	{
+		outputStr += std::to_string(nums_1379[buffer]) + '\n';
+	}
+	std::cout << outputStr;
+}
 
 void ExecuteGreedy()
 {
 	//Problem_1040();
 	//Problem_23845();
-	Problem_1422();
+	//Problem_1422();
+
+	Problem_1379();
 }
