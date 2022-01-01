@@ -481,18 +481,18 @@ struct comp_1467
 {
 	bool operator()(const std::pair<int, int>& lhs, const std::pair<int, int>& rhs)
 	{	
-		if (lhs.second == rhs.second) { return lhs.first < rhs.first; }
+		if (lhs.second == rhs.second) { return lhs.first > rhs.first; }
 
 		if (lhs.first < rhs.first)
 		{
-			if (lhs.second < 0) { return true; }
-			else if (lhs.second == 0) { return rhs.second > 0; }
+			if (lhs.second <= 0) { return true; }
+			else if (lhs.second == 0) { return rhs.second < 0; }
 			return false;
 		}
 		else
 		{
-			if (rhs.second < 0) { return false; }
-			else if (rhs.second == 0) { return lhs.second < 0; }
+			if (rhs.second <= 0) { return false; }
+			else if (rhs.second == 0) { return lhs.second > 0; }
 			return true;
 		}
 	}
@@ -536,6 +536,7 @@ void Problem_1467()
 		}
 
 		skipIndices[pickerQueue.top().first] = true;
+		std::cout << target[idx] << " " << pickerQueue.top().first << " ";
 		pickerQueue = std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, comp_1467>();
 		Print();
 	}
@@ -551,31 +552,30 @@ void Problem_1467()
 std::string originStr, substractStr, resultStr;
 int subCount[100], mainCount[100], mainIdxCount[1001];
 
-std::pair<int, char> process(int x) 
+std::pair<int, char> process(int idx) 
 {
 	int copiedSubStrCount[100];
 
-	std::pair<int, int>ret = std::make_pair(x, originStr[x]);
+	std::pair<int, int>result = std::make_pair(idx, originStr[idx]);
 
-	for (int i = 0; i < 100; i++)
+	for (int countIdx = 0; countIdx < 100; countIdx++)
 	{
-		copiedSubStrCount[i] = subCount[i];
+		copiedSubStrCount[countIdx] = subCount[countIdx];
 	}
 
-
-	while (copiedSubStrCount[originStr[x]])
+	while (copiedSubStrCount[originStr[idx]])
 	{
-		if (originStr[x] > ret.second && copiedSubStrCount[originStr[x]] < mainIdxCount[x])
+		if (originStr[idx] > result.second && copiedSubStrCount[originStr[idx]] < mainIdxCount[idx])
 		{
-			ret = { x,originStr[x] };
+			result = { idx,originStr[idx] };
 		}
-		copiedSubStrCount[originStr[x++]]--;
+		copiedSubStrCount[originStr[idx++]]--;
 	}
-	if (originStr[x] > ret.second && copiedSubStrCount[originStr[x]] < mainIdxCount[x])
+	if (originStr[idx] > result.second && copiedSubStrCount[originStr[idx]] < mainIdxCount[idx])
 	{
-		ret = { x,originStr[x] };
+		result = { idx,originStr[idx] };
 	}
-	return ret;
+	return result;
 }
 
 void Problem_1467_Study() 
@@ -608,13 +608,13 @@ void Problem_1467_Study()
 		}
 		else 
 		{
-			auto t = process(processIdx);
-			for (int i = processIdx; i < t.first; i++)
+			auto dest = process(processIdx);
+			for (int idx = processIdx; idx < dest.first; idx++)
 			{
-				subCount[originStr[i]]--;
+				subCount[originStr[idx]]--;
 			}
-			processIdx = t.first + 1;
-			resultStr.push_back(t.second);
+			processIdx = dest.first + 1;
+			resultStr.push_back(dest.second);
 		}
 	}
 	std::cout << resultStr;
@@ -626,6 +626,6 @@ void ExecuteGreedy()
 	//Problem_23845();
 	//Problem_1422();
 	//Problem_1379();
-	Problem_1467();
-	//Problem_1467_Study();
+	//Problem_1467();
+	Problem_1467_Study();
 }
