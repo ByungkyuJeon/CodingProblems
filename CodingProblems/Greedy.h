@@ -623,7 +623,7 @@ void Problem_1467_Study()
 */
 
 // PROBLEM 1026
-
+/*
 int A[51], B[51];
 
 void Problem_1026()
@@ -654,6 +654,54 @@ void Problem_1026()
 
 	std::cout << result;
 }
+*/
+
+// PROBLEM 1052
+
+int testN = 51;
+int testK = 51;
+
+void Problem_1052()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int preprocessed[26];
+
+	preprocessed[0] = 1;
+	for (int count = 1; count < 25; count++)
+	{
+		preprocessed[count] = preprocessed[count - 1] * 2;
+	}
+
+	int N, K, prevNum = 24, result;
+	std::cin >> N >> K;
+
+	if (N <= K) { std::cout << 0; }
+	else
+	{
+		while (K-- > 0)
+		{
+			for (int count = prevNum - 1; count >= 0; count--)
+			{
+				if (N >= preprocessed[count])
+				{
+					prevNum = count;
+					N -= preprocessed[count];
+					break;
+				}
+			}
+			if (N == 0) { break; }
+		}
+		if (K >= 0 || N == 0) { std::cout << 0; }
+		else
+		{
+			result = preprocessed[prevNum] - N;
+
+			std::cout << result;
+		}
+	}
+}
 
 void ExecuteGreedy()
 {
@@ -663,5 +711,6 @@ void ExecuteGreedy()
 	//Problem_1379();
 	//Problem_1467();
 	//Problem_1467_Study();
-	Problem_1026();
+	//Problem_1026();
+	Problem_1052();
 }
