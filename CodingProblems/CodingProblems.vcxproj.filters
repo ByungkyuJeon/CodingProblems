@@ -16,6 +16,9 @@
     <Filter Include="소스 파일\Baekjoon">
       <UniqueIdentifier>{47349e58-af31-4454-ba24-748ecc3bb8e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\DataStructure">
+      <UniqueIdentifier>{17b4e61e-f914-4173-83eb-aec337e88e49}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CodingProblems.cpp">
@@ -30,6 +33,36 @@
       <Filter>소스 파일\Baekjoon</Filter>
     </ClInclude>
     <ClInclude Include="TimeChecker.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="BaekjoonDPProblems.h">
+      <Filter>소스 파일\Baekjoon</Filter>
+    </ClInclude>
+    <ClInclude Include="BaekjoonGraphProblems.h">
+      <Filter>소스 파일\Baekjoon</Filter>
+    </ClInclude>
+    <ClInclude Include="BaekjoonDataStructureProblems.h">
+      <Filter>소스 파일\Baekjoon</Filter>
+    </ClInclude>
+    <ClInclude Include="BaekjoonStringProblems.h">
+      <Filter>소스 파일\Baekjoon</Filter>
+    </ClInclude>
+    <ClInclude Include="DataStructure\Tree.h">
+      <Filter>헤더 파일\DataStructure</Filter>
+    </ClInclude>
+    <ClInclude Include="DataStructure\Queue.h">
+      <Filter>헤더 파일\DataStructure</Filter>
+    </ClInclude>
+    <ClInclude Include="DataStructure\Stack.h">
+      <Filter>헤더 파일\DataStructure</Filter>
+    </ClInclude>
+    <ClInclude Include="BinarySearch.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="DFS_BFS\DFS_BFS.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Greedy.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

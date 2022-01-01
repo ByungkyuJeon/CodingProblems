@@ -4,7 +4,8 @@
 #include <vector>
 #include <unordered_map>
 
-
+// PROBLEM 2839
+/*
 int DP_2839(std::unordered_map<int, int>& inLookupTable, int inNum)
 {
 	if (inNum == 0) { return 0; }
@@ -46,8 +47,9 @@ void Problem_2839()
 	}
 	else { std::cout << result; }
 }
+*/
 
 void ExecuteDpProblems()
 {
-	Problem_2839();
+	//Problem_2839();
 }

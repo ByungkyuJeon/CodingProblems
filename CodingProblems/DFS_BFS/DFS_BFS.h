@@ -1,6 +1,7 @@
 #pragma once
 
 // PROBLEM 1376
+/*
 std::set<int> nodes_1376[100002];
 std::string result_1376;
 bool visited_1376[100002];
@@ -68,8 +69,9 @@ void Problem_1376()
 
 	std::cout << result_1376 << '\n';
 }
+*/
 
 void ExecuteDFS_BFS()
 {
-	Problem_1376();
+	//Problem_1376();
 }

@@ -142,8 +142,18 @@
     <ClCompile Include="CodingProblems.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaekjoonDataStructureProblems.h" />
+    <ClInclude Include="BaekjoonGraphProblems.h" />
     <ClInclude Include="BaekjoonMathProblems.h" />
+    <ClInclude Include="BaekjoonDPProblems.h" />
+    <ClInclude Include="BaekjoonStringProblems.h" />
+    <ClInclude Include="BinarySearch.h" />
+    <ClInclude Include="DataStructure\Queue.h" />
+    <ClInclude Include="DataStructure\Stack.h" />
+    <ClInclude Include="DFS_BFS\DFS_BFS.h" />
+    <ClInclude Include="Greedy.h" />
     <ClInclude Include="TimeChecker.h" />
+    <ClInclude Include="DataStructure\Tree.h" />
     <ClInclude Include="Yonsei2021.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

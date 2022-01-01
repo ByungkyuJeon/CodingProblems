@@ -148,7 +148,7 @@ void Problem_1208()
 */
 
 // PROBLEM 1114
-
+/*
 int L_1114, K_1114, C_1114, cut_1114;
 std::vector<int> points_1114;
 
@@ -235,11 +235,12 @@ void Problem_1114()
 		else{ std::cout << end << ' ' << points_1114[cut_1114]; }
 	}
 }
+*/
 
 void ExecuteBinarySearch()
 {
 	//Problem_3020();
 	//Problem_2352();
 	//Problem_1208();
-	Problem_1114();
+	//Problem_1114();
 }

@@ -6,6 +6,8 @@
 #include <string>
 #include <queue>
 
+// PROBLEM 2178
+/*
 int rowMovement_Graph[4] = { 0, 0, 1, -1 };
 int columnMovement_Graph[4] = { 1, -1, 0, 0 };
 std::string puzzle[101];
@@ -97,8 +99,9 @@ void Problem_2178()
 
 	std::cout << "consumed time : " << consumedTime << " ms" << '\n';
 }
+*/
 
 void ExecuteGraph()
 {
-	Problem_2178();
+	//Problem_2178();
 }

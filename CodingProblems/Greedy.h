@@ -298,6 +298,7 @@ void Problem_1374()
 */
 
 // PROBLEM 1379
+/*
 int data_1379[100001];
 int nums_1379[100001];
 
@@ -356,12 +357,275 @@ void Problem_1379()
 	}
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 1467
+
+bool skipIndices[1001];
+int countArr[10];
+std::string origin, target, result;
+
+void Problem_1467_trial_1()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::unordered_map<char, std::vector<int>> fastTable;
+	std::cin >> origin >> target;
+
+	for (int idx = 0; idx < target.size(); idx++)
+	{
+		countArr[target[idx] - '0']--;
+	}
+
+	for (int idx = 0; idx < origin.size(); idx++)
+	{
+		countArr[origin[idx] - '0']++;
+		fastTable[origin[idx]].emplace_back(idx);
+	}
+
+	int indexBuffer = -1;
+	bool checker = false;
+	for (char charVal = '9'; charVal >= '0'; charVal--)
+	{
+		if (fastTable[charVal].size() > 0 && countArr[charVal - '0'] == fastTable[charVal].size())
+		{
+			checker = false;
+			for (const auto& elem : fastTable[charVal])
+			{
+				//if (!checker && elem > indexBuffer) { indexBuffer = elem; checker = true; }
+				skipIndices[elem] = true;
+			}
+		}
+		else if (countArr[charVal - '0'] > 0)
+		{
+			checker = false;
+			for (const auto& elem : fastTable[charVal])
+			{
+				if (elem > indexBuffer)
+				{
+					if (!checker) { indexBuffer = elem; checker = true; }
+					countArr[charVal - '0']--;
+					skipIndices[elem] = true;
+				}
+
+				if (countArr[charVal - '0'] == 0) { break; }
+			}
+			if ((countArr[charVal - '0'] > 0))
+			{
+				for (int idx = fastTable[charVal].size() - 1; idx >= 0; idx--)
+				{
+					if (!skipIndices[fastTable[charVal][idx]])
+					{
+						//indexBuffer = fastTable[charVal][idx];
+						skipIndices[fastTable[charVal][idx]] = true;
+						countArr[charVal - '0']--;
+					}
+					if (countArr[charVal - '0'] == 0) { break; }
+				}
+			}
+		}
+	}
+
+
+
+	for (int idx = 0; idx < origin.size(); idx++)
+	{
+		if (skipIndices[idx]) { result += origin[idx]; }
+	}
+
+	std::cout << result;
+}
+
+int getIndex(int start, bool direc)
+{
+	if (direc)
+	{
+		for (int idx = start + 1; idx < origin.size(); idx++)
+		{
+			if (!skipIndices[idx])
+			{
+				return idx;
+			}
+		}
+		for (int idx = start - 1; idx >= 0; idx--)
+		{
+			if (!skipIndices[idx])
+			{
+				return idx;
+			}
+		}
+	}
+	else
+	{
+		for (int idx = start - 1; idx >= 0; idx--)
+		{
+			if (!skipIndices[idx])
+			{
+				return idx;
+			}
+		}
+		for (int idx = start + 1; idx < origin.size(); idx++)
+		{
+			if (!skipIndices[idx])
+			{
+				return idx;
+			}
+		}
+	}
+
+	return start;
+}
+
+struct comp_1467
+{
+	bool operator()(const std::pair<int, int>& lhs, const std::pair<int, int>& rhs)
+	{	
+		if (lhs.second == rhs.second) { return lhs.first < rhs.first; }
+
+		if (lhs.first < rhs.first)
+		{
+			if (lhs.second < 0) { return true; }
+			else if (lhs.second == 0) { return rhs.second > 0; }
+			return false;
+		}
+		else
+		{
+			if (rhs.second < 0) { return false; }
+			else if (rhs.second == 0) { return lhs.second < 0; }
+			return true;
+		}
+	}
+};
+
+void Print()
+{
+	std::string str;
+	for (int idx = 0; idx < origin.size(); idx++)
+	{
+		if (!skipIndices[idx]) { str += origin[idx]; }
+	}
+	std::cout << str << '\n';
+}
+
+void Problem_1467()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::unordered_map<char, std::vector<int>> fastTable;
+	std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, comp_1467> pickerQueue;
+	std::cin >> origin >> target;
+
+	for (int idx = 0; idx < origin.size(); idx++)
+	{
+		fastTable[origin[idx]].emplace_back(idx);
+	}
+
+	std::sort(target.begin(), target.end());
+
+	int indexBuffer;
+	for (int idx = 0; idx < target.size(); idx++)
+	{
+		for (int tableIdx = 0; tableIdx < fastTable[target[idx]].size(); tableIdx++)
+		{
+			indexBuffer = fastTable[target[idx]][tableIdx];
+			if (skipIndices[indexBuffer]) { continue; }
+
+			pickerQueue.emplace(std::make_pair(indexBuffer, origin[getIndex(indexBuffer, true)] - origin[indexBuffer]));
+		}
+
+		skipIndices[pickerQueue.top().first] = true;
+		pickerQueue = std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, comp_1467>();
+		Print();
+	}
+
+	for (int idx = 0; idx < origin.size(); idx++)
+	{
+		if (!skipIndices[idx]) { result += origin[idx]; }
+	}
+
+	std::cout << result;
+}
+
+std::string originStr, substractStr, resultStr;
+int subCount[100], mainCount[100], mainIdxCount[1001];
+
+std::pair<int, char> process(int x) 
+{
+	int copiedSubStrCount[100];
+
+	std::pair<int, int>ret = std::make_pair(x, originStr[x]);
+
+	for (int i = 0; i < 100; i++)
+	{
+		copiedSubStrCount[i] = subCount[i];
+	}
+
+
+	while (copiedSubStrCount[originStr[x]])
+	{
+		if (originStr[x] > ret.second && copiedSubStrCount[originStr[x]] < mainIdxCount[x])
+		{
+			ret = { x,originStr[x] };
+		}
+		copiedSubStrCount[originStr[x++]]--;
+	}
+	if (originStr[x] > ret.second && copiedSubStrCount[originStr[x]] < mainIdxCount[x])
+	{
+		ret = { x,originStr[x] };
+	}
+	return ret;
+}
+
+void Problem_1467_Study() 
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int processIdx = 0;
+	std::cin >> originStr >> substractStr;
+
+	for (int originIdx = originStr.size() - 1; originIdx >= 0; originIdx--)
+	{
+		mainIdxCount[originIdx] = ++mainCount[originStr[originIdx]];
+	}
+
+	for (const auto& elem : substractStr)
+	{
+		subCount[elem]++;
+	}
+
+	while (processIdx < originStr.size())
+	{
+		if (subCount[originStr[processIdx]] == 0)
+		{
+			resultStr.push_back(originStr[processIdx++]);
+		}
+		else if (subCount[originStr[processIdx]] == mainIdxCount[processIdx])
+		{
+			subCount[originStr[processIdx++]]--;
+		}
+		else 
+		{
+			auto t = process(processIdx);
+			for (int i = processIdx; i < t.first; i++)
+			{
+				subCount[originStr[i]]--;
+			}
+			processIdx = t.first + 1;
+			resultStr.push_back(t.second);
+		}
+	}
+	std::cout << resultStr;
+}
 
 void ExecuteGreedy()
 {
 	//Problem_1040();
 	//Problem_23845();
 	//Problem_1422();
-
-	Problem_1379();
+	//Problem_1379();
+	Problem_1467();
+	//Problem_1467_Study();
 }

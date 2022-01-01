@@ -623,6 +623,7 @@ void Problem_12015()
 */
 
 // PROBLEM 14003
+/*
 struct data_14003
 {
 	data_14003() = default;
@@ -698,8 +699,8 @@ void Problem_14003()
 	}
 
 	std::cout << result << '\n' << resultStr << '\n';
-
 }
+*/
 
 void ExecuteDataStructure()
 {
@@ -714,5 +715,5 @@ void ExecuteDataStructure()
 	//Problem_2357();
 	//Problem_10868();
 	//Problem_12015();
-	Problem_14003();
+	//Problem_14003();
 }

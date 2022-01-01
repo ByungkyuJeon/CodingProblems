@@ -7,6 +7,8 @@
 #include <array>
 #include <cmath>
 
+// PROBLEM 2869
+/*
 // 땅 위에 달팽이가 있다.이 달팽이는 높이가 V미터인 나무 막대를 올라갈 것이다.
 // 달팽이는 낮에 A미터 올라갈 수 있다.하지만, 밤에 잠을 자는 동안 B미터 미끄러진다.또, 정상에 올라간 후에는 미끄러지지 않는다.
 // 달팽이가 나무 막대를 모두 올라가려면, 며칠이 걸리는지 구하는 프로그램을 작성하시오.
@@ -34,7 +36,10 @@ void Math_2869()
 
 	std::cout << consumedDays << std::endl;
 }
+*/
 
+// PROBLEM 3053
+/*
 // 19세기 독일 수학자 헤르만 민코프스키는 비유클리드 기하학 중 택시 기하학을 고안했다.
 // 택시 기하학에서 두 점 T1(x1, y1), T2(x2, y2) 사이의 거리는 다음과 같이 구할 수 있다.
 // D(T1, T2) = | x1 - x2 | +| y1 - y2 |
@@ -52,9 +57,44 @@ void Math_3053()
 	std::cout.precision(6);
 	std::cout << pow(R, 2) * M_PI << '\n' << 2 * pow(R, 2);
 }
+*/
+
+// PROBLEM 4342
+/*
+bool process_4342(int bigger, int smaller,  bool turn)
+{
+	if (bigger % smaller == 0 || bigger - smaller > smaller) { return turn; }
+
+	return process_4342(smaller, bigger - smaller, !turn);
+}
+
+// 유클리드 게임
+void Math_4342()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int gameNum[2];
+	std::string outputStr;
+
+	while (true)
+	{
+		std::cin >> gameNum[0] >> gameNum[1];
+		if (!gameNum[0] && !gameNum[1]) { break; }
+
+		if (gameNum[0] < gameNum[1]) { std::swap(gameNum[0], gameNum[1]); }
+		
+		if (process_4342(gameNum[0], gameNum[1], 1)) { outputStr += "A wins\n"; }
+		else { outputStr += "B wins\n"; }
+	}
+
+	std::cout << outputStr;
+}
+*/
 
 void ExecuteBaekjoonMathProblems()
 {
 	//Math_2869();
 	//Math_3053();
+	//Math_4342();
 }

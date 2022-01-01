@@ -71,6 +71,8 @@ void Problem_4354()
 	std::cout << outputStr;
 }
 
+// PROBLEM 18441
+/*
 std::string GetFullStr(std::string str, int count)
 {
 	std::string result;
@@ -875,6 +877,7 @@ void Problem_18441_Trial_4()
 	std::cout << consumedTime << " ms\n";
 }
 
+// 패턴 파악 실패 
 void LCS_BT_Mem_18441(int boundary)
 {
 	// 이전 테이블 복사
@@ -903,31 +906,6 @@ void LCS_BT_Mem_18441(int boundary)
 			lcsArr[newLhsIdx][rhsIdx] = lhsBuffer > rhsBuffer ? lhsBuffer : rhsBuffer;
 		}
 	}
-
-	/*int lhsBuffer, rhsBuffer;
-	int rhsLoopEnd = S_18441.size() - boundary;
-	std::string result;
-
-	for (int lhsIdx = 0; lhsIdx < boundary; lhsIdx++)
-	{
-		for (int rhsIdx = 0; rhsIdx < rhsLoopEnd; rhsIdx++)
-		{
-			if (S_18441[lhsIdx] == S_18441[rhsIdx + boundary])
-			{
-				if (lhsIdx == 0 || rhsIdx == 0) { lcsArr[lhsIdx][rhsIdx] = 1; continue; }
-				else { lcsArr[lhsIdx][rhsIdx] = lcsArr[lhsIdx - 1][rhsIdx - 1] + 1; }
-			}
-			else
-			{
-				if (lhsIdx == 0) { lhsBuffer = 0; }
-				else { lhsBuffer = lcsArr[lhsIdx - 1][rhsIdx]; }
-				if (rhsIdx == 0) { rhsBuffer = 0; }
-				else { rhsBuffer = lcsArr[lhsIdx][rhsIdx - 1]; }
-				lcsArr[lhsIdx][rhsIdx] = lhsBuffer > rhsBuffer ? lhsBuffer : rhsBuffer;
-			}
-		}
-		if (resultStr_18441.size() > (boundary - lhsIdx - 1) + lcsArr[lhsIdx][rhsLoopEnd - 1]) { return; }
-	}*/
 
 	if (lcsArr[(lhsBuffer = boundary - 1)][(rhsBuffer = rhsLoopEnd - 1)] <= resultStr_18441.size()) { return; }
 
@@ -958,6 +936,62 @@ void LCS_BT_Mem_18441(int boundary)
 
 }
 
+#define get(arr, x) (((arr[x >> 6] >> (x & 63)) & 1) == 1)
+#define set(arr, x) (arr[x >> 6] |= 1llu << (x & 63))
+using ulint = unsigned long long;
+
+// 비트셋 : 결과 str 에러 출력 실패
+void lcs(int boundary) {
+	int N = boundary, M = S_18441.size() - boundary;
+	int sz = (M >> 6) + 1;
+
+	std::vector<ulint> S[256];
+	for (int c = 0; c < 256; c++) S[c].resize(sz);
+	for (int j = 0; j < M; j++) set(S[S_18441[j + boundary]], j);
+
+	std::vector<ulint> row(sz);
+	for (int j = 0; j < M; j++) if (S_18441[0] == S_18441[j + boundary]) { set(row, j); break; }
+
+	for (int i = 1; i < N; i++) {
+		ulint shl_carry = 1;
+		ulint minus_carry = 0;
+
+		for (int k = 0; k < sz; k++) {
+			ulint x_k = S[S_18441[i]][k] | row[k];
+
+			ulint term_1 = (row[k] << 1) | shl_carry;
+			shl_carry = row[k] >> 63;
+
+			auto sub_carry = [](ulint& x, ulint y) {
+				ulint tmp = x;
+				return (x = tmp - y) > tmp;
+			};
+			ulint term_2 = x_k;
+			minus_carry = sub_carry(term_2, minus_carry);
+			minus_carry += sub_carry(term_2, term_1);
+
+			row[k] = x_k & (x_k ^ term_2);
+		}
+
+		row[M >> 6] &= (1llu << (M & 63)) - 1;
+	}
+
+	int ret = 0;
+	std::string result;
+	for (int j = 0; j < M; j++)
+	{
+		if (get(row, j))
+		{
+			std::cout << j << std::endl;
+			result += S_18441[j + boundary];
+			ret += 1;
+		}
+
+	}
+
+	if (resultStr_18441.size() < ret) { resultStr_18441 = result; }
+}
+
 
 void Problem_18441()
 {
@@ -976,12 +1010,19 @@ void Problem_18441()
 		while (T-- > 0)
 		{
 			std::getline(std::cin, S_18441);
-
+			std::cout << "----" << std::endl;
 			resultStr_18441.clear();
-			boundary = 0;
-			while (++boundary < S_18441.size())
+			boundary = (S_18441.size() / 2) - 1;
+			while (++boundary < S_18441.size() && boundary > 0)
 			{
-				LCS_BT_Mem_18441(boundary);
+				if (S_18441.size() - boundary < resultStr_18441.size()) { continue; }
+				lcs(boundary);
+			}
+			boundary = S_18441.size() / 2;
+			while (--boundary > 0)
+			{
+				if (boundary < resultStr_18441.size()) { continue; }
+				lcs(boundary);
 			}
 
 			if (resultStr_18441.empty()) { outputStr.append("Case #" + std::to_string(counter++) + ": " + std::to_string(0) + '\n'); continue; }
@@ -994,7 +1035,10 @@ void Problem_18441()
 
 	std::cout << consumedTime << " ms\n";
 }
+*/
 
+// PROBLEM 9251
+/*
 int LCS_9251(const std::string& str, int boundary)
 {
 	int lhsBuffer, rhsBuffer;
@@ -1032,6 +1076,7 @@ void Problem_9251()
 
 	std::cout << LCS_9251(A + B, A.size());
 }
+*/
 
 void ExecuteString()
 {
@@ -1039,5 +1084,5 @@ void ExecuteString()
 	//Problem_18441_Trial();
 	//Problem_18441();
 	//Problem_9251();
-	Problem_18441();
+	//Problem_18441_Trial_4();
 }

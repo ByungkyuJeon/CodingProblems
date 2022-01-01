@@ -4,6 +4,7 @@
 #include<utility>
 
 // PROBLEM 2075
+/*
 int table_2075[1501][1501];
 int currentIdxes[1501];
 
@@ -48,8 +49,9 @@ void Problem_2075()
 
 	std::cout << searchLine.top().first << '\n';
 }
+*/
 
 void ExecuteQueue()
 {
-	Problem_2075();
+	//Problem_2075();
 }
