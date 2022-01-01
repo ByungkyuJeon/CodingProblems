@@ -361,6 +361,7 @@ void Problem_1379()
 
 // PROBLEM 1467
 
+/*
 bool skipIndices[1001];
 int countArr[10];
 std::string origin, target, result;
@@ -619,6 +620,40 @@ void Problem_1467_Study()
 	}
 	std::cout << resultStr;
 }
+*/
+
+// PROBLEM 1026
+
+int A[51], B[51];
+
+void Problem_1026()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(0);
+
+	int N, result = 0;
+	std::cin >> N;
+
+	for (int count = 0; count < N; count++)
+	{
+		std::cin >> A[count];
+	}
+
+	for (int count = 0; count < N; count++)
+	{
+		std::cin >> B[count];
+	}
+
+	std::sort(A, A + N);
+	std::sort(B, B + N, [](const int& lhs, const int& rhs) {return lhs > rhs; });
+
+	for (int idx = 0; idx < N; idx++)
+	{
+		result += A[idx] * B[idx];
+	}
+
+	std::cout << result;
+}
 
 void ExecuteGreedy()
 {
@@ -627,5 +662,6 @@ void ExecuteGreedy()
 	//Problem_1422();
 	//Problem_1379();
 	//Problem_1467();
-	Problem_1467_Study();
+	//Problem_1467_Study();
+	Problem_1026();
 }
