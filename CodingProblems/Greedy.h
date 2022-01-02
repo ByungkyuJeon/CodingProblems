@@ -360,7 +360,6 @@ void Problem_1379()
 */
 
 // PROBLEM 1467
-
 /*
 bool skipIndices[1001];
 int countArr[10];
@@ -657,10 +656,7 @@ void Problem_1026()
 */
 
 // PROBLEM 1052
-
-int testN = 51;
-int testK = 51;
-
+/*
 void Problem_1052()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -702,6 +698,52 @@ void Problem_1052()
 		}
 	}
 }
+*/
+
+// PROBLEM 1041
+
+void Problem_1041()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(0);
+
+	int data[6];
+	int mins[3]{ INT_MAX, INT_MAX, INT_MAX };
+
+	int N;
+	std::cin >> N;
+
+	for (int idx = 0; idx < 6; idx++) { std::cin >> data[idx]; }
+
+	if (N == 1)
+	{
+		std::sort(data, data + 6);
+		int result = 0;
+		for (int idx = 0; idx < 5; idx++) { result += data[idx]; }
+		std::cout << result;
+	}
+	else
+	{
+		for (int outerIdx = 0; outerIdx < 6; outerIdx++)
+		{
+			if (mins[0] > data[outerIdx]) { mins[0] = data[outerIdx]; }
+			for (int innerIdx = 0; innerIdx < 6; innerIdx++)
+			{
+				if (innerIdx != outerIdx && innerIdx != 5 - outerIdx && mins[1] > data[outerIdx] + data[innerIdx]) { mins[1] = data[outerIdx] + data[innerIdx]; }
+				for (int deeperIdx = 0; deeperIdx < 6; deeperIdx++)
+				{
+					if (outerIdx != innerIdx && deeperIdx != outerIdx && deeperIdx != innerIdx && innerIdx != 5 - outerIdx && deeperIdx != 5 - outerIdx && deeperIdx != 5 - innerIdx && mins[2] > data[outerIdx] + data[innerIdx] + data[deeperIdx])
+					{
+						mins[2] = data[outerIdx] + data[innerIdx] + data[deeperIdx];
+					}
+				}
+			}
+		}
+
+		std::cout << ((((long long)(N - 2) * (N - 2) * 5) + ((N - 2) * 4)) * mins[0]) + ((((long long)(N - 2) * 8) + 4) * mins[1]) + (4 * mins[2]);
+	}
+
+}
 
 void ExecuteGreedy()
 {
@@ -712,5 +754,6 @@ void ExecuteGreedy()
 	//Problem_1467();
 	//Problem_1467_Study();
 	//Problem_1026();
-	Problem_1052();
+	//Problem_1052();
+	Problem_1041();
 }
