@@ -701,7 +701,7 @@ void Problem_1052()
 */
 
 // PROBLEM 1041
-
+/*
 void Problem_1041()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -744,6 +744,302 @@ void Problem_1041()
 	}
 
 }
+*/
+
+// PROBLEM 1036
+
+struct dataComp
+{
+	dataComp() = default;
+	dataComp(char inCharac, double inValue) : charac{ inCharac }, value{ inValue }{}
+
+	char charac;
+	double value;
+
+	bool operator()(const dataComp& lhs, const dataComp& rhs)
+	{
+		return lhs.value < rhs.value;
+	}
+};
+
+void Problem_1036_trial()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(0);
+
+	long long sum = 0;
+	std::string result;
+	int buffer;
+	std::string data[50];
+	std::vector<char> changeChars;
+	std::unordered_set<int> summedIndices;
+	double sums[37];
+	memset(sums, 0, sizeof(double) * 36);
+	std::priority_queue<dataComp, std::vector< dataComp>, dataComp> maxElemQueue;
+	double nums[50];
+
+	nums[0] = 1;
+	for (int idx = 1; idx < 50; idx++)
+	{
+		nums[idx] = nums[idx - 1] * 36.0;
+	}
+
+	int N, K;
+	std::cin >> N;
+	for (int idx = 0; idx < N; idx++)
+	{
+		std::cin >> data[idx];
+	}
+	std::cin >> K;
+
+	for (int idx = 0; idx < N; idx++)
+	{
+		buffer = data[idx].size();
+		for (int charIdx = 0; charIdx < buffer; charIdx++)
+		{
+			if (data[idx][charIdx] >= 'A')
+			{
+				summedIndices.emplace(data[idx][charIdx] - 'A' + 10);
+				sums[data[idx][charIdx] - 'A' + 10] += nums[buffer - charIdx - 1] * ('Z' - data[idx][charIdx]);
+			}
+			else
+			{
+				summedIndices.emplace(data[idx][charIdx] - '0');
+				sums[data[idx][charIdx] - '0'] += nums[buffer - charIdx - 1] * (35 - (data[idx][charIdx] - '0'));
+			}
+		}
+	}
+
+	for (const auto& elem : summedIndices)
+	{
+		if (elem >= 10)
+		{
+			maxElemQueue.push(dataComp(elem + 55, sums[elem]));
+		}
+		else
+		{
+			maxElemQueue.push(dataComp(elem + '0', sums[elem]));
+		}
+	}
+
+	for (int count = 0; count < K; count++)
+	{
+		if (maxElemQueue.empty()) { break; }
+		if (std::find(changeChars.begin(), changeChars.end(), maxElemQueue.top().charac) == changeChars.end())
+		{
+			changeChars.emplace_back(maxElemQueue.top().charac);
+		}
+		maxElemQueue.pop();
+	}
+
+	for (int idx = 0; idx < N; idx++)
+	{
+		buffer = data[idx].size();
+		for (int charIdx = 0; charIdx < buffer; charIdx++)
+		{
+			if (std::find(changeChars.begin(), changeChars.end(), data[idx][charIdx]) != changeChars.end())
+			{
+				data[idx][charIdx] = 'Z';
+			}
+
+			if (data[idx][charIdx] >= 'A')
+			{
+				sum += nums[buffer - charIdx - 1] * (data[idx][charIdx] - 'A' + 10);
+			}
+			else
+			{
+				sum += nums[buffer - charIdx - 1] * (data[idx][charIdx] - '0');
+			}
+		}
+	}
+
+	while (true)
+	{
+		buffer = sum % 36;
+		if (buffer >= 10) 
+		{
+			result += buffer + 55;
+		}
+		else
+		{
+			result += std::to_string(buffer);
+		}
+		if (sum < 36) { break; }
+		sum /= 36;
+	}
+
+	for (int idx = 0; idx < result.size() / 2; idx++)
+	{
+		std::swap(result[idx], result[result.size() - 1 - idx]);
+	}
+
+	std::cout << result;
+}
+
+void addAsString(std::string& outStr, std::string& operandStr)
+{
+	for (int idx = 0; idx < operandStr.size() / 2; idx++)
+	{
+		std::swap(operandStr[idx], operandStr[operandStr.size() - 1 - idx]);
+	}
+
+	int lhsVal, rhsVal, subBuffer;
+	subBuffer = outStr.size() - operandStr.size();
+	if (subBuffer < 0)
+	{
+		while (subBuffer++ < 0)
+		{
+			outStr += '0';
+		}
+	}
+	else
+	{
+		while (subBuffer-- > 0)
+		{
+			operandStr += '0';
+		}
+	}
+	int calLength = outStr.size();
+
+	for (int idx = 0; idx < calLength; idx++)
+	{
+		if (outStr[idx] >= 'A') { lhsVal = outStr[idx] - 'A' + 10; }
+		else { lhsVal = outStr[idx] - '0'; }
+
+		if (operandStr[idx] >= 'A') { rhsVal = operandStr[idx] - 'A' + 10; }
+		else { rhsVal = operandStr[idx] - '0'; }
+
+		subBuffer = lhsVal + rhsVal;
+		if (lhsVal + rhsVal > 35)
+		{
+			if ((subBuffer = idx + 1) == outStr.size()) { outStr += '0'; }
+			while (true)
+			{
+				if (outStr[subBuffer] == 'Z')
+				{
+					outStr[subBuffer] = '0';
+					if ((++subBuffer) == outStr.size()) { outStr += '0'; }
+				}
+				else if (outStr[subBuffer] == '9')
+				{
+					outStr[subBuffer] = 'A';
+					break;
+				}
+				else
+				{
+					outStr[subBuffer]++;
+					break;
+				}
+			}
+
+			subBuffer = lhsVal + rhsVal - 36;
+		}
+
+		if (subBuffer >= 10)
+		{
+			outStr[idx] = subBuffer - 10 + 'A';
+		}
+		else
+		{
+			outStr[idx] = subBuffer + '0';
+		}
+	}
+}
+
+void Problem_1036()
+{
+	std::string result;
+	int buffer;
+	std::string data[50];
+	std::vector<char> changeChars;
+	std::unordered_set<int> summedIndices;
+	double sums[37];
+	memset(sums, 0, sizeof(double) * 36);
+	std::priority_queue<dataComp, std::vector< dataComp>, dataComp> maxElemQueue;
+	double nums[50];
+
+	nums[0] = 1;
+	for (int idx = 1; idx < 50; idx++)
+	{
+		nums[idx] = nums[idx - 1] * 36.0;
+	}
+
+	int N, K;
+	std::cin >> N;
+	for (int idx = 0; idx < N; idx++)
+	{
+		std::cin >> data[idx];
+	}
+	std::cin >> K;
+
+	if (K != 0)
+	{
+		for (int idx = 0; idx < N; idx++)
+		{
+			buffer = data[idx].size();
+			for (int charIdx = 0; charIdx < buffer; charIdx++)
+			{
+				if (data[idx][charIdx] >= 'A')
+				{
+					summedIndices.emplace(data[idx][charIdx] - 'A' + 10);
+					sums[data[idx][charIdx] - 'A' + 10] += nums[buffer - charIdx - 1] * ('Z' - data[idx][charIdx]);
+				}
+				else
+				{
+					summedIndices.emplace(data[idx][charIdx] - '0');
+					sums[data[idx][charIdx] - '0'] += nums[buffer - charIdx - 1] * (35 - (data[idx][charIdx] - '0'));
+				}
+			}
+		}
+
+		for (const auto& elem : summedIndices)
+		{
+			if (elem >= 10)
+			{
+				maxElemQueue.push(dataComp(elem + 55, sums[elem]));
+			}
+			else
+			{
+				maxElemQueue.push(dataComp(elem + '0', sums[elem]));
+			}
+		}
+
+		for (int count = 0; count < K; count++)
+		{
+			if (maxElemQueue.empty()) { break; }
+			if (std::find(changeChars.begin(), changeChars.end(), maxElemQueue.top().charac) == changeChars.end())
+			{
+				changeChars.emplace_back(maxElemQueue.top().charac);
+			}
+			maxElemQueue.pop();
+		}
+
+		for (int idx = 0; idx < N; idx++)
+		{
+			buffer = data[idx].size();
+			for (int charIdx = 0; charIdx < buffer; charIdx++)
+			{
+				if (std::find(changeChars.begin(), changeChars.end(), data[idx][charIdx]) != changeChars.end())
+				{
+					data[idx][charIdx] = 'Z';
+				}
+			}
+		}
+	}
+
+	for (int idx = 0; idx < N; idx++)
+	{
+		addAsString(result, data[idx]);
+	}
+
+	for (int idx = 0; idx < result.size() / 2; idx++)
+	{
+		std::swap(result[idx], result[result.size() - 1 - idx]);
+	}
+
+	if (result.size() == 0) { std::cout << '0'; }
+	else { std::cout << result; }
+}
 
 void ExecuteGreedy()
 {
@@ -755,5 +1051,6 @@ void ExecuteGreedy()
 	//Problem_1467_Study();
 	//Problem_1026();
 	//Problem_1052();
-	Problem_1041();
+	//Problem_1041();
+	Problem_1036();
 }
