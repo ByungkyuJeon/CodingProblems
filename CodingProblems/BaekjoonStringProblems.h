@@ -1079,7 +1079,7 @@ void Problem_9251()
 */
 
 // PROBLEM 9252
-
+/*
 int lcsArr[1001][1001];
 std::string resultStr;
 
@@ -1145,17 +1145,72 @@ void Problem_9252()
 
 	std::cout << LCS_9252(A + B, A.size()) << '\n' << resultStr;
 }
+*/
 
 // PROBLEM 18441 RETRY
-//int lcsArr[3001][3001];
+#define get(arr, x) (((arr[x >> 6] >> (x & 63)) & 1) == 1)
+#define set(arr, x) (arr[x >> 6] |= 1llu << (x & 63))
+using ulint = unsigned long long;
+
+int lcsArr[3001][3001];
 std::string S_18441;
 std::string resultStr_18441;
+int maxLength;
+int maxBoundary;
+
+void LCS_Bitset(int boundary)
+{
+	int N = boundary, M = S_18441.size() - boundary;
+	int sz = (M >> 6) + 1;
+	ulint shl_carry;
+	ulint minus_carry;
+
+	std::vector<ulint> S[256];
+	for (int c = 0; c < 256; c++) S[c].resize(sz);
+	for (int j = 0; j < M; j++) set(S[S_18441[j + boundary]], j);
+
+	std::vector<ulint> row(sz);
+	for (int j = 0; j < M; j++) if (S_18441[0] == S_18441[j + boundary]) { set(row, j); break; }
+
+	for (int i = 1; i < N; i++) {
+		shl_carry = 1;
+		minus_carry = 0;
+
+		for (int k = 0; k < sz; k++) {
+			ulint x_k = S[S_18441[i]][k] | row[k];
+
+			ulint term_1 = (row[k] << 1) | shl_carry;
+			shl_carry = row[k] >> 63;
+
+			auto sub_carry = [](ulint& x, ulint y) {
+				ulint tmp = x;
+				return (x = tmp - y) > tmp;
+			};
+			ulint term_2 = x_k;
+			minus_carry = sub_carry(term_2, minus_carry);
+			minus_carry += sub_carry(term_2, term_1);
+
+			row[k] = x_k & (x_k ^ term_2);
+		}
+
+		row[M >> 6] &= (1llu << (M & 63)) - 1;
+	}
+
+	int ret = 0;
+	for (int j = 0; j < M; j++)
+	{
+		if (get(row, j))
+		{
+			ret += 1;
+		}
+	}
+	if (maxLength < ret) { maxLength = ret; maxBoundary = boundary;}
+}
 
 void LCS_BottomUp_18441(int boundary)
 {
 	int lhsBuffer, rhsBuffer;
 	int rhsLoopEnd = S_18441.size() - boundary;
-	std::string result;
 
 	for (int lhsIdx = 0; lhsIdx < boundary; lhsIdx++)
 	{
@@ -1163,7 +1218,7 @@ void LCS_BottomUp_18441(int boundary)
 		{
 			if (S_18441[lhsIdx] == S_18441[rhsIdx + boundary])
 			{
-				if (lhsIdx == 0 || rhsIdx == 0) { lcsArr[lhsIdx][rhsIdx] = 1; continue; }
+				if (lhsIdx == 0 || rhsIdx == 0) { lcsArr[lhsIdx][rhsIdx] = 1; }
 				else { lcsArr[lhsIdx][rhsIdx] = lcsArr[lhsIdx - 1][rhsIdx - 1] + 1; }
 			}
 			else
@@ -1175,10 +1230,10 @@ void LCS_BottomUp_18441(int boundary)
 				lcsArr[lhsIdx][rhsIdx] = lhsBuffer > rhsBuffer ? lhsBuffer : rhsBuffer;
 			}
 		}
-		if (resultStr_18441.size() > (boundary - lhsIdx - 1) + lcsArr[lhsIdx][rhsLoopEnd - 1]) { return; }
 	}
 
-	if (lcsArr[(lhsBuffer = boundary - 1)][(rhsBuffer = rhsLoopEnd - 1)] <= resultStr_18441.size()) { return; }
+	lhsBuffer = boundary - 1;
+	rhsBuffer = rhsLoopEnd - 1;
 
 	while (lhsBuffer >= 0 && rhsBuffer >= 0)
 	{
@@ -1192,18 +1247,16 @@ void LCS_BottomUp_18441(int boundary)
 		}
 		else
 		{
-			result += S_18441[lhsBuffer];
+			resultStr_18441 += S_18441[lhsBuffer];
 			lhsBuffer -= 1;
 			rhsBuffer -= 1;
 		}
 	}
 
-	for (int strIdx = 0; strIdx < result.size() / 2; strIdx++)
+	for (int strIdx = 0; strIdx < resultStr_18441.size() / 2; strIdx++)
 	{
-		std::swap(result[strIdx], result[result.size() - strIdx - 1]);
+		std::swap(resultStr_18441[strIdx], resultStr_18441[resultStr_18441.size() - strIdx - 1]);
 	}
-
-	resultStr_18441 = result;
 }
 
 struct DataSet_18441
@@ -1223,11 +1276,12 @@ void Problem_18441_Retry()
 	std::ios_base::sync_with_stdio(0);
 	std::cin.tie(nullptr);
 
-	int T, counter = 1, boundary;
+	int T, counter = 1, boundary, ddd = 0;
 	std::cin >> T;
 
-	std::string subStr;
 	std::string outputStr;
+
+	double consumedTime = TimeChecker::CheckTime([&] {
 
 	while (T-- > 0)
 	{
@@ -1235,28 +1289,32 @@ void Problem_18441_Retry()
 
 		resultStr_18441.clear();
 
-		LCS_BottomUp_18441(S_18441.size() / 2);
-
-		searchQueue.emplace(DataSet_18441(0, S_18441.size() / 2, -1));
-		searchQueue.emplace(DataSet_18441(S_18441.size() / 2, S_18441.size(), 1));
-		while (!searchQueue.empty())
+		boundary = (S_18441.size() / 2);
+		LCS_Bitset(boundary);
+		while (--boundary > 0)
 		{
-			if (searchQueue.front().end - searchQueue.front().start == 1) { searchQueue.pop();  continue; }
-			boundary = searchQueue.front().start + ((searchQueue.front().end - searchQueue.front().start) / 2);
-			if (searchQueue.front().direc == -1 && boundary < resultStr_18441.size()) { searchQueue.emplace(DataSet_18441(boundary, searchQueue.front().end, searchQueue.front().direc)); searchQueue.pop(); continue; }
-			else if (searchQueue.front().direc == 1 && S_18441.size() - boundary < resultStr_18441.size()) { searchQueue.emplace(DataSet_18441(searchQueue.front().start, boundary, searchQueue.front().direc)); searchQueue.pop(); continue; }
-
-			LCS_BottomUp_18441(boundary);
-			searchQueue.emplace(DataSet_18441(boundary, searchQueue.front().end, searchQueue.front().direc));
-			searchQueue.emplace(DataSet_18441(searchQueue.front().start, boundary, searchQueue.front().direc));
-			searchQueue.pop();
+			//std::cout << ddd++ << '\n';
+			if (boundary < maxLength) { break; }
+			LCS_Bitset(boundary);
+			if (boundary < maxLength) { break; }
+			LCS_Bitset(S_18441.size() - boundary);
 		}
 
-		if (resultStr_18441.empty()) { outputStr.append("Case #" + std::to_string(counter++) + ": " + std::to_string(0) + '\n'); continue; }
+		LCS_BottomUp_18441(maxBoundary);
+
+		if (resultStr_18441.empty()) 
+		{ 
+			outputStr.append("Case #" + std::to_string(counter++) + ": " + std::to_string(0) + '\n'); 
+			continue;
+		}
 		outputStr.append("Case #" + std::to_string(counter++) + ": " + std::to_string(resultStr_18441.size() * 2) + '\n' + resultStr_18441 + resultStr_18441 + '\n');
 	}
 
 	std::cout << outputStr;
+
+		});
+
+	std::cout << '\n' << consumedTime << " ms" << '\n';
 }
 
 void ExecuteString()
@@ -1266,6 +1324,6 @@ void ExecuteString()
 	//Problem_18441();
 	//Problem_9251();
 	//Problem_18441_Trial_4();
-	Problem_9252();
-	//Problem_18441_Retry();
+	//Problem_9252();
+	Problem_18441_Retry();
 }
