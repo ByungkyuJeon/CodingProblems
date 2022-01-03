@@ -1078,6 +1078,187 @@ void Problem_9251()
 }
 */
 
+// PROBLEM 9252
+
+int lcsArr[1001][1001];
+std::string resultStr;
+
+int LCS_9252(const std::string& str, int boundary)
+{
+	int lhsBuffer, rhsBuffer;
+
+	for (int lhsIdx = 0; lhsIdx < boundary; lhsIdx++)
+	{
+		for (int rhsIdx = boundary; rhsIdx < str.size(); rhsIdx++)
+		{
+			if (str[lhsIdx] == str[rhsIdx])
+			{
+				if (lhsIdx == 0 || rhsIdx == boundary) { lcsArr[lhsIdx][rhsIdx - boundary] = 1; continue; }
+				lcsArr[lhsIdx][rhsIdx - boundary] = lcsArr[lhsIdx - 1][rhsIdx - boundary - 1] + 1;
+			}
+			else
+			{
+				if (lhsIdx == 0) { lhsBuffer = 0; }
+				else { lhsBuffer = lcsArr[lhsIdx - 1][rhsIdx - boundary]; }
+				if (rhsIdx == boundary) { rhsBuffer = 0; }
+				else { rhsBuffer = lcsArr[lhsIdx][rhsIdx - boundary - 1]; }
+				lcsArr[lhsIdx][rhsIdx - boundary] = lhsBuffer > rhsBuffer ? lhsBuffer : rhsBuffer;
+			}
+		}
+	}
+
+	lhsBuffer = boundary - 1;
+	rhsBuffer = str.size() - boundary - 1;
+	while (lhsBuffer >= 0 && rhsBuffer >= 0)
+	{
+		if (lcsArr[lhsBuffer][rhsBuffer] == lcsArr[lhsBuffer - 1][rhsBuffer])
+		{
+			lhsBuffer -= 1;
+		}
+		else if (lcsArr[lhsBuffer][rhsBuffer] == lcsArr[lhsBuffer][rhsBuffer - 1])
+		{
+			rhsBuffer -= 1;
+		}
+		else
+		{
+			resultStr += str[lhsBuffer];
+			lhsBuffer -= 1;
+			rhsBuffer -= 1;
+		}
+	}
+
+	for (int strIdx = 0; strIdx < resultStr.size() / 2; strIdx++)
+	{
+		std::swap(resultStr[strIdx], resultStr[resultStr.size() - strIdx - 1]);
+	}
+
+	return lcsArr[boundary - 1][str.size() - boundary - 1];
+}
+
+void Problem_9252()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie();
+
+	std::string A, B;
+	std::cin >> A >> B;
+
+	std::cout << LCS_9252(A + B, A.size()) << '\n' << resultStr;
+}
+
+// PROBLEM 18441 RETRY
+//int lcsArr[3001][3001];
+std::string S_18441;
+std::string resultStr_18441;
+
+void LCS_BottomUp_18441(int boundary)
+{
+	int lhsBuffer, rhsBuffer;
+	int rhsLoopEnd = S_18441.size() - boundary;
+	std::string result;
+
+	for (int lhsIdx = 0; lhsIdx < boundary; lhsIdx++)
+	{
+		for (int rhsIdx = 0; rhsIdx < rhsLoopEnd; rhsIdx++)
+		{
+			if (S_18441[lhsIdx] == S_18441[rhsIdx + boundary])
+			{
+				if (lhsIdx == 0 || rhsIdx == 0) { lcsArr[lhsIdx][rhsIdx] = 1; continue; }
+				else { lcsArr[lhsIdx][rhsIdx] = lcsArr[lhsIdx - 1][rhsIdx - 1] + 1; }
+			}
+			else
+			{
+				if (lhsIdx == 0) { lhsBuffer = 0; }
+				else { lhsBuffer = lcsArr[lhsIdx - 1][rhsIdx]; }
+				if (rhsIdx == 0) { rhsBuffer = 0; }
+				else { rhsBuffer = lcsArr[lhsIdx][rhsIdx - 1]; }
+				lcsArr[lhsIdx][rhsIdx] = lhsBuffer > rhsBuffer ? lhsBuffer : rhsBuffer;
+			}
+		}
+		if (resultStr_18441.size() > (boundary - lhsIdx - 1) + lcsArr[lhsIdx][rhsLoopEnd - 1]) { return; }
+	}
+
+	if (lcsArr[(lhsBuffer = boundary - 1)][(rhsBuffer = rhsLoopEnd - 1)] <= resultStr_18441.size()) { return; }
+
+	while (lhsBuffer >= 0 && rhsBuffer >= 0)
+	{
+		if (lcsArr[lhsBuffer][rhsBuffer] == lcsArr[lhsBuffer - 1][rhsBuffer])
+		{
+			lhsBuffer -= 1;
+		}
+		else if (lcsArr[lhsBuffer][rhsBuffer] == lcsArr[lhsBuffer][rhsBuffer - 1])
+		{
+			rhsBuffer -= 1;
+		}
+		else
+		{
+			result += S_18441[lhsBuffer];
+			lhsBuffer -= 1;
+			rhsBuffer -= 1;
+		}
+	}
+
+	for (int strIdx = 0; strIdx < result.size() / 2; strIdx++)
+	{
+		std::swap(result[strIdx], result[result.size() - strIdx - 1]);
+	}
+
+	resultStr_18441 = result;
+}
+
+struct DataSet_18441
+{
+public:
+	DataSet_18441(int inStart, int inEnd, int inDirec) :start{ inStart }, end{ inEnd }, direc{ inDirec }{}
+
+	int start;
+	int end;
+	int direc;
+};
+
+std::queue<DataSet_18441> searchQueue;
+
+void Problem_18441_Retry()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int T, counter = 1, boundary;
+	std::cin >> T;
+
+	std::string subStr;
+	std::string outputStr;
+
+	while (T-- > 0)
+	{
+		std::cin >> S_18441;
+
+		resultStr_18441.clear();
+
+		LCS_BottomUp_18441(S_18441.size() / 2);
+
+		searchQueue.emplace(DataSet_18441(0, S_18441.size() / 2, -1));
+		searchQueue.emplace(DataSet_18441(S_18441.size() / 2, S_18441.size(), 1));
+		while (!searchQueue.empty())
+		{
+			if (searchQueue.front().end - searchQueue.front().start == 1) { searchQueue.pop();  continue; }
+			boundary = searchQueue.front().start + ((searchQueue.front().end - searchQueue.front().start) / 2);
+			if (searchQueue.front().direc == -1 && boundary < resultStr_18441.size()) { searchQueue.emplace(DataSet_18441(boundary, searchQueue.front().end, searchQueue.front().direc)); searchQueue.pop(); continue; }
+			else if (searchQueue.front().direc == 1 && S_18441.size() - boundary < resultStr_18441.size()) { searchQueue.emplace(DataSet_18441(searchQueue.front().start, boundary, searchQueue.front().direc)); searchQueue.pop(); continue; }
+
+			LCS_BottomUp_18441(boundary);
+			searchQueue.emplace(DataSet_18441(boundary, searchQueue.front().end, searchQueue.front().direc));
+			searchQueue.emplace(DataSet_18441(searchQueue.front().start, boundary, searchQueue.front().direc));
+			searchQueue.pop();
+		}
+
+		if (resultStr_18441.empty()) { outputStr.append("Case #" + std::to_string(counter++) + ": " + std::to_string(0) + '\n'); continue; }
+		outputStr.append("Case #" + std::to_string(counter++) + ": " + std::to_string(resultStr_18441.size() * 2) + '\n' + resultStr_18441 + resultStr_18441 + '\n');
+	}
+
+	std::cout << outputStr;
+}
+
 void ExecuteString()
 {
 	//Problem_4354();
@@ -1085,4 +1266,6 @@ void ExecuteString()
 	//Problem_18441();
 	//Problem_9251();
 	//Problem_18441_Trial_4();
+	Problem_9252();
+	//Problem_18441_Retry();
 }
