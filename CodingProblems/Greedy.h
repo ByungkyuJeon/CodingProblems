@@ -747,7 +747,7 @@ void Problem_1041()
 */
 
 // PROBLEM 1036
-
+/*
 struct dataComp
 {
 	dataComp() = default;
@@ -1040,6 +1040,250 @@ void Problem_1036()
 	if (result.size() == 0) { std::cout << '0'; }
 	else { std::cout << result; }
 }
+*/
+
+// PROBLEM 1161
+struct Data
+{
+	Data() = default;
+	Data(int inStart, int inEnd, int inNum) : start{ inStart }, end{ inEnd }, num{ inNum }{}
+
+	int start;
+	int end;
+	int num;
+};
+
+struct compEnd
+{
+	bool operator()(const Data& lhs, const Data& rhs)
+	{
+		return  lhs.end > rhs.end;
+	}
+};
+
+struct compStart
+{
+	bool operator()(const Data& lhs, const Data& rhs)
+	{
+		return  lhs.start > rhs.start;
+	}
+};
+
+void Problem_1161_Trial()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+	// 아직 도착하지 않아, 시작 지점이 중요
+	std::priority_queue<Data, std::vector<Data>, compStart> startQueue; // 최소 힙
+	// 이미 시작점을 들렸기 때문에 끝나는 지점이 중요
+	std::priority_queue<Data, std::vector<Data>, compEnd> endQueue; // 최소 힙
+
+	int K, N, C, buffer[3];
+	std::cin >> K >> N >> C;
+	for(int idx = 0; idx < K; idx++)
+	{
+		std::cin >> buffer[0] >> buffer[1] >> buffer[2];
+		// 아직 들르지 않은 모든 정류장 히피파이
+		startQueue.emplace(std::move(Data(buffer[0], buffer[1], buffer[2])));
+	}
+
+	buffer[0] = 0; // 현재 태운 인원 수
+	buffer[1] = 0; // 누적 인원 수
+
+	// 들르지 않은 정류장이 없을 때까지 반복
+	while (!startQueue.empty())
+	{
+		if (endQueue.empty()) // 아무도 타고 있지 않은 경우
+		{
+			buffer[0] += startQueue.top().num;
+			buffer[1] += startQueue.top().num;
+			endQueue.emplace(std::move(Data(startQueue.top())));
+			startQueue.pop();
+		}
+		else // 누가 타고 있는 경우
+		{
+			if (endQueue.top().end > startQueue.top().start) // 다음 정류장과 겹치는 경우
+			{
+				if(buffer[0] == C){ startQueue.pop(); } // 최대 인원수 수용중이라 승차 거부
+				else if (buffer[0] + startQueue.top().num > C) // 전부 태울 수 없어, 일부만 태움
+				{
+					endQueue.emplace(std::move(Data(startQueue.top().start, startQueue.top().end, C - buffer[0])));
+					buffer[1] += (C - buffer[0]);
+					buffer[0] = C;
+					startQueue.pop();
+				}
+				else // 전부 태울 수 있음
+				{
+					endQueue.emplace(std::move(Data(startQueue.top())));
+					buffer[0] += startQueue.top().num;
+					buffer[1] += startQueue.top().num;
+					startQueue.pop();
+				}
+			}
+			else // 다음 정류장과 겹치지 않아, 사람들이 내림
+			{
+				buffer[0] -= endQueue.top().num;
+				endQueue.pop();
+			}
+		}
+		std::cout << " result : " << buffer[1] << " out : " << endQueue.top().end << '\n';
+	}
+
+	std::cout << buffer[1];
+}
+
+void Problem_1161_Final()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+	std::priority_queue<Data, std::vector<Data>, compStart> startQueue;
+	std::map<int, int> minmaxMap;
+
+	int K, N, C, buffer[3];
+	std::cin >> K >> N >> C;
+	for (int idx = 0; idx < K; idx++)
+	{
+		std::cin >> buffer[0] >> buffer[1] >> buffer[2];
+		startQueue.emplace(std::move(Data(buffer[0], buffer[1], buffer[2])));
+	}
+
+	buffer[0] = 0;
+	buffer[1] = 0;
+	std::map<int, int>::iterator Itr;
+
+	while (!startQueue.empty())
+	{
+		if (minmaxMap.empty())
+		{
+			minmaxMap[startQueue.top().end] += startQueue.top().num;
+			buffer[0] += startQueue.top().num;
+			buffer[1] += startQueue.top().num;
+			startQueue.pop();
+		}
+		else
+		{
+			if (minmaxMap.begin()->first > startQueue.top().start)
+			{
+				if (buffer[0] + startQueue.top().num > C)
+				{
+					if (buffer[0] != C)
+					{
+						buffer[1] += (C - buffer[0]);
+					}
+
+					buffer[0] += startQueue.top().num;
+					minmaxMap[startQueue.top().end] += startQueue.top().num;
+					Itr = --minmaxMap.end();
+					while (true)
+					{
+						if (buffer[0] - Itr->second >= C)
+						{
+							buffer[0] -= Itr->second;
+							minmaxMap.erase(Itr--);
+						}
+						else
+						{
+							Itr->second -= buffer[0] - C;
+							break;
+						}
+					}
+
+					buffer[0] = C;
+					startQueue.pop();
+				}
+				else
+				{
+					minmaxMap[startQueue.top().end] += startQueue.top().num;
+					buffer[0] += startQueue.top().num;
+					buffer[1] += startQueue.top().num;
+					startQueue.pop();
+				}
+			}
+			else
+			{
+				buffer[0] -= minmaxMap.begin()->second;
+				minmaxMap.erase(minmaxMap.begin());
+			}
+		}
+	}
+
+	std::cout << buffer[1];
+}
+
+struct group
+{
+	int M;
+	int S;
+	int E;
+
+	bool operator<(const group& b) const
+	{
+		return S < b.S;
+	}
+};
+
+// USACO 공식 해답
+void Problem_1161()
+{
+	int K, N, C;
+	int ans = 0;
+
+	std::cin >> K >> N >> C;
+	std::vector<group> groups(K);
+	for (int i = 0; i < K; i++)
+		std::cin >> groups[i].S >> groups[i].E >> groups[i].M;
+
+	std::sort(groups.begin(), groups.end());
+
+	std::map<int, int> off;
+	int total = 0;
+	// 시작점이 가장 작은 그룹부터 iterate
+	for (int i = 0; i < K; i++)
+	{
+		// 시작 지점 
+		int pos = groups[i].S;
+		std::map<int, int>::iterator offItr = off.begin();
+		// 이전 끝점보다 다음 시작점이 클 때
+		while (offItr != off.end() && offItr->first <= pos)
+		{
+			// 누적 인원 수
+			ans += offItr->second;
+			// 현재 인원 수
+			total -= offItr->second;
+			off.erase(offItr++);
+		}
+
+
+		// 끝점에 인원수 저장
+		off[groups[i].E] += groups[i].M;
+		// 현재 인원 수
+		total += groups[i].M;
+		// Itr 끝으로 이동
+		offItr = off.end();
+		// 유효 Itr 로 한칸 이동
+		--offItr;
+		// 현재 인원 수가 제한을 넘을 때
+		while (total > C)
+		{
+			// 마지막 그룹의 인원수가 제한 인원 수를 넘기거나 걸칠 때
+			if (total - offItr->second >= C)
+			{
+				// 그룹 인원 수 제거
+				total -= offItr->second;
+				// 그룹 제거
+				off.erase(offItr--);
+			}
+			else
+			{
+				// 그룹 인원 수 부분 수용
+				offItr->second -= total - C;
+				total = C;
+			}
+		}
+	}
+	ans += total;
+	std::cout << ans << "\n";
+}
 
 void ExecuteGreedy()
 {
@@ -1052,5 +1296,8 @@ void ExecuteGreedy()
 	//Problem_1026();
 	//Problem_1052();
 	//Problem_1041();
-	Problem_1036();
+	//Problem_1036();
+	//Problem_1161_Trial();
+	Problem_1161_Final();
+	//Problem_1161();
 }
