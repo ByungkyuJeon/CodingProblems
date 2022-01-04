@@ -6,14 +6,236 @@
 #include <vector>
 #include <array>
 #include <cmath>
+#include <unordered_map>
+#include "TimeChecker.h"
+
+// PROBLEM 8393
+/*
+void Problem_8393()
+{
+	int N, result = 0;
+	std::cin >> N;
+
+	for (int counter = N; counter > 0; counter--)
+	{
+		result += counter;
+	}
+
+	std::cout << result << std::endl;
+}
+*/
+
+// PROBLEM 2753
+/*
+void Problem_2753()
+{
+	int N;
+	bool result = false;
+	std::cin >> N;
+
+	if (N % 4 == 0 && (N % 400 == 0 || N % 100 != 0))
+	{
+		result = true;
+	}
+
+	std::cout << static_cast<int>(result) << std::endl;
+}
+*/
+
+// PROBLEM 4344
+/*
+void Problem_4344()
+{
+	int C, N, inputBuffer;
+	double result, average;
+	std::vector<int> scores;
+	std::cin >> C;
+
+	for (int outerCounter = C; outerCounter > 0; outerCounter--)
+	{
+		scores.clear();
+		average = 0;
+		result = 0;
+		std::cin >> N;
+		for (int innerCounter = N; innerCounter > 0; innerCounter--)
+		{
+			std::cin >> inputBuffer;
+			scores.emplace_back(inputBuffer);
+		}
+
+		average = static_cast<double>(std::accumulate(scores.begin(), scores.end(), 0)) / static_cast<double>(scores.size());
+
+		for (const auto& elem : scores)
+		{
+			if (elem > average)
+			{
+				result++;
+			}
+		}
+
+		std::cout << std::fixed;
+		std::cout.precision(3);
+		std::cout << static_cast<double>(result) / static_cast<double>(scores.size()) * 100.0 << "%" << std::endl;
+	}
+}
+*/
+
+// PROBLEM 2908
+/*
+void Problem_2908()
+{
+	int inputBuffer;
+	std::string strBuffer;
+	std::vector<int> nums;
+
+	for (int counter = 0; counter < 2; counter++)
+	{
+		strBuffer.clear();
+		std::cin >> inputBuffer;
+		strBuffer.append(std::to_string(inputBuffer));
+		std::swap(strBuffer[0], strBuffer[2]);
+		nums.emplace_back(std::stoi(strBuffer));
+	}
+
+	std::cout << std::max(nums[0], nums[1]) << std::endl;
+}
+*/
+
+// PROBLEM 1978
+/*
+void Problem_1978_Trial_1()
+{
+	int N, inputBuffer;
+	int result = 0;
+	std::vector<int> nums;
+
+	std::cin >> N;
+	for (int counter = N; counter > 0; counter--)
+	{
+		std::cin >> inputBuffer;
+		nums.emplace_back(inputBuffer);
+	}
+
+	for (const auto& elem : nums)
+	{
+		if (elem > 1) { result++; }
+		for (int checker = 2; checker <= elem / 2; checker++)
+		{
+			if (elem % checker == 0)
+			{
+				result--;
+				break;
+			}
+		}
+	}
+
+	std::cout << result << std::endl;
+}
+
+void Problem_1978_Trial_2()
+{
+	int N, inputBuffer;
+	std::vector<int> nums;
+	int result = 0;
+
+	std::cin >> N;
+	for (int counter = N; counter > 0; counter--)
+	{
+		std::cin >> inputBuffer;
+		nums.emplace_back(inputBuffer);
+	}
+
+	for (const auto& elem : nums)
+	{
+		if (elem > 1) { result++; }
+		for (int checker = 2; checker <= static_cast<int>(sqrt(elem)); checker++)
+		{
+			if (elem % checker == 0)
+			{
+				result--;
+				break;
+			}
+		}
+	}
+
+	std::cout << result << std::endl;
+}
+*/
+
+// PROBLEM 2922
+/*
+int Calculate_Baekjoon_2922_MaxRange(int num)
+{
+	if (num < 2) { return 1; }
+
+	return 6 * (num - 1);
+}
+
+int Calculate_Baekjoon_2922_MinRange(std::unordered_map<int, int>& cache, int num)
+{
+	if (num < 1) { return -1; }
+	else if (cache.find(num) != cache.end())
+	{
+		return cache[num];
+	}
+
+	cache.emplace(num, ((num - 2) * 6) + Calculate_Baekjoon_2922_MinRange(cache, num - 1));
+
+	return cache[num];
+}
+
+void Problem_2292()
+{
+	std::unordered_map<int, int> cacheTable
+	{
+		{1, 1},
+		{2, 2}
+	};
+
+	int N, minBuffer;
+	std::cin >> N;
+
+	double consumedTime = TimeChecker::CheckTime([&] {
+
+		for (int counter = 1; counter < 20; counter++)
+		{
+			minBuffer = Calculate_Baekjoon_2922_MinRange(cacheTable, counter);
+			if (minBuffer <= N && N < minBuffer + Calculate_Baekjoon_2922_MaxRange(counter))
+			{
+				std::cout << counter << std::endl;
+				break;
+			}
+		}
+		});
+
+	std::cout << "consumed time : " << consumedTime << " ms" << std::endl;
+}
+
+void Problem_2292_Tiral_2()
+{
+	int N;
+	std::cin >> N;
+
+	if (N == 1) { std::cout << 1 << std::endl; return; }
+
+	int lowerNum = 2;
+	int circleNum = 2;
+	while (true)
+	{
+		if (lowerNum <= N && N < (lowerNum = lowerNum + (6 * (circleNum - 1))))
+		{
+			std::cout << circleNum << std::endl;
+			break;
+		}
+
+		circleNum++;
+	}
+}
+*/
 
 // PROBLEM 2869
 /*
-// 땅 위에 달팽이가 있다.이 달팽이는 높이가 V미터인 나무 막대를 올라갈 것이다.
-// 달팽이는 낮에 A미터 올라갈 수 있다.하지만, 밤에 잠을 자는 동안 B미터 미끄러진다.또, 정상에 올라간 후에는 미끄러지지 않는다.
-// 달팽이가 나무 막대를 모두 올라가려면, 며칠이 걸리는지 구하는 프로그램을 작성하시오.
-// 첫째 줄에 세 정수 A, B, V가 공백으로 구분되어서 주어진다. (1 ≤ B < A ≤ V ≤ 1, 000, 000, 000)
-void Math_2869()
+void Problem_2869()
 {
 	int A, B, V;
 	std::cin >> A >> B >> V;
@@ -40,15 +262,7 @@ void Math_2869()
 
 // PROBLEM 3053
 /*
-// 19세기 독일 수학자 헤르만 민코프스키는 비유클리드 기하학 중 택시 기하학을 고안했다.
-// 택시 기하학에서 두 점 T1(x1, y1), T2(x2, y2) 사이의 거리는 다음과 같이 구할 수 있다.
-// D(T1, T2) = | x1 - x2 | +| y1 - y2 |
-// 두 점 사이의 거리를 제외한 나머지 정의는 유클리드 기하학에서의 정의와 같다.
-// 따라서 택시 기하학에서 원의 정의는 유클리드 기하학에서 원의 정의와 같다.
-// 원: 평면 상의 어떤 점에서 거리가 일정한 점들의 집합
-// 반지름 R이 주어졌을 때, 유클리드 기하학에서 원의 넓이와, 택시 기하학에서 원의 넓이를 구하는 프로그램을 작성하시오.
-// 첫째 줄에 반지름 R이 주어진다.R은 10, 000보다 작거나 같은 자연수이다.
-void Math_3053()
+void Problem_3053()
 {
 	int R;
 	std::cin >> R;
@@ -68,8 +282,7 @@ bool process_4342(int bigger, int smaller,  bool turn)
 	return process_4342(smaller, bigger - smaller, !turn);
 }
 
-// 유클리드 게임
-void Math_4342()
+void Problem_4342()
 {
 	std::ios_base::sync_with_stdio(0);
 	std::cin.tie(nullptr);
@@ -94,7 +307,13 @@ void Math_4342()
 
 void ExecuteBaekjoonMathProblems()
 {
-	//Math_2869();
-	//Math_3053();
-	//Math_4342();
+	//Problem_8393();
+	//Problem_2753();
+	//Problem_4344();
+	//Problem_2908();
+	//Problem_1978();
+	//Problem_2922();
+	//Problem_2869();
+	//Problem_3053();
+	//Problem_4342();
 }
