@@ -141,6 +141,17 @@ void Problem_1007()
 }
 */
 
+// PROBLEM 1053
+
+void Problem_1053()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string inputStr;
+	
+}
+
 void Execute_Math()
 {
 	//Problem_1007();
