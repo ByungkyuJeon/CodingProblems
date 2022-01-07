@@ -237,10 +237,155 @@ void Problem_1114()
 }
 */
 
+// PROBLEM 2568
+/*
+struct data
+{
+	data() = default;
+	data(data* inParent, int inNum) : parent{ inParent }, num{ inNum } {}
+
+	data* parent;
+	int num;
+};
+
+data* subsequence[1000001];
+data list[1000001];
+int counts[1000001];
+
+int binarySearch(int start, int end, int val)
+{
+	if (start == end) { return subsequence[start]->num >= val ? start : start + 1; }
+	int mid = start + (end - start) / 2;
+	if (val == subsequence[mid]->num) { return mid; }
+	else if (val < subsequence[mid]->num) { return binarySearch(start, mid, val); }
+	else { return binarySearch(mid + 1, end, val); }
+}
+
+void Problem_2568()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::unordered_map<int, int> inputs;
+	data* lastDataBuffer = nullptr;
+	std::string resultStr;
+	int N, inputBuffer[2], result = 1;
+	std::cin >> N;
+
+
+
+	std::cin >> inputBuffer[0] >> inputBuffer[1]; // Ã¹ ¼ıÀÚ
+	inputs.emplace(inputBuffer[0], inputBuffer[1]);
+	list[0] = data(nullptr, inputBuffer[0]);
+	subsequence[0] = &list[0];
+	counts[0] = 1;
+	for (int idx = 1; idx < N; idx++)
+	{
+		std::cin >> inputBuffer[0] >> inputBuffer[1];
+		inputs.emplace(inputBuffer[0], inputBuffer[1]);
+		if (subsequence[result - 1]->num < inputBuffer[0])
+		{
+			list[idx] = data(subsequence[result - 1], inputBuffer[0]);
+			subsequence[result] = &list[idx];
+			result++;
+			counts[idx] = binarySearch(0, result - 1, inputBuffer[0]) + 1;
+		}
+		else
+		{
+			counts[idx] = binarySearch(0, result - 1, inputBuffer[0]) + 1;
+			if (counts[idx] - 1 == 0)
+			{
+				list[idx] = data(nullptr, inputBuffer[0]);
+				subsequence[counts[idx] - 1] = &list[idx];
+			}
+			else
+			{
+				list[idx] = data(subsequence[counts[idx] - 2], inputBuffer[0]);
+				subsequence[counts[idx] - 1] = &list[idx];
+			}
+		}
+	}
+
+	lastDataBuffer = subsequence[result - 1];
+
+	std::cout << result << '\n' << resultStr << '\n';
+}
+*/
+
+// PROBLEM 17441
+
+int subsequence[1000001];
+int counts[1000001];
+std::vector<std::pair<int, long long>> list[1000001];
+
+int binarySearch_17441(int start, int end, int val)
+{
+	if (start == end) { return subsequence[start] >= val ? start : start + 1; }
+	int mid = start + (end - start) / 2;
+	if (val == subsequence[mid]) { return mid; }
+	else if (val < subsequence[mid]) { return binarySearch_17441(start, mid, val); }
+	else { return binarySearch_17441(mid + 1, end, val); }
+}
+
+long long getSum(int length, int val)
+{
+	long long result = 0;
+	for (const auto& elem : list[length])
+	{
+		if (elem.first < val)
+		{
+			result += elem.second % 1000000007;
+		}
+	}
+	return result;
+}
+
+void Problem_17441()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int N, inputBuffer, result = 1;
+	std::cin >> N >> subsequence[0];
+
+	list[1].emplace_back(std::make_pair(subsequence[0], 1));
+	counts[0] = 1;
+
+	for (int idx = 1; idx < N; idx++)
+	{
+		std::cin >> inputBuffer;
+		if (subsequence[result - 1] < inputBuffer)
+		{
+			subsequence[result] = inputBuffer;
+			result++;
+			counts[idx] = binarySearch_17441(0, result - 1, inputBuffer) + 1;
+			list[counts[idx]].emplace_back(std::make_pair(inputBuffer, getSum(counts[idx] - 1, inputBuffer)));
+		}
+		else
+		{
+			counts[idx] = binarySearch_17441(0, result - 1, inputBuffer) + 1;
+			subsequence[counts[idx] - 1] = inputBuffer;
+
+			if (counts[idx] != 1)
+			{
+				list[counts[idx]].emplace_back(std::make_pair(inputBuffer, getSum(counts[idx] - 1, inputBuffer)));
+			}
+			else
+			{
+				list[counts[idx]].emplace_back(std::make_pair(inputBuffer, 1));
+			}
+		}
+	}
+
+	std::cout << result << " " << getSum(result, 1000000000) % 1000000007;
+}
+
 void ExecuteBinarySearch()
 {
 	//Problem_3020();
 	//Problem_2352();
 	//Problem_1208();
 	//Problem_1114();
+	//Problem_2568();
+	Problem_17441();
 }
