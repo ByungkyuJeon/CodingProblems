@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include <iostream>
+#include <algorithm>
 
 // PROBLEM 3020
 /*
@@ -238,7 +239,7 @@ void Problem_1114()
 */
 
 // PROBLEM 2568
-/*
+
 struct data
 {
 	data() = default;
@@ -251,6 +252,7 @@ struct data
 data* subsequence[1000001];
 data list[1000001];
 int counts[1000001];
+std::pair<int, int> wires[100001];
 
 int binarySearch(int start, int end, int val)
 {
@@ -266,54 +268,74 @@ void Problem_2568()
 	std::ios_base::sync_with_stdio(0);
 	std::cin.tie(nullptr);
 
-	std::unordered_map<int, int> inputs;
+	std::vector<int> resultList;
+	std::vector<int> removalList;
 	data* lastDataBuffer = nullptr;
-	std::string resultStr;
 	int N, inputBuffer[2], result = 1;
 	std::cin >> N;
+	for (int idx = 0; idx < N; idx++)
+	{
+		std::cin >> inputBuffer[0] >> inputBuffer[1];
+		wires[idx].first = inputBuffer[1];
+		wires[idx].second = inputBuffer[0];
+	}
 
+	std::sort(wires, wires + N, [](const std::pair<int, int>& lhs, const std::pair<int, int>& rhs) {return lhs.second < rhs.second; });
 
-
-	std::cin >> inputBuffer[0] >> inputBuffer[1]; // Ã¹ ¼ýÀÚ
-	inputs.emplace(inputBuffer[0], inputBuffer[1]);
-	list[0] = data(nullptr, inputBuffer[0]);
+	list[0] = data(nullptr, wires[0].first);
 	subsequence[0] = &list[0];
 	counts[0] = 1;
 	for (int idx = 1; idx < N; idx++)
 	{
-		std::cin >> inputBuffer[0] >> inputBuffer[1];
-		inputs.emplace(inputBuffer[0], inputBuffer[1]);
-		if (subsequence[result - 1]->num < inputBuffer[0])
+		if (subsequence[result - 1]->num < wires[idx].first)
 		{
-			list[idx] = data(subsequence[result - 1], inputBuffer[0]);
+			list[idx] = data(subsequence[result - 1], wires[idx].first);
 			subsequence[result] = &list[idx];
 			result++;
-			counts[idx] = binarySearch(0, result - 1, inputBuffer[0]) + 1;
+			counts[idx] = binarySearch(0, result - 1, wires[idx].first) + 1;
 		}
 		else
 		{
-			counts[idx] = binarySearch(0, result - 1, inputBuffer[0]) + 1;
+			counts[idx] = binarySearch(0, result - 1, wires[idx].first) + 1;
 			if (counts[idx] - 1 == 0)
 			{
-				list[idx] = data(nullptr, inputBuffer[0]);
+				list[idx] = data(nullptr, wires[idx].first);
 				subsequence[counts[idx] - 1] = &list[idx];
 			}
 			else
 			{
-				list[idx] = data(subsequence[counts[idx] - 2], inputBuffer[0]);
+				list[idx] = data(subsequence[counts[idx] - 2], wires[idx].first);
 				subsequence[counts[idx] - 1] = &list[idx];
 			}
 		}
 	}
 
 	lastDataBuffer = subsequence[result - 1];
+	while (lastDataBuffer != nullptr)
+	{
+		resultList.emplace_back(lastDataBuffer->num);
+		lastDataBuffer = lastDataBuffer->parent;
+	}
 
-	std::cout << result << '\n' << resultStr << '\n';
+	for (int idx = 0; idx < N; idx++)
+	{
+		if (std::find(resultList.begin(), resultList.end(), wires[idx].first) == resultList.end())
+		{
+			removalList.emplace_back(wires[idx].second);
+		}
+	}
+
+	std::cout << removalList.size() << '\n';
+
+	for (const auto& elem : removalList)
+	{
+		std::cout << elem << '\n';
+	}
 }
-*/
+
 
 // PROBLEM 17441
-
+/*
 int subsequence[1000001];
 int counts[1000001];
 std::vector<std::pair<int, long long>> list[1000001];
@@ -379,6 +401,7 @@ void Problem_17441()
 
 	std::cout << result << " " << getSum(result, 1000000000) % 1000000007;
 }
+*/
 
 void ExecuteBinarySearch()
 {
@@ -386,6 +409,6 @@ void ExecuteBinarySearch()
 	//Problem_2352();
 	//Problem_1208();
 	//Problem_1114();
-	//Problem_2568();
-	Problem_17441();
+	Problem_2568();
+	//Problem_17441();
 }
