@@ -239,7 +239,7 @@ void Problem_1114()
 */
 
 // PROBLEM 2568
-
+/*
 struct data
 {
 	data() = default;
@@ -332,7 +332,7 @@ void Problem_2568()
 		std::cout << elem << '\n';
 	}
 }
-
+*/
 
 // PROBLEM 17441
 /*
@@ -403,12 +403,92 @@ void Problem_17441()
 }
 */
 
+struct data
+{
+	data() = default;
+	data(data* inParent, int inNum) : parent{ inParent }, num{ inNum } {}
+
+	data* parent;
+	int num;
+};
+
+data* subsequence[100001];
+data list[100001];
+int counts[100001];
+std::pair<int, int> wires[100001];
+
+int binarySearch(int start, int end, int val)
+{
+	if (start == end) { return subsequence[start]->num >= val ? start : start + 1; }
+	int mid = start + (end - start) / 2;
+	if (val == subsequence[mid]->num) { return mid; }
+	else if (val < subsequence[mid]->num) { return binarySearch(start, mid, val); }
+	else { return binarySearch(mid + 1, end, val); }
+}
+
+void Problem_1365()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::vector<int> resultList;
+	data* lastDataBuffer = nullptr;
+	int N, inputBuffer[2], result = 1;
+	std::cin >> N;
+	for (int idx = 0; idx < N; idx++)
+	{
+		std::cin >> inputBuffer[1];
+		wires[idx].first = inputBuffer[1];
+		wires[idx].second = idx + 1;
+	}
+
+	list[0] = data(nullptr, wires[0].first);
+	subsequence[0] = &list[0];
+	counts[0] = 1;
+	for (int idx = 1; idx < N; idx++)
+	{
+		if (subsequence[result - 1]->num < wires[idx].first)
+		{
+			list[idx] = data(subsequence[result - 1], wires[idx].first);
+			subsequence[result] = &list[idx];
+			result++;
+			counts[idx] = binarySearch(0, result - 1, wires[idx].first) + 1;
+		}
+		else
+		{
+			counts[idx] = binarySearch(0, result - 1, wires[idx].first) + 1;
+			if (counts[idx] - 1 == 0)
+			{
+				list[idx] = data(nullptr, wires[idx].first);
+				subsequence[counts[idx] - 1] = &list[idx];
+			}
+			else
+			{
+				list[idx] = data(subsequence[counts[idx] - 2], wires[idx].first);
+				subsequence[counts[idx] - 1] = &list[idx];
+			}
+		}
+	}
+
+	inputBuffer[0] = 0;
+	lastDataBuffer = subsequence[result - 1];
+	while (lastDataBuffer != nullptr)
+	{
+		resultList.emplace_back(lastDataBuffer->num);
+		lastDataBuffer = lastDataBuffer->parent;
+		inputBuffer[0]++;
+	}
+
+	std::cout << N - inputBuffer[0] << '\n';
+}
+
 void ExecuteBinarySearch()
 {
 	//Problem_3020();
 	//Problem_2352();
 	//Problem_1208();
 	//Problem_1114();
-	Problem_2568();
+	//Problem_2568();
 	//Problem_17441();
+	Problem_1365();
 }
