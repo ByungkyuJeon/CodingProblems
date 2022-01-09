@@ -3,6 +3,7 @@
 #include <set>
 #include <map>
 #include <unordered_set>
+#include <bitset>
 
 void primeFactorization(std::set<int>& outArr, int inNum)
 {
@@ -1148,6 +1149,10 @@ void Problem_9252()
 */
 
 // PROBLEM 18441 RETRY
+// studied with http://www.secmem.org/blog/2019/09/12/lcs-with-bitset/
+// but without std::bitset library (length 64 * 8 bits operation several times
+/*
+// PROBLEM 18441 RETRY
 #define get(arr, x) (((arr[x >> 6] >> (x & 63)) & 1) == 1)
 #define set(arr, x) (arr[x >> 6] |= 1llu << (x & 63))
 using ulint = unsigned long long;
@@ -1160,40 +1165,36 @@ int maxBoundary;
 
 void LCS_Bitset(int boundary)
 {
-	int N = boundary, M = S_18441.size() - boundary;
-	int sz = (M >> 6) + 1;
-	ulint shl_carry;
-	ulint minus_carry;
+	std::string A = S_18441.substr(0, boundary);
+	std::string B = S_18441.substr(boundary, S_18441.size() - boundary);
+	int N = A.size(), M = B.size(), shM = M >> 6;
+	// 1792 °³
+	const int sz = 28;
+	ulint shl_carry, x_k, term_1, term_2, minus_carry = 0, tmp;
+	ulint S[26][sz];
+	for (int j = 0; j < M; j++) set(S[B[j] - 97], j);
 
-	std::vector<ulint> S[256];
-	for (int c = 0; c < 256; c++) S[c].resize(sz);
-	for (int j = 0; j < M; j++) set(S[S_18441[j + boundary]], j);
+	ulint row[sz] = { 0 };
+	for (int j = 0; j < M; j++) if (A[0] == B[j]) { set(row, j); break; }
 
-	std::vector<ulint> row(sz);
-	for (int j = 0; j < M; j++) if (S_18441[0] == S_18441[j + boundary]) { set(row, j); break; }
-
-	for (int i = 1; i < N; i++) {
+	for (int i = 1; i < N; i++) 
+	{
 		shl_carry = 1;
-		minus_carry = 0;
 
-		for (int k = 0; k < sz; k++) {
-			ulint x_k = S[S_18441[i]][k] | row[k];
+		for (int k = 0; k < sz; k++) 
+		{
+			x_k = S[A[i] - 97][k] | row[k];
 
-			ulint term_1 = (row[k] << 1) | shl_carry;
+			term_1 = (row[k] << 1) | shl_carry;
 			shl_carry = row[k] >> 63;
 
-			auto sub_carry = [](ulint& x, ulint y) {
-				ulint tmp = x;
-				return (x = tmp - y) > tmp;
-			};
-			ulint term_2 = x_k;
-			minus_carry = sub_carry(term_2, minus_carry);
-			minus_carry += sub_carry(term_2, term_1);
+			minus_carry = (tmp = term_2 = x_k - minus_carry) > x_k;
+			minus_carry += (term_2 = term_2 - term_1) > tmp;
 
 			row[k] = x_k & (x_k ^ term_2);
 		}
 
-		row[M >> 6] &= (1llu << (M & 63)) - 1;
+		row[shM] &= (1llu << (M & 63)) - 1;
 	}
 
 	int ret = 0;
@@ -1276,7 +1277,7 @@ void Problem_18441_Retry()
 	std::ios_base::sync_with_stdio(0);
 	std::cin.tie(nullptr);
 
-	int T, counter = 1, boundary, ddd = 0;
+	int T, counter = 1, boundary;
 	std::cin >> T;
 
 	std::string outputStr;
@@ -1286,14 +1287,12 @@ void Problem_18441_Retry()
 	while (T-- > 0)
 	{
 		std::cin >> S_18441;
-
 		resultStr_18441.clear();
 
 		boundary = (S_18441.size() / 2);
 		LCS_Bitset(boundary);
 		while (--boundary > 0)
 		{
-			//std::cout << ddd++ << '\n';
 			if (boundary < maxLength) { break; }
 			LCS_Bitset(boundary);
 			if (boundary < maxLength) { break; }
@@ -1316,6 +1315,144 @@ void Problem_18441_Retry()
 
 	std::cout << '\n' << consumedTime << " ms" << '\n';
 }
+*/
+
+
+// PROBLEM 18441 RETRY
+// with std::bitset library
+std::string S_18441;
+std::string resultStr_18441;
+
+std::bitset<2112> subtract(const std::bitset<2112>& lhs, const std::bitset<2112>&& rhs, int size)
+{
+	std::bitset<2112> rhsTemp = rhs;
+	std::bitset<2112> borrow;
+	std::bitset<2112> result;
+
+	while (borrow.any())
+	{
+		borrow = ~lhs & rhsTemp;
+		result = lhs ^ rhsTemp;
+		rhsTemp = borrow << 1;
+	}
+
+	return result;
+}
+
+std::bitset<2112> addOne(std::bitset<2112>&& lhs, int size)
+{
+	lhs[size] = 1;
+	return lhs;
+}
+
+void LCS_Bitset(int boundary)
+{
+	std::string A = S_18441.substr(0, boundary);
+	std::string B = S_18441.substr(boundary, S_18441.size() - boundary);
+
+	std::bitset<2112> D[2112];
+	std::bitset<2112> S[26];
+	std::bitset<2112> x;
+	for (int idx = 0; idx < B.size(); idx++)
+	{
+		S[B[idx] - 'a'][idx] = 1;
+	}
+
+	for (int idx = 0; idx < A.size(); idx++)
+	{
+		x = S[A[idx] - 'a'] | D[idx];
+		D[idx + 1] = (x & (x ^ subtract(x, addOne((D[idx] << 1), B.size()), B.size())));
+	}
+
+	int a = A.size();
+	int b = B.size() - 1;
+	std::string result;
+	/*while (a >= 0 && b >= 0)
+	{
+		if (D[a][b] == 1)
+		{
+			result += B[b];
+			a--;
+			b--;
+		}
+		else
+		{
+			b--;
+		}
+	}*/
+
+	for (; a > 0; a--)
+	{
+		while (b >= 0 && !D[a][b])
+		{
+			b--;
+		}
+
+		if (b < 0)
+		{
+			break;
+		}
+
+		while (a > 0 && D[a - 1][b])
+		{
+			a--;
+		}
+		result += (B[b--]);
+	}
+
+	for (int idx = 0; idx < result.size() / 2; idx++)
+	{
+		std::swap(result[idx], result[result.size() - idx - 1]);
+	}
+
+	if (resultStr_18441.size() < result.size())
+	{
+		resultStr_18441 = result;
+	}
+};
+
+void Problem_18441_Retry_Bitset()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int T, counter = 1, boundary;
+	std::cin >> T;
+
+	std::string outputStr;
+
+	double consumedTime = TimeChecker::CheckTime([&] {
+
+		while (T-- > 0)
+		{
+			std::cin >> S_18441;
+			resultStr_18441.clear();
+
+			boundary = (S_18441.size() / 2);
+			LCS_Bitset(boundary);
+			while (--boundary > 0)
+			{
+				if (boundary < resultStr_18441.size()) { break; }
+				LCS_Bitset(boundary);
+				if (boundary < resultStr_18441.size()) { break; }
+				LCS_Bitset(S_18441.size() - boundary);
+			}
+
+			if (resultStr_18441.empty())
+			{
+				outputStr.append("Case #" + std::to_string(counter++) + ": " + std::to_string(0) + '\n');
+				continue;
+			}
+			outputStr.append("Case #" + std::to_string(counter++) + ": " + std::to_string(resultStr_18441.size() * 2) + '\n' + resultStr_18441 + resultStr_18441 + '\n');
+		}
+
+		std::cout << outputStr;
+
+		});
+
+	std::cout << '\n' << consumedTime << " ms" << '\n';
+}
+
 
 void ExecuteString()
 {
@@ -1325,5 +1462,6 @@ void ExecuteString()
 	//Problem_9251();
 	//Problem_18441_Trial_4();
 	//Problem_9252();
-	Problem_18441_Retry();
+	//Problem_18441_Retry();
+	//Problem_18441_Retry_Bitset();
 }
