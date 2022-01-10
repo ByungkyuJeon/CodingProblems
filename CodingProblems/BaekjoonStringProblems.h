@@ -1323,26 +1323,19 @@ void Problem_18441_Retry()
 std::string S_18441;
 std::string resultStr_18441;
 
-std::bitset<2112> subtract(const std::bitset<2112>& lhs, const std::bitset<2112>&& rhs, int size)
+std::bitset<1728> substract(const std::bitset<1728>& lhs, std::bitset<1728>& rhs)
 {
-	std::bitset<2112> rhsTemp = rhs;
-	std::bitset<2112> borrow;
-	std::bitset<2112> result;
-
-	while (borrow.any())
+	std::bitset<1728> result = lhs;
+	std::bitset<1728> borrow;
+	
+	while (rhs.any())
 	{
-		borrow = ~lhs & rhsTemp;
-		result = lhs ^ rhsTemp;
-		rhsTemp = borrow << 1;
+		borrow = (~result) & rhs;
+		result ^= rhs;
+		rhs = borrow << 1;
 	}
 
 	return result;
-}
-
-std::bitset<2112> addOne(std::bitset<2112>&& lhs, int size)
-{
-	lhs[size] = 1;
-	return lhs;
 }
 
 void LCS_Bitset(int boundary)
@@ -1350,36 +1343,26 @@ void LCS_Bitset(int boundary)
 	std::string A = S_18441.substr(0, boundary);
 	std::string B = S_18441.substr(boundary, S_18441.size() - boundary);
 
-	std::bitset<2112> D[2112];
-	std::bitset<2112> S[26];
-	std::bitset<2112> x;
+	std::bitset<1728> D[1728];
+	std::bitset<1728> S[26];
+	std::bitset<1728> x;
 	for (int idx = 0; idx < B.size(); idx++)
 	{
-		S[B[idx] - 'a'][idx] = 1;
+		S[B[idx] - 97][idx] = 1;
 	}
 
 	for (int idx = 0; idx < A.size(); idx++)
 	{
-		x = S[A[idx] - 'a'] | D[idx];
-		D[idx + 1] = (x & (x ^ subtract(x, addOne((D[idx] << 1), B.size()), B.size())));
+		x = S[A[idx] - 97] | D[idx];
+		D[idx + 1] = D[idx] << 1; D[idx + 1][0] = 1;
+		D[idx + 1] = (x & (x ^ substract(x, D[idx + 1])));
 	}
+
+	if (resultStr_18441.size() >= D[A.size()].count()) { return; }
 
 	int a = A.size();
 	int b = B.size() - 1;
 	std::string result;
-	/*while (a >= 0 && b >= 0)
-	{
-		if (D[a][b] == 1)
-		{
-			result += B[b];
-			a--;
-			b--;
-		}
-		else
-		{
-			b--;
-		}
-	}*/
 
 	for (; a > 0; a--)
 	{
@@ -1397,7 +1380,7 @@ void LCS_Bitset(int boundary)
 		{
 			a--;
 		}
-		result += (B[b--]);
+		result += B[b--];
 	}
 
 	for (int idx = 0; idx < result.size() / 2; idx++)
@@ -1405,11 +1388,9 @@ void LCS_Bitset(int boundary)
 		std::swap(result[idx], result[result.size() - idx - 1]);
 	}
 
-	if (resultStr_18441.size() < result.size())
-	{
-		resultStr_18441 = result;
-	}
-};
+	std::cout << "Boundary : " << boundary << " size : " << result.size() << '\n';
+	resultStr_18441 = result;
+}
 
 void Problem_18441_Retry_Bitset()
 {
@@ -1454,6 +1435,7 @@ void Problem_18441_Retry_Bitset()
 }
 
 
+
 void ExecuteString()
 {
 	//Problem_4354();
@@ -1463,5 +1445,5 @@ void ExecuteString()
 	//Problem_18441_Trial_4();
 	//Problem_9252();
 	//Problem_18441_Retry();
-	//Problem_18441_Retry_Bitset();
+	Problem_18441_Retry_Bitset();
 }
