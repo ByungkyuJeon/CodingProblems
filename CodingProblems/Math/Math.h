@@ -153,7 +153,7 @@ void Problem_1053()
 }
 
 // PROBLEM 1019
-
+/*
 long long result[10];
 int expNum = 0;
 
@@ -222,9 +222,71 @@ void Problem_1019()
 		std::cout << result[idx] << " ";
 	}
 }
+*/
+
+// PROBLEM 1027
+
+int data[51];
+
+void Problem_1027()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(0);
+
+	std::priority_queue<int> result;
+	double maxTan, distance, height;
+	int N, count;
+	std::cin >> N;
+
+	for (int idx = 0; idx < N; idx++)
+	{
+		std::cin >> data[idx];
+	}
+
+	for (int idx = 0; idx < N; idx++)
+	{
+		count = 0;
+		if (idx > 0)
+		{
+			maxTan = (data[idx] - data[idx - 1]);
+			count = 1;
+			for (int left = idx - 2; left >= 0; left--)
+			{
+				distance = idx - left;
+				height = data[idx] - data[left];
+				if (height / distance < maxTan)
+				{
+					maxTan = height / distance;
+					count++;
+				}
+			}
+		}
+
+		if (idx < N - 1)
+		{
+			maxTan = (data[idx] - data[idx + 1]);
+			count++;
+			for (int right = idx + 2; right < N; right++)
+			{
+				distance = right - idx;
+				height = data[idx] - data[right];
+				if (height / distance < maxTan)
+				{
+					maxTan = height / distance;
+					count++;
+				}
+			}
+		}
+
+		result.emplace(count);
+	}
+
+	std::cout << result.top();
+}
 
 void Execute_Math()
 {
 	//Problem_1007();
-	Problem_1019();
+	//Problem_1019();
+	Problem_1027();
 }
