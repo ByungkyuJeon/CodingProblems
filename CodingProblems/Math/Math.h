@@ -152,7 +152,79 @@ void Problem_1053()
 	
 }
 
+// PROBLEM 1019
+
+long long result[10];
+int expNum = 0;
+
+void process(std::string num)
+{
+	for (const auto& elem : num)
+	{
+		result[elem - '0'] += pow(10, expNum);
+	}
+}
+
+void pushCounts(int lhs, int rhs)
+{
+	for (int idx = 0; idx < 10; idx++)
+	{
+		result[idx] += (rhs - lhs + 1) * pow(10, expNum);
+	}
+
+	expNum++;
+}
+
+void Problem_1019()
+{
+	int end, start = 1;
+	std::cin >> end;
+
+	while (end != 0)
+	{
+		while (start % 10 != 0)
+		{
+			process(std::to_string(start));
+			if (start == end) { break; }
+			start++;
+		}
+
+		if (start == end)
+		{
+			if (start % 10 == 0)
+			{
+				process(std::to_string(start));
+			}
+			break;
+		}
+
+		while (end % 10 != 9)
+		{
+			process(std::to_string(end));
+			if (start == end) { break; }
+			end--;
+		}
+
+		if (start == end)
+		{
+			if (end % 10 == 9)
+			{
+				process(std::to_string(end));
+			}
+			break;
+		}
+
+		pushCounts((start /= 10), (end /= 10));
+	}
+
+	for (int idx = 0; idx < 10; idx++)
+	{
+		std::cout << result[idx] << " ";
+	}
+}
+
 void Execute_Math()
 {
 	//Problem_1007();
+	Problem_1019();
 }
