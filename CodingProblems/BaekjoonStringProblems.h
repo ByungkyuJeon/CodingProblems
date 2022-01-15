@@ -1151,8 +1151,9 @@ void Problem_9252()
 // PROBLEM 18441 RETRY
 // studied with http://www.secmem.org/blog/2019/09/12/lcs-with-bitset/
 // but without std::bitset library (length 64 * 8 bits operation several times
-/*
+
 // PROBLEM 18441 RETRY
+/*
 #define get(arr, x) (((arr[x >> 6] >> (x & 63)) & 1) == 1)
 #define set(arr, x) (arr[x >> 6] |= 1llu << (x & 63))
 using ulint = unsigned long long;
@@ -1163,32 +1164,37 @@ std::string resultStr_18441;
 int maxLength;
 int maxBoundary;
 
+// 비트셋 LCS
+// 
 void LCS_Bitset(int boundary)
 {
 	std::string A = S_18441.substr(0, boundary);
 	std::string B = S_18441.substr(boundary, S_18441.size() - boundary);
 	int N = A.size(), M = B.size(), shM = M >> 6;
-	// 1792 개
-	const int sz = 28;
 	ulint shl_carry, x_k, term_1, term_2, minus_carry = 0, tmp;
-	ulint S[26][sz];
-	for (int j = 0; j < M; j++) set(S[B[j] - 97], j);
 
-	ulint row[sz] = { 0 };
-	for (int j = 0; j < M; j++) if (A[0] == B[j]) { set(row, j); break; }
+	ulint S[26][28]; // a~z 1792 문자열 길이
+	for (int j = 0; j < M; j++) set(S[B[j] - 'a'], j); // A[i] == B[i] 전처리
+
+	ulint row[28] = { 0 };
+	for (int j = 0; j < M; j++) if (A[0] == B[j]) { set(row, j); break; } // D[0]
 
 	for (int i = 1; i < N; i++) 
 	{
 		shl_carry = 1;
 
-		for (int k = 0; k < sz; k++) 
+		// 64비트 단위 M >> 6 개 비트셋 프로세싱
+		for (int k = 0; k < shM + 1; k++)
 		{
-			x_k = S[A[i] - 97][k] | row[k];
+			x_k = S[A[i] - 'a'][k] | row[k];
 
+			// 쉬프트 캐리
 			term_1 = (row[k] << 1) | shl_carry;
 			shl_carry = row[k] >> 63;
 
-			minus_carry = (tmp = term_2 = x_k - minus_carry) > x_k;
+			// 빼기 연산 캐리
+			minus_carry = (term_2 = x_k - minus_carry) > x_k;
+			tmp = term_2;
 			minus_carry += (term_2 = term_2 - term_1) > tmp;
 
 			row[k] = x_k & (x_k ^ term_2);
@@ -1197,6 +1203,7 @@ void LCS_Bitset(int boundary)
 		row[shM] &= (1llu << (M & 63)) - 1;
 	}
 
+	// 결과 D의 true 비트 갯수 카운트
 	int ret = 0;
 	for (int j = 0; j < M; j++)
 	{
@@ -1260,18 +1267,6 @@ void LCS_BottomUp_18441(int boundary)
 	}
 }
 
-struct DataSet_18441
-{
-public:
-	DataSet_18441(int inStart, int inEnd, int inDirec) :start{ inStart }, end{ inEnd }, direc{ inDirec }{}
-
-	int start;
-	int end;
-	int direc;
-};
-
-std::queue<DataSet_18441> searchQueue;
-
 void Problem_18441_Retry()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -1288,7 +1283,9 @@ void Problem_18441_Retry()
 	{
 		std::cin >> S_18441;
 		resultStr_18441.clear();
+		maxLength = 0;
 
+		// 중앙 길이부터 연산하는 것이 유리하다고 생각
 		boundary = (S_18441.size() / 2);
 		LCS_Bitset(boundary);
 		while (--boundary > 0)
@@ -1299,7 +1296,10 @@ void Problem_18441_Retry()
 			LCS_Bitset(S_18441.size() - boundary);
 		}
 
-		LCS_BottomUp_18441(maxBoundary);
+		if (maxLength != 0)
+		{
+			LCS_BottomUp_18441(maxBoundary);
+		}
 
 		if (resultStr_18441.empty()) 
 		{ 
@@ -1317,56 +1317,63 @@ void Problem_18441_Retry()
 }
 */
 
-
 // PROBLEM 18441 RETRY
 // with std::bitset library
+/*
 std::string S_18441;
 std::string resultStr_18441;
+int maxLength = 0;
 
-std::bitset<1728> substract(const std::bitset<1728>& lhs, std::bitset<1728>& rhs)
-{
-	std::bitset<1728> result = lhs;
-	std::bitset<1728> borrow;
-	
-	while (rhs.any())
-	{
-		borrow = (~result) & rhs;
-		result ^= rhs;
-		rhs = borrow << 1;
-	}
-
-	return result;
-}
-
+template<int size>
 void LCS_Bitset(int boundary)
 {
-	std::string A = S_18441.substr(0, boundary);
-	std::string B = S_18441.substr(boundary, S_18441.size() - boundary);
+	std::string A;
+	std::string B;
+	std::bitset<size> S[26];
+	std::bitset<size> x, temp, borrow;
+	std::bitset<size> D[2000];
 
-	std::bitset<1728> D[1728];
-	std::bitset<1728> S[26];
-	std::bitset<1728> x;
+	if (boundary > S_18441.size() / 2)
+	{
+		A = S_18441.substr(0, boundary);
+		B = S_18441.substr(boundary, S_18441.size() - boundary);
+	}
+	else
+	{
+		A = S_18441.substr(boundary, S_18441.size() - boundary);
+		B = S_18441.substr(0, boundary);
+	}
+
+	int aSize = A.size();
+
 	for (int idx = 0; idx < B.size(); idx++)
 	{
 		S[B[idx] - 97][idx] = 1;
 	}
 
-	for (int idx = 0; idx < A.size(); idx++)
+	for (int idx = 0; idx < aSize; idx++)
 	{
-		x = S[A[idx] - 97] | D[idx];
-		D[idx + 1] = D[idx] << 1; D[idx + 1][0] = 1;
-		D[idx + 1] = (x & (x ^ substract(x, D[idx + 1])));
+		temp = x = S[A[idx] - 97] | D[idx];
+		(D[idx + 1] = D[idx] << 1)[0] = 1;
+
+		while (D[idx + 1].any())
+		{
+			borrow = (~temp) & D[idx + 1];
+			temp ^= D[idx + 1];
+			D[idx + 1] = borrow << 1;
+		}
+
+		D[idx + 1] = (x & (x ^ temp));
 	}
 
-	if (resultStr_18441.size() >= D[A.size()].count()) { return; }
+	if (maxLength >= D[aSize].count()) { return; }
 
-	int a = A.size();
 	int b = B.size() - 1;
-	std::string result;
+	resultStr_18441.clear();
 
-	for (; a > 0; a--)
+	for (; aSize > 0; aSize--)
 	{
-		while (b >= 0 && !D[a][b])
+		while (b >= 0 && !D[aSize][b])
 		{
 			b--;
 		}
@@ -1376,20 +1383,56 @@ void LCS_Bitset(int boundary)
 			break;
 		}
 
-		while (a > 0 && D[a - 1][b])
+		while (aSize > 0 && D[aSize - 1][b])
 		{
-			a--;
+			aSize--;
 		}
-		result += B[b--];
+		resultStr_18441 += B[b--];
 	}
 
-	for (int idx = 0; idx < result.size() / 2; idx++)
+	maxLength = resultStr_18441.size();
+}
+
+void LCS(int boundary)
+{
+	int temp;
+	if (boundary > S_18441.size() / 2)
 	{
-		std::swap(result[idx], result[result.size() - idx - 1]);
+		temp = (S_18441.size() - boundary) >> 6;
+	}
+	else
+	{
+		temp = boundary >> 6;
 	}
 
-	std::cout << "Boundary : " << boundary << " size : " << result.size() << '\n';
-	resultStr_18441 = result;
+	switch (temp)
+	{
+	case 23: { LCS_Bitset<1536>(boundary); break; }
+	case 22: { LCS_Bitset<1472>(boundary); break; }
+	case 21: { LCS_Bitset<1408>(boundary); break; }
+	case 20: { LCS_Bitset<1344>(boundary); break; }
+	case 19: { LCS_Bitset<1280>(boundary); break; }
+	case 18: { LCS_Bitset<1216>(boundary); break; }
+	case 17: { LCS_Bitset<1152>(boundary); break; }
+	case 16: { LCS_Bitset<1088>(boundary); break; }
+	case 15: { LCS_Bitset<1024>(boundary); break; }
+	case 14: { LCS_Bitset<960>(boundary); break; }
+	case 13: { LCS_Bitset<896>(boundary); break; }
+	case 12: { LCS_Bitset<832>(boundary); break; }
+	case 11: { LCS_Bitset<768>(boundary); break; }
+	case 10: { LCS_Bitset<704>(boundary); break; }
+	case 9: { LCS_Bitset<640>(boundary); break; }
+	case 8: { LCS_Bitset<576>(boundary); break; }
+	case 7: { LCS_Bitset<512>(boundary); break; }
+	case 6: { LCS_Bitset<448>(boundary); break; }
+	case 5: { LCS_Bitset<384>(boundary); break; }
+	case 4: { LCS_Bitset<320>(boundary); break; }
+	case 3: { LCS_Bitset<256>(boundary); break; }
+	case 2: { LCS_Bitset<192>(boundary); break; }
+	case 1: { LCS_Bitset<128>(boundary); break; }
+	case 0: { LCS_Bitset<64>(boundary); break; }
+	default: break;
+	}
 }
 
 void Problem_18441_Retry_Bitset()
@@ -1408,22 +1451,29 @@ void Problem_18441_Retry_Bitset()
 		{
 			std::cin >> S_18441;
 			resultStr_18441.clear();
+			maxLength = 0;
 
 			boundary = (S_18441.size() / 2);
-			LCS_Bitset(boundary);
+			LCS(boundary);
 			while (--boundary > 0)
 			{
-				if (boundary < resultStr_18441.size()) { break; }
-				LCS_Bitset(boundary);
-				if (boundary < resultStr_18441.size()) { break; }
-				LCS_Bitset(S_18441.size() - boundary);
+				if (boundary < maxLength) { break; }
+				LCS(boundary);
+				if (boundary < maxLength) { break; }
+				LCS(S_18441.size() - boundary);
 			}
 
-			if (resultStr_18441.empty())
+			if (maxLength == 0)
 			{
 				outputStr.append("Case #" + std::to_string(counter++) + ": " + std::to_string(0) + '\n');
 				continue;
 			}
+
+			for (int idx = 0; idx < resultStr_18441.size() / 2; idx++)
+			{
+				std::swap(resultStr_18441[idx], resultStr_18441[resultStr_18441.size() - idx - 1]);
+			}
+
 			outputStr.append("Case #" + std::to_string(counter++) + ": " + std::to_string(resultStr_18441.size() * 2) + '\n' + resultStr_18441 + resultStr_18441 + '\n');
 		}
 
@@ -1433,8 +1483,43 @@ void Problem_18441_Retry_Bitset()
 
 	std::cout << '\n' << consumedTime << " ms" << '\n';
 }
+*/
 
+// PROBLEM 1152
+void Problem_1152()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(0);
 
+	std::string str;
+	std::string strBuffer;
+	int result = 0;
+	std::getline(std::cin, str);
+
+	for (const auto& elem : str)
+	{
+		if (elem == ' ')
+		{
+			if (strBuffer.size() > 0)
+			{
+				strBuffer.clear();
+				result++;
+			}
+		}
+		else
+		{
+			strBuffer += elem;
+		}
+	}
+
+	if (strBuffer.size() > 0)
+	{
+		strBuffer.clear();
+		result++;
+	}
+
+	std::cout << result;
+}
 
 void ExecuteString()
 {
@@ -1445,5 +1530,6 @@ void ExecuteString()
 	//Problem_18441_Trial_4();
 	//Problem_9252();
 	//Problem_18441_Retry();
-	Problem_18441_Retry_Bitset();
+	//Problem_18441_Retry_Bitset();
+	Problem_1152();
 }
