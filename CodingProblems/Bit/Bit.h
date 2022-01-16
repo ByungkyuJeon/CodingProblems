@@ -50,19 +50,17 @@ long long getSeg(int start, int end, int node, int left, int right)
 
 unsigned long long Problem_13710_Test(int N)
 {
-	unsigned long long digits[30] = { 0 };
+	int digits[30] = { 0 };
 	unsigned long long sumDigits[65] = { 0 };
-	std::bitset<32> bitsetBuffer;
 	unsigned long long result = 0, inputBuffer;
 
 	for (int count = 1; count <= N; count++)
 	{
 		inputBuffer = data[count];
-		bitsetBuffer = std::bitset<32>(inputBuffer);
 
 		for (int idx = 0; idx < 30; idx++)
 		{
-			if (bitsetBuffer[idx])
+			if ((inputBuffer >> idx) & 1 == 1)
 			{
 				digits[idx] = count - digits[idx];
 			}
@@ -75,12 +73,14 @@ unsigned long long Problem_13710_Test(int N)
 		sumDigits[idx + 1] += sumDigits[idx] / 2;
 		if (sumDigits[idx] % 2 == 1)
 		{
-			result += static_cast<unsigned long long>(pow(2, idx));
+			result += ((unsigned long long)1 << idx);
 		}
 	}
 
 	return result;
 }
+
+int count = 1;
 
 void Problem_13710_BF_TestStarter()
 {
@@ -91,13 +91,14 @@ void Problem_13710_BF_TestStarter()
 		unsigned long long testResult;
 		int N;
 		long long result = 0;
-		N = 100000;
+		N = count++;
+		//N = 100000;
 		//std::cin >> N;
 		for (int idx = 1; idx <= N; idx++)
 		{
-			//data[idx] = std::rand() % 1000000001;
+			data[idx] = idx;
 			//std::cin >> data[idx];
-			data[idx] = 1000000000;
+			//data[idx] = 1000000000;
 		}
 
 		/*makeSegTree(1, N, 1);
@@ -111,8 +112,9 @@ void Problem_13710_BF_TestStarter()
 		}*/
 
 		test = ((testResult = Problem_13710_Test(N)) == result);
-		std::cout << "Test : " << test << std::endl;
-		if (!test)
+		test = true;
+		std::cout << "Test : " << testResult << " N : " << N << std::endl;
+		/*if (!test)
 		{
 			std::cout << "BF result  : " << result << "  Bit result : " << testResult << std::endl;
 			std::cout << "case : ";
@@ -120,8 +122,8 @@ void Problem_13710_BF_TestStarter()
 			{
 				std::cout << data[idx] << " ";
 			}
-		}
-		break;
+		}*/
+		//break;
 	}
 }
 
@@ -130,9 +132,8 @@ void Problem_13710()
 	std::ios_base::sync_with_stdio(0);
 	std::cin.tie(nullptr);
 
-	unsigned long long digits[32] = { 0 };
+	int digits[30] = { 0 };
 	unsigned long long sumDigits[65] = { 0 };
-	std::bitset<32> bitsetBuffer;
 	int N;
 	unsigned long long result = 0, inputBuffer;
 	std::cin >> N;
@@ -140,11 +141,10 @@ void Problem_13710()
 	for (int count = 1; count <= N; count++)
 	{
 		std::cin >> inputBuffer;
-		bitsetBuffer = std::bitset<32>(inputBuffer);
 
-		for (int idx = 0; idx < 32; idx++)
+		for (int idx = 0; idx < 30; idx++)
 		{
-			if (bitsetBuffer[idx])
+			if ((inputBuffer >> idx) & 1 == 1)
 			{
 				digits[idx] = count - digits[idx];
 			}
@@ -157,7 +157,7 @@ void Problem_13710()
 		sumDigits[idx + 1] += sumDigits[idx] / 2;
 		if (sumDigits[idx] % 2 == 1)
 		{
-			result += pow(2, idx);
+			result += ((unsigned long long)1 << idx);
 		}
 	}
 
@@ -166,7 +166,7 @@ void Problem_13710()
 
 
 // PROBLEM 2830
-
+/*
 void Problem_2830()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -195,11 +195,12 @@ void Problem_2830()
 
 	std::cout << resultNum;
 }
+*/
 
 void ExecuteBit()
 {
 	//Problem_13701();
-	//Problem_13710_BF_TestStarter();
+	Problem_13710_BF_TestStarter();
 	//Problem_13710();
-	Problem_2830();
+	//Problem_2830();
 }
