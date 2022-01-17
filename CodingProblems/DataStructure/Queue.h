@@ -51,7 +51,81 @@ void Problem_2075()
 }
 */
 
+// PROBLEM 18258
+
+void Problem_18258()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::queue<int> dataQueue;
+	std::string inputStr, outputStr;
+	int N, inputNum;
+	std::cin >> N;
+	while (N-- > 0)
+	{
+		std::cin >> inputStr;
+		if (inputStr == "push")
+		{
+			std::cin >> inputNum;
+			dataQueue.push(inputNum);
+		}
+		else if (inputStr == "pop")
+		{
+			if (dataQueue.empty())
+			{
+				outputStr += std::to_string(-1) + '\n';
+			}
+			else
+			{
+				outputStr += std::to_string(dataQueue.front()) + '\n';
+				dataQueue.pop();
+			}
+		}
+		else if (inputStr == "size")
+		{
+			outputStr += std::to_string(dataQueue.size()) + '\n';
+		}
+		else if (inputStr == "empty")
+		{
+			if (dataQueue.empty())
+			{
+				outputStr += std::to_string(1) + '\n';
+			}
+			else
+			{
+				outputStr += std::to_string(0) + '\n';
+			}
+		}
+		else if (inputStr == "front")
+		{
+			if (dataQueue.empty())
+			{
+				outputStr += std::to_string(-1) + '\n';
+			}
+			else
+			{
+				outputStr += std::to_string(dataQueue.front()) + '\n';
+			}
+		}
+		else if (inputStr == "back")
+		{
+			if (dataQueue.empty())
+			{
+				outputStr += std::to_string(-1) + '\n';
+			}
+			else
+			{
+				outputStr += std::to_string(dataQueue.back()) + '\n';
+			}
+		}
+	}
+
+	std::cout << outputStr;
+}
+
 void ExecuteQueue()
 {
 	//Problem_2075();
+	Problem_18258();
 }
