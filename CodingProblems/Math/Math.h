@@ -225,7 +225,7 @@ void Problem_1019()
 */
 
 // PROBLEM 1027
-
+/*
 int data[51];
 
 void Problem_1027()
@@ -283,10 +283,85 @@ void Problem_1027()
 
 	std::cout << result.top();
 }
+*/
+
+// PROBLEM 1038
+
+void Problem_1038()
+{
+	int nums[10] = { 0 };
+	long long result = 0;
+	int maxDigit = 0;
+	int N;
+	std::cin >> N;
+	if (N > 1022)
+	{
+		std::cout << std::to_string(-1);
+	}
+	else
+	{
+		while (N-- > 0)
+		{
+			for (int digit = 0; digit <= maxDigit; digit++)
+			{
+				if (digit != maxDigit)
+				{
+					if (nums[digit] + 1 < nums[digit + 1])
+					{
+						nums[digit]++;
+						break;
+					}
+					else
+					{
+						if (digit == 0) { nums[digit] = 0; }
+						else { nums[digit] = nums[digit - 1] + 1; }
+					}
+				}
+				else
+				{
+					if (nums[digit] == 9)
+					{
+						maxDigit++;
+						if (digit == 0) { nums[digit] = 0; }
+						else { nums[digit] = nums[digit - 1] + 1; }
+						nums[maxDigit] = nums[digit] + 1;
+						break;
+					}
+					else
+					{
+						nums[digit]++;
+						break;
+					}
+				}
+			}
+		}
+
+		for (int idx = 0; idx < 10; idx++)
+		{
+			if (nums[idx] > 0)
+			{
+				result += pow(10, idx) * nums[idx];
+			}
+		}
+
+		std::cout << result << std::endl;
+	}
+}
+
+void Problem_1038_Test()
+{
+	int N = 0;
+	while (N < 50000)
+	{
+		//Problem_1038(N++);
+	}
+}
 
 void Execute_Math()
 {
 	//Problem_1007();
 	//Problem_1019();
-	Problem_1027();
+	//Problem_1027();
+	//Problem_1038_Test();
+	Problem_1038();
 }
