@@ -1,6 +1,10 @@
 #pragma once
 
 #include <stack>
+#include <set>
+#include <map>
+#include <iterator>
+#include <string>
 
 // PROBLEM 1874
 /*
@@ -382,7 +386,7 @@ void Problem_6549()
 
 // PROBLEM 2042
 /*
-int data_2042[1000002];
+long long data_2042[1000002];
 long long segTree_2042[4000000];
 
 long long makeSegTree_2042(int start, int end, int node)
@@ -443,7 +447,7 @@ void Problem_2042()
 			outputStr += std::to_string(getSegNode(1, N, 1, inputBuffer[1], inputBuffer[2])) + '\n';
 		}
 	}
-	
+
 	std::cout << outputStr;
 }
 */
@@ -702,6 +706,74 @@ void Problem_14003()
 }
 */
 
+// PROBLEM 2243
+
+int fenwick[1000001];
+
+void update(int idx, int value)
+{
+	while (idx < 1000001)
+	{
+		fenwick[idx] = fenwick[idx] + value;
+		idx = idx + (idx & -idx);
+	}
+}
+
+int getSum(int idx)
+{
+	int result = 0;
+	while (idx > 0)
+	{
+		result = result + fenwick[idx];
+		idx = idx - (idx & -idx);
+	}
+	return result;
+}
+
+int binarySearch(int start, int end, int val)
+{
+	if (start == end) { return start; }
+	int mid = start + (end - start) / 2;
+	int sum = getSum(mid);
+	if (val > sum)
+	{
+		return binarySearch(mid + 1, end, val);
+	}
+	else
+	{
+		return binarySearch(start, mid, val);
+	}
+
+}
+
+void Problem_2243()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string outputStr;
+	int N, inputBuffer[3];
+	std::cin >> N;
+
+	while (N-- > 0)
+	{
+		std::cin >> inputBuffer[0] >> inputBuffer[1];
+		if (inputBuffer[0] == 2)
+		{
+			std::cin >> inputBuffer[2];
+			update(inputBuffer[1], inputBuffer[2]);
+		}
+		else
+		{
+			inputBuffer[2] = binarySearch(1, 1000001, inputBuffer[1]);
+			outputStr += std::to_string(inputBuffer[2]) + '\n';
+			update(inputBuffer[2], -1);
+		}
+	}
+
+	std::cout << outputStr;
+}
+
 void ExecuteDataStructure()
 {
 	//Problem_1874();
@@ -716,4 +788,5 @@ void ExecuteDataStructure()
 	//Problem_10868();
 	//Problem_12015();
 	//Problem_14003();
+	Problem_2243();
 }
