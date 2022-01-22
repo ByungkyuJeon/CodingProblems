@@ -3,7 +3,7 @@
 #include <bitset>
 
 // PROBLEM 1377
-
+/*
 std::pair<int,int> data[500001];
 int test[500001];
 
@@ -67,7 +67,7 @@ void Problem_1377_Test()
             }
         }
 
-        if ((originResult = Problem_1377(N)) == testResult)
+        if ((originResult = Problem_1377_Testee(N)) == testResult)
         {
             std::cout << "pass" << '\n';
         }
@@ -105,11 +105,46 @@ void Problem_1377()
 
     std::cout << result + 1;
 }
+*/
 
+// PROBLEM 1838
+
+#include <iostream>
+#include <algorithm>
+
+std::pair<int, int> data[500001];
+
+void Problem_1838()
+{
+    std::ios_base::sync_with_stdio(0);
+    std::cin.tie(nullptr);
+
+    int N;
+    int result = 0;
+    std::cin >> N;
+    for (int idx = 1; idx <= N; idx++)
+    {
+        std::cin >> data[idx].first;
+        data[idx].second = idx;
+    }
+
+    std::sort(data + 1, data + N + 1);
+
+    for (int idx = 1; idx < N; idx++)
+    {
+        if (result < data[idx].second - idx)
+        {
+            result = data[idx].second - idx;
+        }
+    }
+
+    std::cout << result;
+}
 
 void ExecuteSort()
 {
     //Problem_1377();
     //Problem_1377_Test();
-    Problem_1377();
+    //Problem_1377();
+    Problem_1838();
 }
