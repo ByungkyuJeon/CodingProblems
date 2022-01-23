@@ -108,10 +108,7 @@ void Problem_1377()
 */
 
 // PROBLEM 1838
-
-#include <iostream>
-#include <algorithm>
-
+/*
 std::pair<int, int> data[500001];
 
 void Problem_1838()
@@ -140,11 +137,64 @@ void Problem_1838()
 
     std::cout << result;
 }
+*/
+
+// PROBLEM 1517
+
+int data[500001];
+int temp[500001];
+
+long long merge(int left,int mid, int right)
+{
+    int lhsStart = left;
+    int rhsStart = mid + 1;
+    int count = 0;
+    long long crossCount = 0;
+    long long rightCount = 0;
+
+    while (lhsStart <= mid && rhsStart <= right)
+    {
+        if (data[lhsStart] <= data[rhsStart]) { temp[left + count++] = data[lhsStart++]; crossCount += rightCount; }
+        else { temp[left + count++] = data[rhsStart++]; rightCount++; }
+    }
+
+    while (lhsStart <= mid){ temp[left + count++] = data[lhsStart++]; crossCount += rightCount; }
+    while (rhsStart <= right){ temp[left + count++] = data[rhsStart++]; rightCount++; }
+
+    memcpy(data + left, temp + left, sizeof(int) * (right - left + 1));
+
+    return crossCount;
+}
+
+long long mergeSort(int start, int end)
+{
+    if (start == end) { return 0; }
+    int mid = start + (end - start) / 2;
+    long long lhsCrossCount = mergeSort(start, mid);
+    long long rhsCrossCount = mergeSort(mid + 1, end);
+    return merge(start, mid, end) + lhsCrossCount + rhsCrossCount;
+}
+
+void Problem_1517()
+{
+    std::ios_base::sync_with_stdio(0);
+    std::cin.tie(nullptr);
+
+    int N;
+    std::cin >> N;
+    for (int idx = 0; idx < N; idx++)
+    {
+        std::cin >> data[idx];
+    }
+
+    std::cout << mergeSort(0, N - 1);
+}
 
 void ExecuteSort()
 {
     //Problem_1377();
     //Problem_1377_Test();
     //Problem_1377();
-    Problem_1838();
+    //Problem_1838();
+    Problem_1517();
 }
