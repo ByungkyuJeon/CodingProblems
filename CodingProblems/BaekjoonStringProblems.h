@@ -1486,6 +1486,7 @@ void Problem_18441_Retry_Bitset()
 */
 
 // PROBLEM 1152
+/*
 void Problem_1152()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -1520,6 +1521,62 @@ void Problem_1152()
 
 	std::cout << result;
 }
+*/
+
+// PRBOLEM 1018
+
+void Problem_1018()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int M, N;
+	std::cin >> M >> N;
+	std::cin.ignore();
+
+	std::vector<std::string> data(M);
+	std::priority_queue<int, std::vector<int>, std::greater<int>> result;
+
+	for (int count = 0; count < M; count++)
+	{
+		std::getline(std::cin, data[count]);
+	}
+
+	int counter;
+	char currentCharac, lineCharac;
+
+	for (int posX = 0; posX <= M - 8; posX++)
+	{
+		for (int posY = 0; posY <= N - 8; posY++)
+		{
+			for (int caseNum = 0; caseNum < 2; caseNum++)
+			{
+				counter = 0;
+				if (caseNum == 0) { lineCharac = 'W'; currentCharac = 'W'; }
+				else { lineCharac = 'B'; currentCharac = 'B'; }
+				for (int outerIdx = posX; outerIdx < posX + 8; outerIdx++)
+				{
+					for (int innerIdx = posY; innerIdx < posY + 8; innerIdx++)
+					{
+						if (data[outerIdx][innerIdx] != currentCharac)
+						{
+							counter++;
+							if (!result.empty() && counter > result.top()) { break; }
+						}
+
+						if (currentCharac == 'W'){ currentCharac = 'B'; }
+						else{ currentCharac = 'W'; }
+					}
+					if (lineCharac == 'W'){ lineCharac = 'B'; currentCharac = 'B'; }
+					else{ lineCharac = 'W'; currentCharac = 'W'; }
+				}
+				result.emplace(counter);
+			}
+		}
+	}
+
+	std::cout << result.top();
+}
 
 void ExecuteString()
 {
@@ -1531,5 +1588,6 @@ void ExecuteString()
 	//Problem_9252();
 	//Problem_18441_Retry();
 	//Problem_18441_Retry_Bitset();
-	Problem_1152();
+	//Problem_1152();
+	Problem_1018();
 }
