@@ -1530,12 +1530,11 @@ void Problem_1018()
 	std::ios_base::sync_with_stdio(0);
 	std::cin.tie(nullptr);
 
-	int M, N;
+	int M, N, result = INT_MAX;
 	std::cin >> M >> N;
 	std::cin.ignore();
 
 	std::vector<std::string> data(M);
-	std::priority_queue<int, std::vector<int>, std::greater<int>> result;
 
 	for (int count = 0; count < M; count++)
 	{
@@ -1561,7 +1560,7 @@ void Problem_1018()
 						if (data[outerIdx][innerIdx] != currentCharac)
 						{
 							counter++;
-							if (!result.empty() && counter > result.top()) { break; }
+							if (counter > result) { break; }
 						}
 
 						if (currentCharac == 'W'){ currentCharac = 'B'; }
@@ -1570,12 +1569,12 @@ void Problem_1018()
 					if (lineCharac == 'W'){ lineCharac = 'B'; currentCharac = 'B'; }
 					else{ lineCharac = 'W'; currentCharac = 'W'; }
 				}
-				result.emplace(counter);
+				if (counter < result) { result = counter; }
 			}
 		}
 	}
 
-	std::cout << result.top();
+	std::cout << result;
 }
 
 void ExecuteString()
@@ -1589,5 +1588,5 @@ void ExecuteString()
 	//Problem_18441_Retry();
 	//Problem_18441_Retry_Bitset();
 	//Problem_1152();
-	Problem_1018();
+	//Problem_1018();
 }
