@@ -140,7 +140,7 @@ void Problem_1838()
 */
 
 // PROBLEM 1517
-
+/*
 int data[500001];
 int temp[500001];
 
@@ -189,6 +189,143 @@ void Problem_1517()
 
     std::cout << mergeSort(0, N - 1);
 }
+*/
+
+// PROBLEM 1083
+
+std::vector<int> v;
+int data[51];
+int test[51];
+int count = 0;
+
+std::vector<int> Problem_1083(int N, int S)
+{
+    std::ios_base::sync_with_stdio(0);
+    std::cin.tie(nullptr);
+    
+    std::vector<int> result;
+    //int data[51];
+
+    //int N, S;
+    //std::cin >> N;
+
+    for (int idx = 0; idx < N; idx++)
+    {
+        //std::cin >> data[idx];
+        //data[idx] = v[idx];
+    }
+    //std::cin >> S;
+    int maxIdx, startIdx, endIdx;
+    int completed = -1;
+    while (completed != N - 1)
+    {
+        startIdx = completed + 1;
+        endIdx = startIdx + (S + 1 < N - 1 - completed ? S + 1 : N - 1 - completed);
+        maxIdx = startIdx;
+        for (int idx = startIdx + 1; idx < endIdx; idx++){ if (data[idx] > data[maxIdx]) { maxIdx = idx; } }
+        for (int idx = maxIdx; idx > completed + 1; idx--)
+        {
+            std::swap(data[idx], data[idx - 1]);
+            S--;
+        }
+        completed++;
+        if (S <= 0) { break; }
+    }
+
+    for (int idx = 0; idx < N; idx++)
+    {
+        //std::cout << data[idx] << " ";
+        result.emplace_back(data[idx]);
+    }
+
+    return result;
+}
+
+void Problem_1083_Test()
+{
+    std::srand(std::time(NULL));
+
+    int n = 50;
+   
+    v.resize(n);
+    while (true)
+    {
+        n = 5;
+        v.clear();
+        v.resize(n);
+        for (int idx = 0; idx < n; idx++)
+        {
+            v[idx] = (std::rand() % 1000000) + 1;
+            data[idx] = v[idx];
+            test[idx] = v[idx];
+        }
+
+        int s = 10;
+        int cpyS = s;
+
+        int mx, idx;
+        for (int i = 0; i < n && s; ++i) {
+            mx = idx = -1;
+            for (int j = i, k = 0; j < n && k <= s; ++j, ++k)
+                if (mx < v[j]) {
+                    mx = v[j];
+                    idx = j;
+                }
+
+            for (int j = idx; j > i && s; --j, --s)
+                std::swap(v[j], v[j - 1]);
+        }
+
+        std::vector<int> ret = Problem_1083(n, cpyS);
+
+        for (int idx = 0; idx < n; idx++)
+        {
+            if (ret[idx] != v[idx])
+            {
+                std::cout << "false";
+            }
+        }
+        std::cout << count++ << std::endl;
+    }
+}
+
+void Problem_1083()
+{
+    std::ios_base::sync_with_stdio(0);
+    std::cin.tie(nullptr);
+
+    int nums[51];
+
+    int N, S;
+    std::cin >> N;
+
+    for (int idx = 0; idx < N; idx++)
+    {
+        std::cin >> nums[idx];
+    }
+    std::cin >> S;
+    int maxIdx, startIdx, endIdx;
+    int completed = -1;
+    while (completed != N - 1)
+    {
+        startIdx = completed + 1;
+        endIdx = startIdx + (S + 1 < N - 1 - completed ? S + 1 : N - 1 - completed);
+        maxIdx = startIdx;
+        for (int idx = startIdx + 1; idx < endIdx; idx++) { if (nums[idx] > nums[maxIdx]) { maxIdx = idx; } }
+        for (int idx = maxIdx; idx > completed + 1; idx--)
+        {
+            std::swap(nums[idx], nums[idx - 1]);
+            S--;
+        }
+        completed++;
+        if (S <= 0) { break; }
+    }
+
+    for (int idx = 0; idx < N; idx++)
+    {
+        std::cout << nums[idx] << " ";
+    }
+}
 
 void ExecuteSort()
 {
@@ -196,5 +333,7 @@ void ExecuteSort()
     //Problem_1377_Test();
     //Problem_1377();
     //Problem_1838();
-    Problem_1517();
+    //Problem_1517();
+    //Problem_1083_Test();
+    Problem_1083();
 }
