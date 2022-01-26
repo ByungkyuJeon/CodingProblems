@@ -36,7 +36,7 @@ Based on these critera, I intended to extend experiences bellow from solving wor
 
 ## Author
 
-**Jun Byungkyu**
+**Jeon Byungkyu**
 
 ## Contact
 
