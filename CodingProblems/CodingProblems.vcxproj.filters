@@ -65,5 +65,17 @@
     <ClInclude Include="Greedy.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Math\Math.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicProgramming.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Bit\Bit.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="BaekjoonSortProblems.h">
+      <Filter>소스 파일\Baekjoon</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -62,7 +62,7 @@ void Problem_1068()
 */
 
 // PROBLEM 11505
-
+/*
 long long data[1000002];
 long long segTree[4000000];
 
@@ -127,9 +127,10 @@ void Problem_11505()
 
 	std::cout << outputStr;
 }
+*/
 
 void ExecuteTree()
 {
 	//Problem_1068();
-	Problem_11505();
+	//Problem_11505();
 }

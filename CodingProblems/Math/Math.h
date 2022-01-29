@@ -286,7 +286,7 @@ void Problem_1027()
 */
 
 // PROBLEM 1038
-
+/*
 void Problem_1038()
 {
 	int nums[10] = { 0 };
@@ -356,6 +356,7 @@ void Problem_1038_Test()
 		//Problem_1038(N++);
 	}
 }
+*/
 
 void Execute_Math()
 {
@@ -363,5 +364,5 @@ void Execute_Math()
 	//Problem_1019();
 	//Problem_1027();
 	//Problem_1038_Test();
-	Problem_1038();
+	//Problem_1038();
 }

@@ -1524,7 +1524,7 @@ void Problem_1152()
 */
 
 // PRBOLEM 1018
-
+/*
 void Problem_1018()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -1576,6 +1576,7 @@ void Problem_1018()
 
 	std::cout << result;
 }
+*/
 
 void ExecuteString()
 {

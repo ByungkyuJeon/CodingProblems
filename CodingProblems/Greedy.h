@@ -1043,6 +1043,7 @@ void Problem_1036()
 */
 
 // PROBLEM 1161
+/*
 struct Data
 {
 	Data() = default;
@@ -1223,7 +1224,7 @@ struct group
 };
 
 // USACO 공식 해답
-void Problem_1161()
+void Problem_1161_Official()
 {
 	int K, N, C;
 	int ans = 0;
@@ -1284,6 +1285,7 @@ void Problem_1161()
 	ans += total;
 	std::cout << ans << "\n";
 }
+*/
 
 void ExecuteGreedy()
 {
@@ -1298,6 +1300,6 @@ void ExecuteGreedy()
 	//Problem_1041();
 	//Problem_1036();
 	//Problem_1161_Trial();
-	Problem_1161_Final();
-	//Problem_1161();
+	//Problem_1161_Final();
+	//Problem_1161_Official();
 }

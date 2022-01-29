@@ -707,7 +707,7 @@ void Problem_14003()
 */
 
 // PROBLEM 2243
-
+/*
 int fenwick[1000001];
 
 void update(int idx, int value)
@@ -773,6 +773,7 @@ void Problem_2243()
 
 	std::cout << outputStr;
 }
+*/
 
 void ExecuteDataStructure()
 {
@@ -788,5 +789,5 @@ void ExecuteDataStructure()
 	//Problem_10868();
 	//Problem_12015();
 	//Problem_14003();
-	Problem_2243();
+	//Problem_2243();
 }

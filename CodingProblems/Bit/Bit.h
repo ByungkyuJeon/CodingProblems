@@ -19,9 +19,8 @@ void Problem_13701()
 }
 */
 
-
 // PROBLEM 13710
-
+/*
 int data[100002];
 long long segTree[400000];
 
@@ -101,7 +100,7 @@ void Problem_13710_BF_TestStarter()
 			//data[idx] = 1000000000;
 		}
 
-		/*makeSegTree(1, N, 1);
+		makeSegTree(1, N, 1);
 
 		for (int size = 1; size <= N; size++)
 		{
@@ -109,12 +108,12 @@ void Problem_13710_BF_TestStarter()
 			{
 				result += getSeg(1, N, 1, idx, idx + size - 1);
 			}
-		}*/
+		}
 
 		test = ((testResult = Problem_13710_Test(N)) == result);
 		test = true;
 		std::cout << "Test : " << testResult << " N : " << N << std::endl;
-		/*if (!test)
+		if (!test)
 		{
 			std::cout << "BF result  : " << result << "  Bit result : " << testResult << std::endl;
 			std::cout << "case : ";
@@ -122,7 +121,7 @@ void Problem_13710_BF_TestStarter()
 			{
 				std::cout << data[idx] << " ";
 			}
-		}*/
+		}
 		//break;
 	}
 }
@@ -163,7 +162,7 @@ void Problem_13710()
 
 	std::cout << result;
 }
-
+*/
 
 // PROBLEM 2830
 /*
@@ -197,10 +196,42 @@ void Problem_2830()
 }
 */
 
+// PROBLEM 13709
+
+void Problem_13709()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::vector<unsigned long long> sums;
+	int digits[60] = { 0 };
+	unsigned long long sumDigits[60] = { 0 };
+	int N;
+	unsigned long long result = 0, inputBuffer;
+	std::cin >> N >> inputBuffer;
+
+	sums.emplace_back(inputBuffer);
+
+	for (int count = 1; count < N; count++)
+	{
+		std::cin >> inputBuffer;
+
+		for (int idx = sums.size() - 1; idx >= sums.size() - 1 - count; idx--)
+		{
+			sums.emplace_back((sums[idx]) ^ inputBuffer);
+		}
+	}
+
+	result = *(std::max_element(sums.begin(), sums.end()));
+
+	std::cout << result;
+}
+
 void ExecuteBit()
 {
 	//Problem_13701();
-	Problem_13710_BF_TestStarter();
+	//Problem_13710_BF_TestStarter();
 	//Problem_13710();
 	//Problem_2830();
+	//Problem_13709();
 }

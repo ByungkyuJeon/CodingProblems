@@ -403,6 +403,8 @@ void Problem_17441()
 }
 */
 
+// PROBLEM 1365
+/*
 struct data
 {
 	data() = default;
@@ -481,6 +483,7 @@ void Problem_1365()
 
 	std::cout << N - inputBuffer[0] << '\n';
 }
+*/
 
 void ExecuteBinarySearch()
 {
@@ -490,5 +493,5 @@ void ExecuteBinarySearch()
 	//Problem_1114();
 	//Problem_2568();
 	//Problem_17441();
-	Problem_1365();
+	//Problem_1365();
 }

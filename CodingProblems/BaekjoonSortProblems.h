@@ -192,7 +192,7 @@ void Problem_1517()
 */
 
 // PROBLEM 1083
-
+/*
 std::vector<int> v;
 int data[51];
 int test[51];
@@ -326,6 +326,105 @@ void Problem_1083()
         std::cout << nums[idx] << " ";
     }
 }
+*/
+
+// PROBLEM 11920
+
+void Probme_11920()
+{
+    std::ios_base::sync_with_stdio(0);
+    std::cin.tie(nullptr);
+    
+    int N, K;
+    std::cin >> N >> K;
+
+
+}
+
+// PROBLEM 20190
+
+int data[300001];
+int dataIdices[300001];
+int mergeTemp[300001];
+int idicesTemp[300001];
+long long crossCounts[300001];
+int N;
+
+long long merge(int start, int mid, int end)
+{
+    int leftIdx = start;
+    int rightIdx = mid + 1;
+    int offset = -1;
+    long long crossCount = 0;
+    long long rightCount = 0;
+
+    while (++offset <= end - start)
+    {
+        if (leftIdx > mid || (leftIdx <= mid && rightIdx <= end && data[leftIdx] > data[rightIdx]))
+        {
+            mergeTemp[offset] = data[rightIdx];
+            idicesTemp[offset] = dataIdices[rightIdx++];
+            rightCount++;
+            if (idicesTemp[offset] != start + offset)
+            {
+                crossCounts[idicesTemp[offset]] += (mid - leftIdx + 1) - (rightCount - 1);
+            }
+        }
+        else
+        {
+            mergeTemp[offset] = data[leftIdx];
+            idicesTemp[offset] = dataIdices[leftIdx++];
+            crossCount += rightCount;
+            if (idicesTemp[offset] != start + offset)
+            {
+                crossCounts[idicesTemp[offset]] += rightCount - (mid - leftIdx + 1);
+            }
+        }
+    }
+
+    offset = 0;
+    for (int idx = start; idx <= end; idx++)
+    {
+        dataIdices[idx] = idicesTemp[offset];
+        data[idx] = mergeTemp[offset++];
+    }
+
+    return crossCount;
+}
+
+long long mergeSort(int start, int end)
+{
+    if (!(end - start <= 1))
+    {
+        int mid = (start + end) / 2;
+        long long lhCrossCount = mergeSort(start, mid);
+        long long rhCrossCount = mergeSort(mid + 1, end);
+        return merge(start, mid, end) + lhCrossCount + rhCrossCount;
+    }
+    if (start == end) { return 0; }
+    return merge(start, start, end);
+}
+
+void Problem_20190()
+{
+    std::ios_base::sync_with_stdio(0);
+    std::cin.tie(nullptr);
+    long long totalCrossCount = 0;
+
+    std::cin >> N;
+    for (int idx = 0; idx < N; idx++)
+    {
+        std::cin >> data[idx];
+        dataIdices[idx] = idx;
+    }
+
+    totalCrossCount = mergeSort(0, N - 1);
+
+    for (int idx = 0; idx < N; idx++)
+    {
+        std::cout << totalCrossCount - crossCounts[idx] << " ";
+    }
+}
 
 void ExecuteSort()
 {
@@ -335,5 +434,6 @@ void ExecuteSort()
     //Problem_1838();
     //Problem_1517();
     //Problem_1083_Test();
-    Problem_1083();
+    //Problem_1083();
+    Problem_20190();
 }

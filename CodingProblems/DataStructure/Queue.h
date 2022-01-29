@@ -126,7 +126,7 @@ void Problem_18258()
 */
 
 // PROBLEM 1039
-
+/*
 void Problem_1039()
 {
 	int chCount[58] = { 0 };
@@ -402,6 +402,7 @@ void Problem_1039_Tester()
 		}
 	}
 }
+*/
 
 
 
@@ -409,6 +410,6 @@ void ExecuteQueue()
 {
 	//Problem_2075();
 	//Problem_18258();
-	Problem_1039_Tester();
+	//Problem_1039_Tester();
 	//Problem_1039();
 }
