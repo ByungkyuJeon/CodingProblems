@@ -84,7 +84,7 @@ void Problem_1377()
     std::ios_base::sync_with_stdio(0);
     std::cin.tie(nullptr);
 
-    int N; 
+    int N;
     int result = 0;
     std::cin >> N;
     for (int idx = 1; idx <= N; idx++)
@@ -365,10 +365,8 @@ long long merge(int start, int mid, int end)
             mergeTemp[offset] = data[rightIdx];
             idicesTemp[offset] = dataIdices[rightIdx++];
             rightCount++;
-            if (idicesTemp[offset] != start + offset)
-            {
-                crossCounts[idicesTemp[offset]] += (mid - leftIdx + 1) - (rightCount - 1);
-            }
+            
+            //crossCounts[idicesTemp[offset]] += rightCount - ((start + offset) - idicesTemp[offset])
         }
         else
         {
@@ -426,6 +424,44 @@ void Problem_20190()
     }
 }
 
+// PRBOLEM 11920
+
+int data_11920[100001];
+std::priority_queue<int, std::vector<int>, std::greater<int>> subData;
+
+void Problem_11920()
+{
+    std::ios_base::sync_with_stdio(0);
+    std::cin.tie(nullptr);
+
+    std::string outputStr;
+    int N, K;
+    std::cin >> N >> K;
+
+    for (int idx = 0; idx < N; idx++)
+    {
+        std::cin >> data_11920[idx];
+        if (idx < K) { subData.emplace(data_11920[idx]); }
+    }
+
+    for (int idx = 0; idx < N - K; idx++)
+    {
+        subData.emplace(data_11920[idx + K]);
+        data_11920[idx] = subData.top();
+        subData.pop();
+
+        outputStr += std::to_string(data_11920[idx]) + ' ';
+    }
+
+    while (!subData.empty())
+    {
+        outputStr += std::to_string(subData.top()) + ' ';
+        subData.pop();
+    }
+
+    std::cout << outputStr;
+}
+
 void ExecuteSort()
 {
     //Problem_1377();
@@ -435,5 +471,6 @@ void ExecuteSort()
     //Problem_1517();
     //Problem_1083_Test();
     //Problem_1083();
-    Problem_20190();
+    //Problem_20190();
+    Problem_11920();
 }
