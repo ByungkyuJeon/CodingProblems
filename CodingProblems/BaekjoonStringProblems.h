@@ -1578,6 +1578,30 @@ void Problem_1018()
 }
 */
 
+// PROBLEM 1120
+
+void Problem_1120()
+{
+	int min = 51, count = 0;
+	std::string A, B;
+	std::cin >> A >> B;
+
+	for (int bIdx = 0; bIdx <= B.size() - A.size(); bIdx++)
+	{
+		count = 0;
+		for (int aIdx = 0; aIdx < A.size(); aIdx++)
+		{
+			if (A[aIdx] != B[bIdx + aIdx])
+			{
+				count++;
+			}
+		}
+		if (min > count) { min = count; }
+	}
+
+	std::cout << min;
+}
+
 void ExecuteString()
 {
 	//Problem_4354();
@@ -1590,4 +1614,5 @@ void ExecuteString()
 	//Problem_18441_Retry_Bitset();
 	//Problem_1152();
 	//Problem_1018();
+	Problem_1120();
 }
