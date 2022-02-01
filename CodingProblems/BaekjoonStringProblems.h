@@ -1640,6 +1640,24 @@ void Problem_1110()
 }
 */
 
+// PROBLEM 2577
+
+void Problem_2577()
+{
+	int a, b, c;
+	std::cin >> a >> b >> c;
+	int counts[10] = { 0 };
+	std::string numStr = std::to_string(a * b * c);
+	for (const auto& elem : numStr)
+	{
+		counts[elem - '0']++;
+	}
+	for (int idx = 0; idx < 10; idx++)
+	{
+		std::cout << counts[idx] << '\n';
+	}
+}
+
 void ExecuteString()
 {
 	//Problem_4354();
@@ -1654,4 +1672,5 @@ void ExecuteString()
 	//Problem_1018();
 	//Problem_1120();
 	//Problem_1110();
+	Problem_2577();
 }
