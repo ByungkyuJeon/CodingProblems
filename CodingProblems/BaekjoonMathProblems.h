@@ -305,6 +305,27 @@ void Problem_4342()
 }
 */
 
+// PROBLEM 1546
+
+void Problem_1546()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int N, inputBuffer;
+	double sum = 0, max = -1;
+	std::cin >> N;
+	for (int count = 0; count < N; count++)
+	{
+		std::cin >> inputBuffer;
+		sum += inputBuffer;
+		if (inputBuffer > max) { max = inputBuffer; }
+	}
+
+	std::cout << (sum / max * 100.0) / (double)N;
+
+}
+
 void ExecuteBaekjoonMathProblems()
 {
 	//Problem_8393();
@@ -316,4 +337,5 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_2869();
 	//Problem_3053();
 	//Problem_4342();
+	Problem_1546();
 }
