@@ -5,6 +5,8 @@
 #include <unordered_set>
 #include <bitset>
 
+// PROBLEM 4354
+/*
 void primeFactorization(std::set<int>& outArr, int inNum)
 {
 	int numBuffer = inNum;
@@ -71,6 +73,7 @@ void Problem_4354()
 
 	std::cout << outputStr;
 }
+*/
 
 // PROBLEM 18441
 /*
@@ -1579,7 +1582,7 @@ void Problem_1018()
 */
 
 // PROBLEM 1120
-
+/*
 void Problem_1120()
 {
 	int min = 51, count = 0;
@@ -1601,6 +1604,40 @@ void Problem_1120()
 
 	std::cout << min;
 }
+*/
+
+// PROBLEM 1110
+
+void Problem_1110()
+{
+	std::string num;
+	int digit[2], buffer;
+	std::cin >> num;
+	if (num.length() != 2)
+	{
+		digit[1] = num[0] - '0';
+		digit[0] = 0;
+	}
+	else
+	{
+		digit[1] = num[1] - '0';
+		digit[0] = num[0] - '0';
+	}
+
+	buffer = digit[1];
+	digit[1] = (digit[0] + digit[1]) % 10;
+	digit[0] = buffer;
+	int count = 1;
+	while (std::stoi(num) != digit[0] * 10 + digit[1])
+	{
+		buffer = digit[1];
+		digit[1] = (digit[0] + digit[1]) % 10;
+		digit[0] = buffer;
+		count++;
+	}
+
+	std::cout << count;
+}
 
 void ExecuteString()
 {
@@ -1614,5 +1651,6 @@ void ExecuteString()
 	//Problem_18441_Retry_Bitset();
 	//Problem_1152();
 	//Problem_1018();
-	Problem_1120();
+	//Problem_1120();
+	Problem_1110();
 }
