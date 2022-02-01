@@ -1641,7 +1641,7 @@ void Problem_1110()
 */
 
 // PROBLEM 2577
-
+/*
 void Problem_2577()
 {
 	int a, b, c;
@@ -1656,6 +1656,33 @@ void Problem_2577()
 	{
 		std::cout << counts[idx] << '\n';
 	}
+}
+*/
+
+// PROBLEM 8958
+
+void Problem_8958()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string str, outputStr;
+	int N, count = 1, total = 0;
+	std::cin >> N;
+	std::cin.ignore();
+
+	while (N-- > 0)
+	{
+		total = 0; count = 0;
+		std::getline(std::cin, str);
+		for (const auto& elem : str)
+		{
+			if (elem == 'O'){ total += ++count; }
+			else{ count = 0; }
+		}
+		outputStr += std::to_string(total) + '\n';
+	}
+	std::cout << outputStr;
 }
 
 void ExecuteString()
@@ -1672,5 +1699,6 @@ void ExecuteString()
 	//Problem_1018();
 	//Problem_1120();
 	//Problem_1110();
-	Problem_2577();
+	//Problem_2577();
+	Problem_8958();
 }
