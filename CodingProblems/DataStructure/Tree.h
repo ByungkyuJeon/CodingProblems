@@ -130,7 +130,7 @@ void Problem_11505()
 */
 
 // PROBLEM 10800
-
+/*
 struct ball
 {
 public:
@@ -255,10 +255,11 @@ void Problem_10800()
 
 	std::cout << outputStr;
 }
+*/
 
 void ExecuteTree()
 {
 	//Problem_1068();
 	//Problem_11505();
-	Problem_10800();
+	//Problem_10800();
 }

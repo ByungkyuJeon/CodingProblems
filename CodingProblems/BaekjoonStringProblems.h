@@ -1607,7 +1607,7 @@ void Problem_1120()
 */
 
 // PROBLEM 1110
-
+/*
 void Problem_1110()
 {
 	std::string num;
@@ -1638,6 +1638,7 @@ void Problem_1110()
 
 	std::cout << count;
 }
+*/
 
 void ExecuteString()
 {
@@ -1652,5 +1653,5 @@ void ExecuteString()
 	//Problem_1152();
 	//Problem_1018();
 	//Problem_1120();
-	Problem_1110();
+	//Problem_1110();
 }

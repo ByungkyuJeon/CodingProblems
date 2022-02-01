@@ -342,7 +342,7 @@ void Probme_11920()
 }
 
 // PROBLEM 20190
-
+/*
 int data[300001];
 int dataIdices[300001];
 int mergeTemp[300001];
@@ -423,9 +423,10 @@ void Problem_20190()
         std::cout << totalCrossCount - crossCounts[idx] << " ";
     }
 }
+*/
 
 // PRBOLEM 11920
-
+/*
 int data_11920[100001];
 std::priority_queue<int, std::vector<int>, std::greater<int>> subData;
 
@@ -461,6 +462,159 @@ void Problem_11920()
 
     std::cout << outputStr;
 }
+*/
+
+// PROBLEM 24046
+/*
+int data[500001];
+std::vector<std::pair<int, int>> mergeData;
+std::vector<std::pair<int, int>> mergeTemp;
+std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> subData;
+
+long long merge(int start, int mid, int end)
+{
+    int leftIdx = start;
+    int rightIdx = mid + 1;
+    int offset = -1;
+    long long crossCount = 0;
+    long long rightCount = 0;
+    mergeTemp.resize(end - start + 1);
+
+    while (++offset <= end - start)
+    {
+        if (leftIdx > mid || (leftIdx <= mid && rightIdx <= end && mergeData[leftIdx].first > mergeData[rightIdx].first))
+        {
+            mergeTemp[offset] = mergeData[rightIdx++];
+            rightCount++;
+        }
+        else
+        {
+            mergeTemp[offset] = mergeData[leftIdx++];
+            crossCount += rightCount;
+        }
+    }
+
+    offset = 0;
+    for (int idx = start; idx <= end; idx++)
+    {
+        mergeData[idx] = mergeTemp[offset++];
+    }
+
+    return crossCount;
+}
+
+long long mergeSort(int start, int end)
+{
+    if (!(end - start <= 1))
+    {
+        int mid = (start + end) / 2;
+        long long lhCrossCount = mergeSort(start, mid);
+        long long rhCrossCount = mergeSort(mid + 1, end);
+        return merge(start, mid, end) + lhCrossCount + rhCrossCount;
+    }
+    if (start == end) { return 0; }
+    return merge(start, start, end);
+}
+
+void Problem_24046()
+{
+    std::ios_base::sync_with_stdio(0);
+    std::cin.tie(nullptr);
+
+    long long N, K;
+    std::cin >> N >> K;
+
+    for (int idx = 0; idx < N; idx++){ std::cin >> data[idx]; }
+
+    long long fullK = 0;
+    long long subK;
+    int completed = 0;
+
+    while (fullK < K && completed != N - 1)
+    {
+        if ((subK = ((K - fullK) / (N - 1 - completed)) - 1) > 0)
+        {
+            mergeData.clear();
+            mergeData.resize(subK);
+            for (int idx = 0; idx < subK; idx++)
+            {
+                subData.emplace(std::make_pair(data[idx], idx));
+            }
+            for (int idx = 0; idx < N - completed; idx++)
+            {
+                if(idx < N - completed - subK)
+                { 
+                    subData.emplace(std::make_pair(data[idx + subK], idx + subK));
+                    data[idx] = subData.top().first;
+                }
+                else{ mergeData[idx - (N - completed - subK)] = subData.top(); }
+                if (idx - subData.top().second > 0)
+                {
+                    fullK += idx - subData.top().second;
+                }
+                subData.pop();
+            }
+
+            std::sort(mergeData.begin(), mergeData.end(), [](const std::pair<int, int>& lhs, const std::pair<int, int>& rhs) { return lhs.second < rhs.second; });
+            fullK += mergeSort(0, subK - 1);
+            for (int idx = 0; idx < subK; idx++)
+            {
+                data[idx + N - subK - completed] = mergeData[idx].first;
+            }
+            completed += subK;
+        }
+        else
+        {
+            bool swapped;
+            for (int endPoint = 0; endPoint < N - completed; endPoint++)
+            {
+                swapped = false;
+                for (int idx = 0; idx < N - completed - endPoint - 1; idx++)
+                {
+                    if (data[idx] > data[idx + 1])
+                    {
+                        if (++fullK == K)
+                        {
+                            std::cout << data[idx + 1] << " " << data[idx];
+                            return;
+                        }
+                        std::swap(data[idx], data[idx + 1]);
+                        swapped = true;
+                    }
+                }
+                if (!swapped)
+                {
+                    std::cout << -1;
+                    return;
+                }
+            }
+        }
+    }
+
+    std::cout << -1;
+}
+*/
+
+// PROBLEM 10818
+
+void Problem_10818()
+{
+    std::ios_base::sync_with_stdio(0);
+    std::cin.tie(nullptr);
+
+    int N, inputBuffer;
+    int min = 1000001, max = -1000001;
+    std::cin >> N;
+
+    while (N-- > 0)
+    {
+        std::cin >> inputBuffer;
+        if (inputBuffer > max) { max = inputBuffer; }
+        if (inputBuffer < min) { min = inputBuffer; }
+    }
+
+    std::cout << min << " " << max;
+}
 
 void ExecuteSort()
 {
@@ -472,5 +626,7 @@ void ExecuteSort()
     //Problem_1083_Test();
     //Problem_1083();
     //Problem_20190();
-    Problem_11920();
+    //Problem_11920();
+    //Problem_24046();
+    Problem_10818();
 }
