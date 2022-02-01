@@ -596,7 +596,7 @@ void Problem_24046()
 */
 
 // PROBLEM 10818
-
+/*
 void Problem_10818()
 {
     std::ios_base::sync_with_stdio(0);
@@ -615,6 +615,25 @@ void Problem_10818()
 
     std::cout << min << " " << max;
 }
+*/
+
+// PROBLEM 2562
+
+void Problem_2562()
+{
+    std::ios_base::sync_with_stdio(0);
+    std::cin.tie(nullptr);
+
+    int max = INT_MIN, maxIdx, inputBuffer;
+
+    for (int idx = 1; idx < 10; idx++)
+    {
+        std::cin >> inputBuffer;
+        if (inputBuffer > max) { max = inputBuffer; maxIdx = idx; }
+    }
+
+    std::cout << max << '\n' << maxIdx;
+}
 
 void ExecuteSort()
 {
@@ -628,5 +647,6 @@ void ExecuteSort()
     //Problem_20190();
     //Problem_11920();
     //Problem_24046();
-    Problem_10818();
+    //Problem_10818();
+    //Problem_2562();
 }
