@@ -1687,7 +1687,7 @@ void Problem_8958()
 */
 
 // PROBLEM 11720
-
+/*
 void Problem_11720()
 {
 	int N;
@@ -1697,6 +1697,19 @@ void Problem_11720()
 	int result = 0;
 	for (const auto& elem : numStr){ result += elem - '0'; }
 	std::cout << result;
+}
+*/
+
+// PROBLEM 10809
+
+void Problem_10809()
+{
+	int indices[26];
+	for (int idx = 0; idx < 26; idx++) { indices[idx] = -1; }
+	std::string str;
+	std::cin >> str;
+	for (int idx = 0; idx < str.size(); idx++){ if (indices[str[idx] - 'a'] == -1) { indices[str[idx] - 'a'] = idx; } }
+	for (int idx = 0; idx < 26; idx++) { std::cout << indices[idx] << " "; }
 }
 
 void ExecuteString()
@@ -1715,5 +1728,6 @@ void ExecuteString()
 	//Problem_1110();
 	//Problem_2577();
 	//Problem_8958();
-	Problem_11720();
+	//Problem_11720();
+	Problem_10809();
 }
