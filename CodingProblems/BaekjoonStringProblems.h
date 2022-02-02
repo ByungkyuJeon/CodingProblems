@@ -1660,7 +1660,7 @@ void Problem_2577()
 */
 
 // PROBLEM 8958
-
+/*
 void Problem_8958()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -1684,6 +1684,20 @@ void Problem_8958()
 	}
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 11720
+
+void Problem_11720()
+{
+	int N;
+	std::cin >> N;
+	std::string numStr;
+	std::cin >> numStr;
+	int result = 0;
+	for (const auto& elem : numStr){ result += elem - '0'; }
+	std::cout << result;
+}
 
 void ExecuteString()
 {
@@ -1700,5 +1714,6 @@ void ExecuteString()
 	//Problem_1120();
 	//Problem_1110();
 	//Problem_2577();
-	Problem_8958();
+	//Problem_8958();
+	Problem_11720();
 }
