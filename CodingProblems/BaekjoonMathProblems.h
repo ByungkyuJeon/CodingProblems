@@ -329,7 +329,7 @@ void Problem_1546()
 */
 
 // PROBLEM 4673
-
+/*
 bool data[10001];
 
 int getD(int num)
@@ -351,6 +351,29 @@ void Problem_4673()
 	while (num <= 10000) { if ((D = getD(num++)) <= 10000) { data[D] = true; } }
 	for (int idx = 0; idx <= 10000; idx++){ if (!data[idx]) { std::cout << idx << '\n'; } }
 }
+*/
+
+// PROBLEM 1065
+
+bool checkNum(int num)
+{
+	std::string numStr = std::to_string(num);
+	if (numStr.size() == 1){ return true; }
+	else
+	{
+		int distance = numStr[0] - numStr[1];
+		for (int idx = 1; idx < numStr.size() - 1; idx++){ if (numStr[idx] - numStr[idx + 1] != distance) { return false; } }
+	}
+	return true;
+}
+
+void Problem_1065()
+{
+	int N, result = 0;
+	std::cin >> N;
+	for (int num = 1; num <= N; num++){ if (checkNum(num)) { result++; } }
+	std::cout << result;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -364,5 +387,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_3053();
 	//Problem_4342();
 	//Problem_1546();
-	Problem_4673();
+	//Problem_4673();
+	Problem_1065();
 }
