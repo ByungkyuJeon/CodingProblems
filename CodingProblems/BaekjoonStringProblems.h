@@ -1753,7 +1753,7 @@ void Problem_1157()
 */
 
 // PROBLEM 5622
-
+/*
 int getDialNum(char ch)
 {
 	if (ch <= 'O') { return ((ch - 'A') / 3); }
@@ -1768,6 +1768,37 @@ void Problem_5622()
 	std::cin >> str;
 	int result = 0;
 	for (const auto& elem : str){ result += getDialNum(elem) + 3; }
+	std::cout << result;
+}
+*/
+
+// PROBLEM 2941
+
+void Problem_2941()
+{
+	std::string croa[8] = { "c=", "c-", "dz=", "d-", "lj", "nj", "s=", "z=" };
+	std::string str;
+	std::cin >> str;
+	int result = 0, savedIdx = 0;
+	size_t found = 0;
+	while (found != std::string::npos)
+	{
+		for (int count = savedIdx; count < 8; count++)
+		{
+			if ((found = str.find(croa[count])) != std::string::npos)
+			{
+				savedIdx = count;
+				result++;
+				str = str.substr(0, found) + " " + str.substr(found + croa[count].size(), str.size() - (found + croa[count].size()));
+				break;
+			}
+		}
+	}
+
+	for (const auto& elem : str)
+	{
+		if (elem != ' ') { result++; }
+	}
 	std::cout << result;
 }
 
@@ -1791,5 +1822,6 @@ void ExecuteString()
 	//Problem_10809();
 	//Problem_2675();
 	//Problem_1157();
-	Problem_5622();
+	//Problem_5622();
+	Problem_2941();
 }
