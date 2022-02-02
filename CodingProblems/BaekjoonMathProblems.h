@@ -6,6 +6,7 @@
 #include <vector>
 #include <array>
 #include <cmath>
+#include <string>
 #include <unordered_map>
 #include "TimeChecker.h"
 
@@ -306,7 +307,7 @@ void Problem_4342()
 */
 
 // PROBLEM 1546
-
+/*
 void Problem_1546()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -325,6 +326,31 @@ void Problem_1546()
 	std::cout << (sum / max * 100.0) / (double)N;
 
 }
+*/
+
+// PROBLEM 4673
+
+bool data[10001];
+
+int getD(int num)
+{
+	int result = num;
+	std::string numStr = std::to_string(num);
+	for (int idx = 0; idx < numStr.size(); idx++)
+	{
+		result += numStr[idx] - '0';
+	}
+	return result;
+}
+
+void Problem_4673()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+	int num = 0, D;
+	while (num <= 10000) { if ((D = getD(num++)) <= 10000) { data[D] = true; } }
+	for (int idx = 0; idx <= 10000; idx++){ if (!data[idx]) { std::cout << idx << '\n'; } }
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -337,5 +363,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_2869();
 	//Problem_3053();
 	//Problem_4342();
-	Problem_1546();
+	//Problem_1546();
+	Problem_4673();
 }
