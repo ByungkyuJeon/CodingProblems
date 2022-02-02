@@ -1734,7 +1734,7 @@ void Problem_2675()
 */
 
 // PROBLEM 1157
-
+/*
 void Problem_1157()
 {
 	int count[26] = { 0 };
@@ -1749,6 +1749,26 @@ void Problem_1157()
 	}
 	if (maxCount > 1){ std::cout << "?"; }
 	else { std::cout << (char)(maxIdx + 'A'); }
+}
+*/
+
+// PROBLEM 5622
+
+int getDialNum(char ch)
+{
+	if (ch <= 'O') { return ((ch - 'A') / 3); }
+	else if (ch <= 'S') { return 5; }
+	else if (ch <= 'V') { return 6; }
+	else { return 7; }
+}
+
+void Problem_5622()
+{
+	std::string str;
+	std::cin >> str;
+	int result = 0;
+	for (const auto& elem : str){ result += getDialNum(elem) + 3; }
+	std::cout << result;
 }
 
 void ExecuteString()
@@ -1770,5 +1790,6 @@ void ExecuteString()
 	//Problem_11720();
 	//Problem_10809();
 	//Problem_2675();
-	Problem_1157();
+	//Problem_1157();
+	Problem_5622();
 }
