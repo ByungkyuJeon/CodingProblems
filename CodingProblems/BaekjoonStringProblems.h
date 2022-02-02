@@ -1714,7 +1714,7 @@ void Problem_10809()
 */
 
 // PROBLEM 2675
-
+/*
 void Problem_2675()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -1730,6 +1730,25 @@ void Problem_2675()
 		outputStr += '\n';
 	}
 	std::cout << outputStr;
+}
+*/
+
+// PROBLEM 1157
+
+void Problem_1157()
+{
+	int count[26] = { 0 };
+	std::string str;
+	std::cin >> str;
+	for (const auto& elem : str) { if (elem >= 'a') { count[elem - 'a']++; } else { count[elem - 'A']++; } }
+	int maxIdx = 0, maxCount = 1;
+	for (int idx = 1; idx < 26; idx++) 
+	{
+		if (count[idx] > count[maxIdx]) { maxIdx = idx; maxCount = 1; }
+		else if (count[idx] == count[maxIdx]) { maxCount++; }
+	}
+	if (maxCount > 1){ std::cout << "?"; }
+	else { std::cout << (char)(maxIdx + 'A'); }
 }
 
 void ExecuteString()
@@ -1750,5 +1769,6 @@ void ExecuteString()
 	//Problem_8958();
 	//Problem_11720();
 	//Problem_10809();
-	Problem_2675();
+	//Problem_2675();
+	Problem_1157();
 }
