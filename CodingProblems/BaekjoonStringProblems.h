@@ -1773,7 +1773,7 @@ void Problem_5622()
 */
 
 // PROBLEM 2941
-
+/*
 void Problem_2941()
 {
 	std::string croa[8] = { "c=", "c-", "dz=", "d-", "lj", "nj", "s=", "z=" };
@@ -1801,6 +1801,39 @@ void Problem_2941()
 	}
 	std::cout << result;
 }
+*/
+
+// PROBLEM 1316
+
+void Problem_1316()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	bool check[26], pass = true; char ch;
+	std::string inputStr;
+	int N, result = 0;
+	std::cin >> N;
+
+	while (N-- > 0)
+	{
+		std::cin >> inputStr; inputStr += " ";
+		for (int idx = 0; idx < 26; idx++) { check[idx] = false; }
+		ch = inputStr[0];
+		pass = true;
+		for (int idx = 1; idx < inputStr.size(); idx++)
+		{
+			if (inputStr[idx] != ch)
+			{
+				if (check[ch - 'a']) { pass = false; break; }
+				else { check[ch - 'a'] = true; ch = inputStr[idx]; }
+			}
+		}
+		if (pass) { result++; }
+	}
+
+	std::cout << result;
+}
 
 void ExecuteString()
 {
@@ -1823,5 +1856,6 @@ void ExecuteString()
 	//Problem_2675();
 	//Problem_1157();
 	//Problem_5622();
-	Problem_2941();
+	//Problem_2941();
+	Problem_1316();
 }
