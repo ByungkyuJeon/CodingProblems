@@ -451,7 +451,7 @@ void Problem_10250()
 */
 
 // PROBLEM 2775
-
+/*
 struct HashFunc
 {
 	size_t operator()(const std::pair<int, int>& obj) const
@@ -494,6 +494,31 @@ void Problem_2775()
 
 	std::cout << outputStr;
 }
+*/
+
+// PRBOLEM 10757
+
+void Problem_10757()
+{
+	std::string a, b, result;
+	std::cin >> a >> b;
+	for (int idx = 0; idx < a.size() / 2; idx++) { std::swap(a[idx], a[a.size() - idx - 1]); }
+	for (int idx = 0; idx < b.size() / 2; idx++) { std::swap(b[idx], b[b.size() - idx - 1]); }
+	int max = a.size() > b.size() ? a.size() : b.size();
+	bool over = false; int temp;
+	for (int idx = 0; idx < max; idx++)
+	{
+		if (a.size() < max) { a += '0'; }
+		if (b.size() < max) { b += '0'; }
+		if (result.size() < idx + 1) { result += '0'; }
+		over = false;
+		temp = a[idx] + b[idx] + result[idx] - (3 * '0');
+		if (temp >= 10) { result += '1'; }
+		result[idx] = (temp % 10) + '0';
+	}
+	for (int idx = 0; idx < result.size() / 2; idx++) { std::swap(result[idx], result[result.size() - idx - 1]); }
+	std::cout << result;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -512,5 +537,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_1712();
 	//Problem_1193();
 	//Problem_10250();
-	Problem_2775();
+	//Problem_2775();
+	Problem_10757();
 }
