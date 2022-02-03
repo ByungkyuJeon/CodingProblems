@@ -388,6 +388,7 @@ void Problem_1712()
 */
 
 // PROBLEM 1193
+/*
 void Problem_1193()
 {
 	int x;
@@ -427,6 +428,26 @@ void Problem_1193()
 
 	std::cout << numerator << "/" << denominator;
 }
+*/
+
+// PROBLEM 10250
+
+void Problem_10250()
+{
+	int T, inputBuffer[3];
+	std::cin >> T;
+	std::string outputStr;
+	while (T-- > 0)
+	{
+		std::cin >> inputBuffer[0] >> inputBuffer[1] >> inputBuffer[2];
+		int div = inputBuffer[2] / inputBuffer[0];
+		int mod = inputBuffer[2] % inputBuffer[0];
+		if(mod == 0) { outputStr += std::to_string((inputBuffer[0] * 100) + div) + '\n'; }
+		else { outputStr += std::to_string((mod * 100) + div + 1) + '\n'; }
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -443,5 +464,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_4673();
 	//Problem_1065();
 	//Problem_1712();
-	Problem_1193();
+	//Problem_1193();
+	Problem_10250();
 }
