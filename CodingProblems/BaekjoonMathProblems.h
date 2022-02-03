@@ -377,13 +377,55 @@ void Problem_1065()
 */
 
 // PROBLEM 1712
-
+/*
 void Problem_1712()
 {
 	int a, b, c;
 	std::cin >> a >> b >> c;
 	if (b >= c){ std::cout << -1; }
 	else{ std::cout << (a / (c - b)) + 1; }
+}
+*/
+
+// PROBLEM 1193
+void Problem_1193()
+{
+	int x;
+	std::cin >> x;
+	int arrCount = 0, arrNum, distance;
+	for (int count = 1; count < 100000; count++)
+	{
+		if ((arrCount += count) >= x)
+		{
+			distance = x - (arrCount - count);
+			arrNum = count;
+			break;
+		}
+	}
+	int numerator;
+	int denominator;
+	if (arrNum % 2)
+	{
+		numerator = arrNum;
+		denominator = 1;
+		while (--distance > 0)
+		{
+			numerator--;
+			denominator++;
+		}
+	}
+	else
+	{
+		numerator = 1;
+		denominator = arrNum;
+		while (--distance > 0)
+		{
+			numerator++;
+			denominator--;
+		}
+	}
+
+	std::cout << numerator << "/" << denominator;
 }
 
 void ExecuteBaekjoonMathProblems()
@@ -400,5 +442,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_1546();
 	//Problem_4673();
 	//Problem_1065();
-	Problem_1712();
+	//Problem_1712();
+	Problem_1193();
 }
