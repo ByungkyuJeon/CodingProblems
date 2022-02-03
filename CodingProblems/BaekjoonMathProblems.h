@@ -431,7 +431,7 @@ void Problem_1193()
 */
 
 // PROBLEM 10250
-
+/*
 void Problem_10250()
 {
 	int T, inputBuffer[3];
@@ -444,6 +444,52 @@ void Problem_10250()
 		int mod = inputBuffer[2] % inputBuffer[0];
 		if(mod == 0) { outputStr += std::to_string((inputBuffer[0] * 100) + div) + '\n'; }
 		else { outputStr += std::to_string((mod * 100) + div + 1) + '\n'; }
+	}
+
+	std::cout << outputStr;
+}
+*/
+
+// PROBLEM 2775
+
+struct HashFunc
+{
+	size_t operator()(const std::pair<int, int>& obj) const
+	{
+		return obj.first * 100 + obj.second;
+	}
+};
+
+std::unordered_map<std::pair<int, int>, int, HashFunc> map
+{
+	{{0, 1}, 1}, {{0, 2}, 2}, {{0, 3}, 3}, {{0, 4}, 4}, {{0, 5}, 5}, {{0, 6}, 6}, {{0, 7}, 7}, {{0, 8}, 8}, {{0, 9}, 9}, {{0, 10}, 10},
+	{{0, 11}, 11}, {{0, 12}, 12}, {{0, 13}, 13}, {{0, 14}, 14}
+};
+
+int getNum(std::pair<int, int> data)
+{
+	std::unordered_map<std::pair<int, int>, int, HashFunc>::iterator itr;
+	if ((itr = map.find(data)) != map.end()){ return (*itr).second; }
+	
+	int sum = 0;
+	for (int num = data.second; num > 0; num--)
+	{
+		sum += getNum(std::make_pair(data.first - 1, num));
+	}
+
+	map[data] = sum;
+	return sum;
+}
+
+void Problem_2775()
+{
+	int T, inputs[2];
+	std::cin >> T;
+	std::string outputStr;
+	while (T-- > 0)
+	{
+		std::cin >> inputs[0] >> inputs[1];
+		outputStr+= std::to_string(getNum(std::make_pair(inputs[0], inputs[1]))) + '\n';
 	}
 
 	std::cout << outputStr;
@@ -465,5 +511,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_1065();
 	//Problem_1712();
 	//Problem_1193();
-	Problem_10250();
+	//Problem_10250();
+	Problem_2775();
 }
