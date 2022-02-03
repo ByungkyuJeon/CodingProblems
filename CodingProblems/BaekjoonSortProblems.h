@@ -637,13 +637,14 @@ void Problem_2562()
 */
 
 // PROBLEM 3052
-
+/*
 void Problem_3052()
 {
     typedef int i; std::unordered_map<i, i> m; i b;
     for (i c = 0; c < 10; c++) { std::cin >> b; m[b % 42]; }
     std::cout << m.size();
 }
+*/
 
 void ExecuteSort()
 {
@@ -659,5 +660,5 @@ void ExecuteSort()
     //Problem_24046();
     //Problem_10818();
     //Problem_2562();
-    Problem_3052();
+    //Problem_3052();
 }

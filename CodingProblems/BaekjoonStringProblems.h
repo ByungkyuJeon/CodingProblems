@@ -1804,7 +1804,7 @@ void Problem_2941()
 */
 
 // PROBLEM 1316
-
+/*
 void Problem_1316()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -1834,6 +1834,7 @@ void Problem_1316()
 
 	std::cout << result;
 }
+*/
 
 void ExecuteString()
 {
@@ -1857,5 +1858,5 @@ void ExecuteString()
 	//Problem_1157();
 	//Problem_5622();
 	//Problem_2941();
-	Problem_1316();
+	//Problem_1316();
 }

@@ -354,7 +354,7 @@ void Problem_4673()
 */
 
 // PROBLEM 1065
-
+/*
 bool checkNum(int num)
 {
 	std::string numStr = std::to_string(num);
@@ -374,6 +374,17 @@ void Problem_1065()
 	for (int num = 1; num <= N; num++){ if (checkNum(num)) { result++; } }
 	std::cout << result;
 }
+*/
+
+// PROBLEM 1712
+
+void Problem_1712()
+{
+	int a, b, c;
+	std::cin >> a >> b >> c;
+	if (b >= c){ std::cout << -1; }
+	else{ std::cout << (a / (c - b)) + 1; }
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -388,5 +399,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_4342();
 	//Problem_1546();
 	//Problem_4673();
-	Problem_1065();
+	//Problem_1065();
+	Problem_1712();
 }
