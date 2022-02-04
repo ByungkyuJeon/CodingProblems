@@ -588,7 +588,7 @@ void Problem_2581()
 */
 
 // PROBLEM 11653
-
+/*
 void Problem_11653()
 {
 	int N;
@@ -612,6 +612,55 @@ void Problem_11653()
 		std::cout << outputStr << N;
 	}
 }
+*/
+
+// PROBLEM 1929
+
+void Problem_1929_Simple()
+{
+	int m, n, squrtNum;
+	std::cin >> m >> n;
+	bool checker;
+	std::string outputStr;
+	if (m == 1) { m = 2; }
+	for (int num = m; num <= n; num++)
+	{
+		squrtNum = sqrt(num);
+		checker = true;
+		for (int check = 2; check <= squrtNum; check++)
+		{
+			if (num % check == 0) { checker = false; break; }
+		}
+		if (checker) { outputStr += std::to_string(num) + '\n'; }
+	}
+
+	std::cout << outputStr;
+}
+
+int primesUnder1000[168] = { 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,211,223,227,229,233,239,241,251,257,263,269,271,277,281,283,293,307,311,313,317,331,337,347,349,353,359,367,373,379,383,389,397,401,409,419,421,431,433,439,443,449,457,461,463,467,479,487,491,499,503,509,521,523,541,547,557,563,569,571,577,587,593,599,601,607,613,617,619,631,641,643,647,653,659,661,673,677,683,691,701,709,719,727,733,739,743,751,757,761,769,773,787,797,809,811,821,823,827,829,839,853,857,859,863,877,881,883,887,907,911,919,929,937,941,947,953,967,971,977,983,991,997 };
+
+void Problem_1929()
+{
+	int m, n, squrtNum;
+	std::cin >> m >> n;
+	bool checker;
+	int count = 0;
+	std::string outputStr;
+	if (m == 1) { m = 2; }
+	for (int num = m; num <= n; num++)
+	{
+		squrtNum = sqrt(num);
+		checker = true;
+		for (int pIdx = 0; pIdx < 168; pIdx++)
+		{
+			if (primesUnder1000[pIdx] > squrtNum) { break; }
+			if (num % primesUnder1000[pIdx] == 0) { checker = false; break; }
+		}
+		if (checker) { outputStr += std::to_string(num) + '\n'; }
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -634,5 +683,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_10757();
 	//Problem_1011();
 	//Problem_2581();
-	Problem_11653();
+	//Problem_11653();
+	Problem_1929();
 }
