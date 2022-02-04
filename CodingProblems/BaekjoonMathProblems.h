@@ -667,7 +667,7 @@ void Problem_1929()
 */
 
 // PROBLEM 4948
-
+/*
 int primesUnder496[94] = { 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,211,223,227,229,233,239,241,251,257,263,269,271,277,281,283,293,307,311,313,317,331,337,347,349,353,359,367,373,379,383,389,397,401,409,419,421,431,433,439,443,449,457,461,463,467,479,487,491 };
 
 void Problem_4948()
@@ -699,6 +699,54 @@ void Problem_4948()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 9020
+
+int primesUnder97[25] = { 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97};
+
+void Problem_9020()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string outputStr;
+	int T, N, end, count, squrtNum;
+	bool checker;
+	std::cin >> T;
+	while (T-- > 0)
+	{
+		std::cin >> N;
+		end = N / 2;
+		for (int num = end; num >= 2; num--)
+		{
+			squrtNum = sqrt(num);
+			checker = true;
+			for (int pIdx = 0; pIdx < 25; pIdx++)
+			{
+				if (primesUnder97[pIdx] > squrtNum) { break; }
+				if (num % primesUnder97[pIdx] == 0) { checker = false; break; }
+			}
+			if (checker) 
+			{ 
+				squrtNum = sqrt(N - num);
+				checker = true;
+				for (int pIdx = 0; pIdx < 25; pIdx++)
+				{
+					if (primesUnder97[pIdx] > squrtNum) { break; }
+					if ((N - num) % primesUnder97[pIdx] == 0) { checker = false; break; }
+				}
+				if (checker)
+				{
+					outputStr += std::to_string(num) + " " + std::to_string(N - num) + '\n';
+					break;
+				}
+			}
+		}
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -723,5 +771,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_2581();
 	//Problem_11653();
 	//Problem_1929();
-	Problem_4948();
+	//Problem_4948();
+	Problem_9020();
 }
