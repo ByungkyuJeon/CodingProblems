@@ -702,7 +702,7 @@ void Problem_4948()
 */
 
 // PROBLEM 9020
-
+/*
 int primesUnder97[25] = { 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97};
 
 void Problem_9020()
@@ -747,6 +747,17 @@ void Problem_9020()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 1085
+
+void Problem_1085()
+{
+	int x, y, w, h;
+	std::cin >> x >> y >> w >> h;
+	std::vector<int> val {x, y, w - x, h - y};
+	std::cout << *std::min_element(val.begin(), val.end());
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -772,5 +783,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_11653();
 	//Problem_1929();
 	//Problem_4948();
-	Problem_9020();
+	//Problem_9020();
+	Problem_1085();
 }
