@@ -615,7 +615,7 @@ void Problem_11653()
 */
 
 // PROBLEM 1929
-
+/*
 void Problem_1929_Simple()
 {
 	int m, n, squrtNum;
@@ -644,7 +644,7 @@ void Problem_1929()
 	std::ios_base::sync_with_stdio(0);
 	std::cin.tie(nullptr);
 
-	int m, n, squrtNum;
+	int m, n, squrtNum, temp;
 	std::cin >> m >> n;
 	bool checker;
 	int count = 0;
@@ -656,10 +656,46 @@ void Problem_1929()
 	squrtNum = sqrt(n);
 	for (int pIdx = 0; pIdx < 168; pIdx++)
 	{
-		if (primesUnder1000[pIdx] > squrtNum) { break; }
-		result.erase(std::remove_if(result.begin(), result.end(), [&](int n) {return n != primesUnder1000[pIdx] && n % primesUnder1000[pIdx] == 0; }), result.end());
+		temp = primesUnder1000[pIdx];
+		if (temp > squrtNum) { break; }
+		result.erase(std::remove_if(result.begin(), result.end(), [=](int n) {return n != temp && n % temp == 0; }), result.end());
 	}
 	for (int idx = 0; idx < result.size(); idx++) { outputStr += std::to_string(result[idx]) + '\n'; }
+
+	std::cout << outputStr;
+}
+*/
+
+// PROBLEM 4948
+
+int primesUnder496[94] = { 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,211,223,227,229,233,239,241,251,257,263,269,271,277,281,283,293,307,311,313,317,331,337,347,349,353,359,367,373,379,383,389,397,401,409,419,421,431,433,439,443,449,457,461,463,467,479,487,491 };
+
+void Problem_4948()
+{
+	int n, squrtNum;
+	bool checker;
+	int count = 0;
+	std::string outputStr;
+
+	while (true)
+	{
+		std::cin >> n;
+		if (n == 0) { break; }
+		count = 0;
+		for (int num = n + 1; num <= 2 * n; num++)
+		{
+			squrtNum = sqrt(num);
+			checker = true;
+			for (int pIdx = 0; pIdx < 94; pIdx++)
+			{
+				if (primesUnder496[pIdx] > squrtNum) { break; }
+				if (num % primesUnder496[pIdx] == 0) { checker = false; break; }
+			}
+			if (checker) { count++; }
+		}
+
+		outputStr += std::to_string(count) + '\n';
+	}
 
 	std::cout << outputStr;
 }
@@ -686,5 +722,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_1011();
 	//Problem_2581();
 	//Problem_11653();
-	Problem_1929();
+	//Problem_1929();
+	Problem_4948();
 }
