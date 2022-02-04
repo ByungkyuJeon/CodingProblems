@@ -497,7 +497,7 @@ void Problem_2775()
 */
 
 // PRBOLEM 10757
-
+/*
 void Problem_10757()
 {
 	std::string a, b, result;
@@ -519,6 +519,46 @@ void Problem_10757()
 	for (int idx = 0; idx < result.size() / 2; idx++) { std::swap(result[idx], result[result.size() - idx - 1]); }
 	std::cout << result;
 }
+*/
+
+// PROBLEM 1011
+
+void Problem_1011()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string outputStr;
+	int T, inputs[2], distance, currentMov, result;
+	long long calcMov;
+	std::cin >> T;
+	while (T-- > 0)
+	{
+		std::cin >> inputs[0] >> inputs[1];
+		distance = inputs[1] - inputs[0];
+		currentMov = result = 0;
+		
+		while (distance > 0)
+		{
+			if ((calcMov = ((long long)(currentMov + 1 + 1) * (currentMov + 1)) / 2) <= distance)
+			{
+				distance -= ++currentMov;
+			}
+			else if ((calcMov = ((long long)(currentMov + 1) * (currentMov)) / 2) <= distance)
+			{
+				distance -= currentMov;
+			}
+			else
+			{
+				distance -= --currentMov;
+			}
+			result++;
+		}
+		
+		outputStr += std::to_string(result) + '\n';
+	}
+	std::cout << outputStr;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -538,5 +578,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_1193();
 	//Problem_10250();
 	//Problem_2775();
-	Problem_10757();
+	//Problem_10757();
+	Problem_1011();
 }
