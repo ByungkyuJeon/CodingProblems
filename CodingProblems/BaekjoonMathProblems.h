@@ -761,7 +761,7 @@ void Problem_1085()
 */
 
 // PROBLEM 3009
-
+/*
 void Problem_3009()
 {
 	int input, x, y;
@@ -774,6 +774,28 @@ void Problem_3009()
 	for (const auto& elem : X) { if (elem.second % 2 == 1) { x = elem.first; break; } }
 	for (const auto& elem : Y) { if (elem.second % 2 == 1) { y = elem.first; break; } }
 	std::cout << x << " " << y;
+}
+*/
+
+// PROBLEM 4153
+
+void Problem_4153()
+{
+	std::string outputStr;
+	std::vector<int> nums(3);
+	int max, sum;
+	while (true)
+	{
+		std::cin >> nums[0] >> nums[1] >> nums[2];
+		if (nums[0] == 0) { break; }
+		sum = 0;
+		max = *std::max_element(nums.begin(), nums.end());
+		for (const auto elem : nums){ if (elem != max) { sum += pow(elem, 2); } }
+		if (pow(max, 2) == sum) { outputStr += "right\n"; }
+		else { outputStr += "wrong\n"; }
+	}
+
+	std::cout << outputStr;
 }
 
 void ExecuteBaekjoonMathProblems()
@@ -802,5 +824,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_4948();
 	//Problem_9020();
 	//Problem_1085();
-	Problem_3009();
+	//Problem_3009();
+	Problem_4153();
 }
