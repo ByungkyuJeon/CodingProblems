@@ -750,13 +750,30 @@ void Problem_9020()
 */
 
 // PROBLEM 1085
-
+/*
 void Problem_1085()
 {
 	int x, y, w, h;
 	std::cin >> x >> y >> w >> h;
 	std::vector<int> val {x, y, w - x, h - y};
 	std::cout << *std::min_element(val.begin(), val.end());
+}
+*/
+
+// PROBLEM 3009
+
+void Problem_3009()
+{
+	int input, x, y;
+	std::unordered_map<int, int> X, Y;
+	for (int count = 0; count < 3; count++)
+	{
+		std::cin >> input; X[input]++;
+		std::cin >> input; Y[input]++;
+	}
+	for (const auto& elem : X) { if (elem.second % 2 == 1) { x = elem.first; break; } }
+	for (const auto& elem : Y) { if (elem.second % 2 == 1) { y = elem.first; break; } }
+	std::cout << x << " " << y;
 }
 
 void ExecuteBaekjoonMathProblems()
@@ -784,5 +801,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_1929();
 	//Problem_4948();
 	//Problem_9020();
-	Problem_1085();
+	//Problem_1085();
+	Problem_3009();
 }
