@@ -563,7 +563,7 @@ void Problem_1011()
 */
 
 // PROBLEM 2581
-
+/*
 void Problem_2581()
 {
 	int m, n, squrtNum, min = 10001; 
@@ -584,6 +584,33 @@ void Problem_2581()
 
 	if (sum == 0) { std::cout << -1; }
 	else { std::cout << sum << '\n' << min; }
+}
+*/
+
+// PROBLEM 11653
+
+void Problem_11653()
+{
+	int N;
+	std::cin >> N;
+	if (N == 1) { return; }
+	else
+	{
+		int sqrtNum = sqrt(N);
+		std::string outputStr;
+		for (int num = 2; num <= sqrtNum; num++)
+		{
+			if (N % num == 0)
+			{
+				N /= num;
+				sqrtNum = sqrt(N);
+				outputStr += std::to_string(num) + '\n';
+				num--;
+			}
+		}
+
+		std::cout << outputStr << N;
+	}
 }
 
 void ExecuteBaekjoonMathProblems()
@@ -606,5 +633,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_2775();
 	//Problem_10757();
 	//Problem_1011();
-	Problem_2581();
+	//Problem_2581();
+	Problem_11653();
 }
