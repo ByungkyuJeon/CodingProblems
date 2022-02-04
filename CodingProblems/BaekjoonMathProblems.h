@@ -8,6 +8,7 @@
 #include <cmath>
 #include <string>
 #include <unordered_map>
+#include <queue>
 #include "TimeChecker.h"
 
 // PROBLEM 8393
@@ -522,7 +523,7 @@ void Problem_10757()
 */
 
 // PROBLEM 1011
-
+/*
 void Problem_1011()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -559,6 +560,31 @@ void Problem_1011()
 	}
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 2581
+
+void Problem_2581()
+{
+	int m, n, squrtNum, min = 10001; 
+	long long sum = 0;
+	std::cin >> m >> n;
+	bool checker;
+	if (m == 1) { m = 2; }
+	for (int num = m; num <= n; num++)
+	{
+		squrtNum = sqrt(num);
+		checker = true;
+		for (int check = 2; check <= squrtNum; check++)
+		{
+			if (num % check == 0) { checker = false; break; }
+		}
+		if (checker) { if (num < min) { min = num; } sum += num; }
+	}
+
+	if (sum == 0) { std::cout << -1; }
+	else { std::cout << sum << '\n' << min; }
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -579,5 +605,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_10250();
 	//Problem_2775();
 	//Problem_10757();
-	Problem_1011();
+	//Problem_1011();
+	Problem_2581();
 }
