@@ -641,23 +641,25 @@ int primesUnder1000[168] = { 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,6
 
 void Problem_1929()
 {
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
 	int m, n, squrtNum;
 	std::cin >> m >> n;
 	bool checker;
 	int count = 0;
 	std::string outputStr;
 	if (m == 1) { m = 2; }
-	for (int num = m; num <= n; num++)
+	if (m == n) { std::cout << n; return; }
+	std::vector<int> result(n - m + 1);
+	for (int idx = 0; idx < result.size(); idx++) { result[idx] = m + idx; }
+	squrtNum = sqrt(n);
+	for (int pIdx = 0; pIdx < 168; pIdx++)
 	{
-		squrtNum = sqrt(num);
-		checker = true;
-		for (int pIdx = 0; pIdx < 168; pIdx++)
-		{
-			if (primesUnder1000[pIdx] > squrtNum) { break; }
-			if (num % primesUnder1000[pIdx] == 0) { checker = false; break; }
-		}
-		if (checker) { outputStr += std::to_string(num) + '\n'; }
+		if (primesUnder1000[pIdx] > squrtNum) { break; }
+		result.erase(std::remove_if(result.begin(), result.end(), [&](int n) {return n != primesUnder1000[pIdx] && n % primesUnder1000[pIdx] == 0; }), result.end());
 	}
+	for (int idx = 0; idx < result.size(); idx++) { outputStr += std::to_string(result[idx]) + '\n'; }
 
 	std::cout << outputStr;
 }
