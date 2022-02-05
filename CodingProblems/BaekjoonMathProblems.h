@@ -778,7 +778,7 @@ void Problem_3009()
 */
 
 // PROBLEM 4153
-
+/*
 void Problem_4153()
 {
 	std::string outputStr;
@@ -793,6 +793,42 @@ void Problem_4153()
 		for (const auto elem : nums){ if (elem != max) { sum += pow(elem, 2); } }
 		if (pow(max, 2) == sum) { outputStr += "right\n"; }
 		else { outputStr += "wrong\n"; }
+	}
+
+	std::cout << outputStr;
+}
+*/
+
+// PROBLEM 1002
+
+void Problem_1022()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string outputStr;
+	int T, inputs[6], maxR, minR;
+	double distance;
+	std::cin >> T;
+	while (T-- > 0)
+	{
+		std::cin >> inputs[0] >> inputs[1] >> inputs[2] >> inputs[3] >> inputs[4] >> inputs[5];
+		maxR = inputs[2] > inputs[5] ? inputs[2] : inputs[5];
+		minR = inputs[2] < inputs[5] ? inputs[2] : inputs[5];
+		distance = sqrt(pow(inputs[0] - inputs[3], 2) + pow(inputs[1] - inputs[4], 2));
+		if (distance == 0 && inputs[2] == inputs[5]) { outputStr += "-1\n"; continue; }
+		if (distance >= maxR)
+		{
+			if (distance > inputs[2] + inputs[5]){ outputStr += "0\n"; }
+			else if (distance == inputs[2] + inputs[5]){ outputStr += "1\n"; }
+			else{ outputStr += "2\n"; }
+		}
+		else
+		{
+			if (maxR == distance + minR) { outputStr += "1\n"; }
+			else if (maxR < distance + minR) { outputStr += "2\n"; }
+			else { outputStr += "0\n"; }
+		}
 	}
 
 	std::cout << outputStr;
@@ -825,5 +861,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_9020();
 	//Problem_1085();
 	//Problem_3009();
-	Problem_4153();
+	//Problem_4153();
+	Problem_1022();
 }
