@@ -953,6 +953,27 @@ void Problem_9471()
 	std::cout << outputStr;
 }
 
+// PRBOELM 2749
+
+void Problem_2749()
+{
+	long long N;
+	std::cin >> N;
+	N %= 1500000;
+
+	long long fibonacci[3]{ 0, 1, 1 };
+	int checkIdx = 1;
+	for (int num = 2; num <= N; num++)
+	{
+		if (++checkIdx > 2) { checkIdx = 0; }
+		if (checkIdx == 2) { fibonacci[2] = (fibonacci[0] + fibonacci[1]) % 1000000; }
+		else if (checkIdx == 1) { fibonacci[1] = (fibonacci[0] + fibonacci[2]) % 1000000; }
+		else { fibonacci[0] = (fibonacci[1] + fibonacci[2]) % 1000000; }
+	}
+
+	std::cout << fibonacci[checkIdx];
+}
+
 void ExecuteBaekjoonMathProblems()
 {
 	//Problem_8393();
@@ -985,5 +1006,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_10872();
 	//Problem_10870();
 	//Problem_10826();
-	Problem_9471();
+	//Problem_9471();
+	Problem_2749();
 }
