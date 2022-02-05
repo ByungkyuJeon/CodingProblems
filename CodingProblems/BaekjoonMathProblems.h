@@ -836,7 +836,7 @@ void Problem_1022()
 */
 
 // PROBLEM 10872
-
+/*
 long long factorial(int num)
 {
 	if (num == 1 || num == 0) { return 1; }
@@ -848,6 +848,28 @@ void Problem_10872()
 	int N;
 	std::cin >> N;
 	std::cout << factorial(N);
+}
+*/
+
+// PROBLEM 10870, 2747
+
+std::unordered_map<int, long long> map
+{
+	{0, 0},
+	{1, 1}
+};
+
+long long fibonacci(int num)
+{
+	if (map.find(num) != map.end()) { return map[num]; }
+	return (map[num] = fibonacci(num - 1) + fibonacci(num - 2));
+}
+
+void Problem_10870()
+{
+	int num;
+	std::cin >> num;
+	std::cout << fibonacci(num);
 }
 
 void ExecuteBaekjoonMathProblems()
@@ -879,5 +901,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_3009();
 	//Problem_4153();
 	//Problem_1022();
-	Problem_10872();
+	//Problem_10872();
+	Problem_10870();
 }
