@@ -917,7 +917,7 @@ void Problem_10826()
 */
 
 // PROBLEM 9471
-
+/*
 void Problem_9471()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -952,9 +952,10 @@ void Problem_9471()
 
 	std::cout << outputStr;
 }
+*/
 
 // PRBOELM 2749
-
+/*
 void Problem_2749()
 {
 	long long N;
@@ -972,6 +973,28 @@ void Problem_2749()
 	}
 
 	std::cout << fibonacci[checkIdx];
+}
+*/
+
+// PROBLEM 1463
+
+int maxDepth = 1000000;
+
+void operation(int num, int depth)
+{
+	if (maxDepth < depth) { return; }
+	if (num == 1) { if (maxDepth > depth) { maxDepth = depth; } return; }
+	if (num % 3 == 0) { operation(num / 3, depth + 1); }
+	if (num % 2 == 0) { operation(num >> 1, depth + 1); }
+	operation(num - 1, depth + 1);
+}
+
+void Problem_1463()
+{
+	int num;
+	std::cin >> num;
+	operation(num, 0);
+	std::cout << maxDepth;
 }
 
 void ExecuteBaekjoonMathProblems()
@@ -1007,5 +1030,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_10870();
 	//Problem_10826();
 	//Problem_9471();
-	Problem_2749();
+	//Problem_2749();
+	Problem_1463();
 }
