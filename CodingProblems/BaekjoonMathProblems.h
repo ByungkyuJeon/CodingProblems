@@ -851,8 +851,8 @@ void Problem_10872()
 }
 */
 
-// PROBLEM 10870, 2747
-
+// PROBLEM 10870, 2747, 2748
+/*
 std::unordered_map<int, long long> map
 {
 	{0, 0},
@@ -870,6 +870,49 @@ void Problem_10870()
 	int num;
 	std::cin >> num;
 	std::cout << fibonacci(num);
+}
+*/
+
+// PROBLEM 10826
+
+std::string addStr(std::string& lhs, std::string& rhs)
+{
+	int digit;
+	if (lhs.size() > rhs.size()) { rhs = "0" + rhs; }
+	else if (lhs.size() < rhs.size()) { lhs = "0" + lhs; }
+	std::string result; result.resize(lhs.size(), '0');
+	for (int idx = lhs.size() - 1; idx >= 0; idx--)
+	{
+		digit = lhs[idx] + rhs[idx] + result[idx] - (3 * '0');
+		result[idx] = (digit % 10) + '0';
+		if (digit >= 10)
+		{
+			if (idx != 0) { result[idx - 1]++; }
+			else{ result = "1" + result; }
+		}
+	}
+	return result;
+}
+
+void Problem_10826()
+{
+	int num;
+	std::cin >> num;
+	if (num == 0) { std::cout << 0; }
+	else if (num == 1) { std::cout << 1; }
+	else
+	{
+		std::string fibonacci[3]{ "0", "1", "1" };
+		int checkIdx = 1;
+		for (int idx = 2; idx <= num; idx++)
+		{
+			if (++checkIdx > 2) { checkIdx = 0; }
+			if (checkIdx == 2){ fibonacci[2] = addStr(fibonacci[0], fibonacci[1]); }
+			else if (checkIdx == 1){ fibonacci[1] = addStr(fibonacci[0], fibonacci[2]); }
+			else{ fibonacci[0] = addStr(fibonacci[1], fibonacci[2]); }
+		}
+		std::cout << fibonacci[checkIdx];
+	}
 }
 
 void ExecuteBaekjoonMathProblems()
@@ -902,5 +945,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_4153();
 	//Problem_1022();
 	//Problem_10872();
-	Problem_10870();
+	//Problem_10870();
+	Problem_10826();
 }
