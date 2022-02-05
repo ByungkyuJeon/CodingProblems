@@ -800,7 +800,7 @@ void Problem_4153()
 */
 
 // PROBLEM 1002
-
+/*
 void Problem_1022()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -833,6 +833,22 @@ void Problem_1022()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 10872
+
+long long factorial(int num)
+{
+	if (num == 1 || num == 0) { return 1; }
+	return num * factorial(num - 1);
+}
+
+void Problem_10872()
+{
+	int N;
+	std::cin >> N;
+	std::cout << factorial(N);
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -862,5 +878,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_1085();
 	//Problem_3009();
 	//Problem_4153();
-	Problem_1022();
+	//Problem_1022();
+	Problem_10872();
 }
