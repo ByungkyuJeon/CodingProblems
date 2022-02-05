@@ -874,7 +874,7 @@ void Problem_10870()
 */
 
 // PROBLEM 10826
-
+/*
 std::string addStr(std::string& lhs, std::string& rhs)
 {
 	int digit;
@@ -914,6 +914,44 @@ void Problem_10826()
 		std::cout << fibonacci[checkIdx];
 	}
 }
+*/
+
+// PROBLEM 9471
+
+void Problem_9471()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string outputStr;
+	int T, inputs[2];
+	long long temp[2];
+	std::cin >> T;
+	while (T-- > 0)
+	{
+		std::cin >> inputs[0] >> inputs[1];
+		
+		long long fibonacci[3]{ 0, 1, 1 };
+		int checkIdx = 1;
+		temp[0] = -1;
+		for (int num = 2;; num++)
+		{
+			if (++checkIdx > 2) { checkIdx = 0; }
+			if (checkIdx == 2) { fibonacci[2] = (fibonacci[0] + fibonacci[1]) % inputs[1]; }
+			else if (checkIdx == 1) { fibonacci[1] = (fibonacci[0] + fibonacci[2]) % inputs[1]; }
+			else { fibonacci[0] = (fibonacci[1] + fibonacci[2]) % inputs[1]; }
+			temp[1] = fibonacci[checkIdx];
+			if (temp[0] == 1 && temp[1] == 1)
+			{
+				outputStr += std::to_string(inputs[0]) + " " + std::to_string(num - 2) + '\n';
+				break;
+			}
+			temp[0] = temp[1];
+		}
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -946,5 +984,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_1022();
 	//Problem_10872();
 	//Problem_10870();
-	Problem_10826();
+	//Problem_10826();
+	Problem_9471();
 }
