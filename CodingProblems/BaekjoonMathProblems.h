@@ -1099,7 +1099,6 @@ void Problem_11729_bruteForce()
 	oper(0);
 	std::cout << result;
 }
-*/
 
 int getStart(int num)
 {
@@ -1127,6 +1126,37 @@ void Problem_11729()
 		else { if (start == 3) { temp = 1; } else { temp = start + 1; } map[cirNum] = temp; outputStr += std::to_string(temp) + "\n"; }
 	}
 	std::cout << outputStr;
+}
+*/
+
+// PROBLEM 2798
+
+void Problem_2798()
+{
+	int N, M, inputs[100] = { 0 };
+	std::cin >> N >> M;
+	int sum = 0, max = 0;
+
+	for(int idx = 0; idx < N; idx++)
+	{
+		std::cin >> inputs[idx];
+	}
+	for (int front = 0; front < N - 2; front++)
+	{
+		for (int middle = front + 1; middle < N - 1; middle++)
+		{
+			for (int back = middle + 1; back < N; back++)
+			{
+				sum = inputs[front] + inputs[middle] + inputs[back];
+				if (sum <= M && max < sum) { max = sum; }
+				if (max == M) { break; }
+			}
+			if (max == M) { break; }
+		}
+		if (max == M) { break; }
+	}
+
+	std::cout << max;
 }
 
 void ExecuteBaekjoonMathProblems()
@@ -1165,5 +1195,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_2749();
 	//Problem_1463();
 	//Problem_2447();
-	Problem_11729();
+	//Problem_11729();
+	Problem_2798();
 }
