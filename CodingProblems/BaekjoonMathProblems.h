@@ -9,6 +9,7 @@
 #include <string>
 #include <unordered_map>
 #include <queue>
+#include <stack>
 #include "TimeChecker.h"
 
 // PROBLEM 8393
@@ -999,7 +1000,7 @@ void Problem_1463()
 */
 
 // PRBOELM 2447
-
+/*
 bool calc(int x, int y)
 {
 	while (x != 0 && y != 0) { if (x % 3 == 1 && y % 3 == 1) { return true; } x /= 3; y /= 3; }
@@ -1024,6 +1025,107 @@ void Problem_2447()
 		outputStr += "\n";
 	}
 
+	std::cout << outputStr;
+}
+*/
+
+// PROBLEM 11729
+/*
+std::stack<int> table[3];
+std::vector<std::pair<int, int>> trace;
+std::string result;
+int N;
+int maxDepth = 100000;
+bool found = false;
+
+void saveResult()
+{
+	result.clear();
+	result += std::to_string(maxDepth) + "\n";
+	for (const auto& elem : trace)
+	{
+		result += std::to_string(elem.first) + " " + std::to_string(elem.second) + "\n";
+	}
+}
+
+void oper(int depth)
+{
+	if (table[0].empty() && table[1].empty()) { if (maxDepth == depth) { saveResult(); found = true; } return; }
+	if (found || maxDepth < depth) { return; }
+	std::pair<int, int> step;
+
+	for (int lhs = 0; lhs < 2; lhs++)
+	{
+		for (int rhs = lhs + 1; rhs < 3; rhs++)
+		{
+			if (trace.size() > 0 && trace[trace.size() - 1].first == rhs + 1 && trace[trace.size() - 1].second == lhs + 1) { continue; }
+			if (!table[lhs].empty() && (table[rhs].empty() || table[lhs].top() < table[rhs].top()))
+			{
+				step.first = lhs + 1; step.second = rhs + 1;
+				trace.emplace_back(step);
+				table[rhs].emplace(table[lhs].top()); table[lhs].pop();
+				oper(depth + 1);
+				trace.erase(trace.end() - 1);
+				table[lhs].emplace(table[rhs].top()); table[rhs].pop();
+			}
+			if (found) { return; }
+		}
+	}
+
+	for (int lhs = 2; lhs > 0; lhs--)
+	{
+		for (int rhs = lhs - 1; rhs >= 0; rhs--)
+		{
+			if (trace.size() > 0 && trace[trace.size() - 1].first == rhs + 1 && trace[trace.size() - 1].second == lhs + 1) { continue; }
+			if (!table[lhs].empty() && (table[rhs].empty() || table[lhs].top() < table[rhs].top()))
+			{
+				step.first = lhs + 1; step.second = rhs + 1;
+				trace.emplace_back(step);
+				table[rhs].emplace(table[lhs].top()); table[lhs].pop();
+				oper(depth + 1);
+				trace.erase(trace.end() - 1);
+				table[lhs].emplace(table[rhs].top()); table[rhs].pop();
+			}
+			if (found) { return; }
+		}
+	}
+}
+
+void Problem_11729_bruteForce()
+{
+	std::cin >> N;
+	maxDepth = pow(2, N) - 1;
+	for (int num = N; num > 0; num--) { table[0].emplace(num); }
+	oper(0);
+	std::cout << result;
+}
+*/
+
+int getStart(int num)
+{
+	int ret = 1;
+	while ((num & 1) != 1){ num = num >> 1; ret++; }
+	return ret;
+}
+
+void Problem_11729()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::unordered_map<int, int> map{ {1,1},{2,1},{3,1},{4,1},{5,1},{6,1},{7,1},{8,1},{9,1},{10,1},{11,1},{12,1},{13,1},{14,1},{15,1},{16,1},{17,1},{18,1},{19,1},{20,1} };
+	int num, temp, start, cirNum, order;
+	std::cin >> num;
+	order = num % 2;
+	int min = pow(2, num) - 1;
+	std::string outputStr; outputStr += std::to_string(min) + "\n";
+	for (int step = 1; step <= min; step++)
+	{
+		start = map[(cirNum = getStart(step))];
+		outputStr += std::to_string(start) + " ";
+		if (cirNum % 2 == order) { if (start == 1) { temp = 3; } else { temp = start - 1; } map[cirNum] = temp; outputStr += std::to_string(temp) + "\n"; }
+		else { if (start == 3) { temp = 1; } else { temp = start + 1; } map[cirNum] = temp; outputStr += std::to_string(temp) + "\n"; }
+	}
 	std::cout << outputStr;
 }
 
@@ -1062,5 +1164,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_9471();
 	//Problem_2749();
 	//Problem_1463();
-	Problem_2447();
+	//Problem_2447();
+	Problem_11729();
 }
