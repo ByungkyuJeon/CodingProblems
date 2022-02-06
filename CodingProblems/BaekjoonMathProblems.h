@@ -977,7 +977,7 @@ void Problem_2749()
 */
 
 // PROBLEM 1463
-
+/*
 int maxDepth = 1000000;
 
 void operation(int num, int depth)
@@ -995,6 +995,36 @@ void Problem_1463()
 	std::cin >> num;
 	operation(num, 0);
 	std::cout << maxDepth;
+}
+*/
+
+// PRBOELM 2447
+
+bool calc(int x, int y)
+{
+	while (x != 0 && y != 0) { if (x % 3 == 1 && y % 3 == 1) { return true; } x /= 3; y /= 3; }
+	return false;
+}
+
+void Problem_2447()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string outputStr;
+	int N;
+	std::cin >> N;
+	for (int x = 0; x < N; x++)
+	{
+		for (int y = 0; y < N; y++)
+		{
+			if (calc(x, y)) { outputStr += " "; continue; }
+			outputStr += "*";
+		}
+		outputStr += "\n";
+	}
+
+	std::cout << outputStr;
 }
 
 void ExecuteBaekjoonMathProblems()
@@ -1031,5 +1061,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_10826();
 	//Problem_9471();
 	//Problem_2749();
-	Problem_1463();
+	//Problem_1463();
+	Problem_2447();
 }
