@@ -1130,7 +1130,7 @@ void Problem_11729()
 */
 
 // PROBLEM 2798
-
+/*
 void Problem_2798()
 {
 	int N, M, inputs[100] = { 0 };
@@ -1157,6 +1157,28 @@ void Problem_2798()
 	}
 
 	std::cout << max;
+}
+*/
+
+// PROBLEM 2231
+
+void Problem_2231()
+{
+	int N;
+	std::cin >> N;
+	std::string numStr = std::to_string(N);
+	int start = N - (numStr.size() * 9), sum;
+	bool check = false;
+	if (start < 0) { start = 0; }
+	for (int num = start; num < N; num++)
+	{
+		sum = num;
+		numStr = std::to_string(num);
+		for (int idx = numStr.size() - 1; idx >= 0; idx--) { sum += (numStr[idx] - '0'); }
+		if (sum == N) { check = true;  break; }
+	}
+	if(check){ std::cout << numStr; }
+	else { std::cout << 0; }
 }
 
 void ExecuteBaekjoonMathProblems()
@@ -1196,5 +1218,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_1463();
 	//Problem_2447();
 	//Problem_11729();
-	Problem_2798();
+	//Problem_2798();
+	Problem_2231();
 }
