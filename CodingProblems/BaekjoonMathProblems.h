@@ -1183,7 +1183,7 @@ void Problem_2231()
 */
 
 // PROBLEM 7568
-
+/*
 void Problem_7568()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -1209,6 +1209,20 @@ void Problem_7568()
 	}
 
 	std::cout << outputStr;
+}
+*/
+
+// PROBLEM 1436
+
+void Problem_1436()
+{
+	int N;
+	std::cin >> N;
+
+	int count = 0;
+	int result;
+	for (int num = 666; count != N; num++){ if (std::to_string(num).find("666") != std::string::npos) { count++; result = num; } }
+	std::cout << result;
 }
 
 void ExecuteBaekjoonMathProblems()
@@ -1250,5 +1264,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_11729();
 	//Problem_2798();
 	//Problem_2231();
-	Problem_7568();
+	//Problem_7568();
+	Problem_1436();
 }
