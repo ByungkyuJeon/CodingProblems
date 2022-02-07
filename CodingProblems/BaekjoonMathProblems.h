@@ -1161,7 +1161,7 @@ void Problem_2798()
 */
 
 // PROBLEM 2231
-
+/*
 void Problem_2231()
 {
 	int N;
@@ -1179,6 +1179,36 @@ void Problem_2231()
 	}
 	if(check){ std::cout << numStr; }
 	else { std::cout << 0; }
+}
+*/
+
+// PROBLEM 7568
+
+void Problem_7568()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	struct Human { int weight, height; };
+	Human humans[51];
+
+	int N;
+	std::cin >> N;
+	for (int idx = 0; idx < N; idx++) { std::cin >> humans[idx].weight >> humans[idx].height; }
+	std::string outputStr;
+	int count;
+	for (int outer = 0; outer < N; outer++)
+	{
+		count = 1;
+		for (int inner = 0; inner < N; inner++)
+		{
+			if (outer == inner) { continue; }
+			if (humans[inner].weight > humans[outer].weight && humans[inner].height > humans[outer].height) { count++; }
+		}
+		outputStr += std::to_string(count) + " ";
+	}
+
+	std::cout << outputStr;
 }
 
 void ExecuteBaekjoonMathProblems()
@@ -1219,5 +1249,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_2447();
 	//Problem_11729();
 	//Problem_2798();
-	Problem_2231();
+	//Problem_2231();
+	Problem_7568();
 }
