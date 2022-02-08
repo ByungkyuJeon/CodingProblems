@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <bitset>
+#include <string>
 
 // PROBLEM 1377
 /*
@@ -647,7 +648,7 @@ void Problem_3052()
 */
 
 // PROBLEM 2750, 2751
-
+/*
 int nums[1000001];
 
 void Problem_2750()
@@ -669,6 +670,46 @@ void Problem_2750()
     }
     std::cout << outputStr;
 }
+*/
+
+// PROBLEM 10989
+
+int nums[10001];
+
+void Problem_10989()
+{
+    std::ios_base::sync_with_stdio(0);
+    std::cin.tie(nullptr);
+
+    std::string outputStr, tempStr;
+    outputStr.reserve(1000000);
+    int N, input;
+    std::cin >> N;
+
+    while (N-- > 0)
+    {
+        std::cin >> input;
+        nums[input]++;
+    }
+
+    for (int num = 1; num <= 10000; num++)
+    {
+        if ((input = nums[num]) == 0) { continue; }
+        else{ tempStr = std::to_string(num) + '\n'; }
+        for (int count = 0; count < input; count++)
+        {
+            outputStr += tempStr;
+            if (outputStr.size() > 999900)
+            {
+                std::cout << outputStr;
+                outputStr.clear();
+                outputStr.reserve(1000000);
+            }
+        }
+    }
+
+    std::cout << outputStr;
+}
 
 void ExecuteSort()
 {
@@ -685,5 +726,6 @@ void ExecuteSort()
     //Problem_10818();
     //Problem_2562();
     //Problem_3052();
-    Problem_2750();
+    //Problem_2750();
+    Problem_10989();
 }
