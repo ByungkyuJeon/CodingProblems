@@ -673,7 +673,7 @@ void Problem_2750()
 */
 
 // PROBLEM 10989
-
+/*
 int nums[10001];
 
 void Problem_10989()
@@ -710,6 +710,40 @@ void Problem_10989()
 
     std::cout << outputStr;
 }
+*/
+
+// PROBLEM 2108
+
+int nums[500001];
+std::unordered_map<int, int> counts;
+
+void Problem_2108()
+{
+    typedef std::priority_queue<int, std::vector<int>, std::greater<int>> q; q countQueue;
+    int N, sum = 0, maxNum = 0, temp;
+    std::cin >> N;
+    for (int idx = 0; idx < N; idx++)
+    {
+        std::cin >> nums[idx];
+        sum += nums[idx];
+        ++counts[nums[idx]];
+    }
+    for (const auto& elem : counts)
+    {
+        if (elem.second > counts[maxNum]) { maxNum = elem.first; countQueue = q(); countQueue.emplace(maxNum); }
+        else if (elem.second == counts[maxNum]) { countQueue.emplace(elem.first); }
+    }
+    
+    std::sort(nums, nums + N);
+    float avr = (float)sum / N;
+    if (avr > 0 && avr + 0.5f >= 1 + (int)avr) { std::cout << 1 + (int)avr << '\n'; }
+    else if (avr < 0 && avr - 0.5f <= -1 + (int)avr) { std::cout << -1 + (int)avr << '\n'; }
+    else { std::cout << (int)avr << '\n'; }
+    std::cout << nums[N / 2] << '\n';
+    if (countQueue.size() > 1){ countQueue.pop(); }
+    std::cout << countQueue.top() << '\n';
+    std::cout << nums[N - 1] - nums[0];
+}
 
 void ExecuteSort()
 {
@@ -727,5 +761,6 @@ void ExecuteSort()
     //Problem_2562();
     //Problem_3052();
     //Problem_2750();
-    Problem_10989();
+    //Problem_10989();
+    Problem_2108();
 }
