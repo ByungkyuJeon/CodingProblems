@@ -713,7 +713,7 @@ void Problem_10989()
 */
 
 // PROBLEM 2108
-
+/*
 int nums[500001];
 std::unordered_map<int, int> counts;
 
@@ -744,6 +744,27 @@ void Problem_2108()
     std::cout << countQueue.top() << '\n';
     std::cout << nums[N - 1] - nums[0];
 }
+*/
+
+// PROBLEM 1427
+
+void Problem_1427()
+{
+    std::string numStr;
+    int counts[10] = { 0 };
+    std::cin >> numStr;
+    for (const auto& elem : numStr){ counts[elem - '0']++; }
+    int numIdx = 0;
+    for (int idx = 9; idx >= 0; idx--)
+    {
+        for (int count = 0; count < counts[idx]; count++)
+        {
+            numStr[numIdx++] = idx + '0';
+        }
+    }
+
+    std::cout << numStr;
+}
 
 void ExecuteSort()
 {
@@ -762,5 +783,6 @@ void ExecuteSort()
     //Problem_3052();
     //Problem_2750();
     //Problem_10989();
-    Problem_2108();
+    //Problem_2108();
+    Problem_1427();
 }
