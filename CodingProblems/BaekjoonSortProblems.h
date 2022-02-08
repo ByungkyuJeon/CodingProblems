@@ -646,6 +646,30 @@ void Problem_3052()
 }
 */
 
+// PROBLEM 2750, 2751
+
+int nums[1000001];
+
+void Problem_2750()
+{
+    std::ios_base::sync_with_stdio(0);
+    std::cin.tie(nullptr);
+
+    int N;
+    std::cin >> N;
+    for (int idx = 0; idx < N; idx++)
+    {
+        std::cin >> nums[idx];
+    }
+    std::sort(nums, nums + N);
+    std::string outputStr;
+    for (int idx = 0; idx < N; idx++)
+    {
+        outputStr += std::to_string(nums[idx]) + '\n';
+    }
+    std::cout << outputStr;
+}
+
 void ExecuteSort()
 {
     //Problem_1377();
@@ -661,4 +685,5 @@ void ExecuteSort()
     //Problem_10818();
     //Problem_2562();
     //Problem_3052();
+    Problem_2750();
 }
