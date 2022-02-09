@@ -874,7 +874,7 @@ void Problem_1181()
 */
 
 // PROBLEM 10814
-
+/*
 std::pair<int, std::string> data[100001];
 
 void Problem_10814()
@@ -903,6 +903,44 @@ void Problem_10814()
 
     std::cout << outputStr;
 }
+*/
+
+// PROBLEM 18870
+
+std::map<int, std::vector<int>> data;
+
+void Problem_18870()
+{
+    std::ios_base::sync_with_stdio(0);
+    std::cin.tie(nullptr);
+
+    int N, input;
+    std::cin >> N;
+    for (int idx = 0; idx < N; idx++)
+    {
+        std::cin >> input;
+        data[input].emplace_back(idx);
+    }
+
+    std::vector<int> outputNums(N);
+    int count = 0;
+    for (const auto& elem : data)
+    {
+        for (const auto& indices : elem.second)
+        {
+            outputNums[indices] = count;
+        }
+        count++;
+    }
+
+    std::string outputStr;
+    for (const auto& elem : outputNums)
+    {
+        outputStr += std::to_string(elem) + " ";
+    }
+
+    std::cout << outputStr;
+}
 
 void ExecuteSort()
 {
@@ -926,5 +964,6 @@ void ExecuteSort()
     //Problem_11650();
     //Problem_11651();
     //Problem_1181();
-    Problem_10814();
+    //Problem_10814();
+    Problem_18870();
 }
