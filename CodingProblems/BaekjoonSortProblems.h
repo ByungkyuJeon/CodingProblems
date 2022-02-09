@@ -768,7 +768,7 @@ void Problem_1427()
 */
 
 // PROBLEM 11650
-
+/*
 std::pair<int, int> dots[100001];
 
 void Problem_11650()
@@ -799,6 +799,40 @@ void Problem_11650()
 
     std::cout << outputStr;
 }
+*/
+
+// PROBLEM 11651
+
+std::pair<int, int> dots[100001];
+
+void Problem_11651()
+{
+    std::ios_base::sync_with_stdio(0);
+    std::cin.tie(nullptr);
+
+    int N;
+    std::cin >> N;
+    for (int idx = 0; idx < N; idx++)
+    {
+        std::cin >> dots[idx].first >> dots[idx].second;
+    }
+
+    std::sort(dots, dots + N, [](const std::pair<int, int>& lhs, const std::pair<int, int>& rhs) {
+        if (lhs.second == rhs.second)
+        {
+            return lhs.first < rhs.first;
+        }
+        return lhs.second < rhs.second;
+        });
+
+    std::string outputStr;
+    for (int idx = 0; idx < N; idx++)
+    {
+        outputStr += std::to_string(dots[idx].first) + " " + std::to_string(dots[idx].second) + '\n';
+    }
+
+    std::cout << outputStr;
+}
 
 void ExecuteSort()
 {
@@ -819,5 +853,6 @@ void ExecuteSort()
     //Problem_10989();
     //Problem_2108();
     //Problem_1427();
-    Problem_11650();
+    //Problem_11650();
+    Problem_11651();
 }
