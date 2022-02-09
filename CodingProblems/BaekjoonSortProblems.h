@@ -836,8 +836,7 @@ void Problem_11651()
 */
 
 // PROBLEM 1181
-
-
+/*
 struct Comp
 {
     bool operator()(const std::string& lhs, const std::string& rhs) const
@@ -872,6 +871,38 @@ void Problem_1181()
     }
     std::cout << outputStr;
 }
+*/
+
+// PROBLEM 10814
+
+std::pair<int, std::string> data[100001];
+
+void Problem_10814()
+{
+    std::ios_base::sync_with_stdio(0);
+    std::cin.tie(nullptr);
+
+    int N;
+    std::cin >> N;
+    for (int idx = 0; idx < N; idx++)
+    {
+        std::cin >> data[idx].first >> data[idx].second;
+    }
+
+    std::stable_sort(data, data + N, [](const std::pair<int, std::string>& lhs, const std::pair<int, std::string>& rhs)
+        {
+            return lhs.first < rhs.first;
+        }
+    );
+
+    std::string outputStr;
+    for (int idx = 0; idx < N; idx++)
+    {
+        outputStr += std::to_string(data[idx].first) + " " + data[idx].second + '\n';
+    }
+
+    std::cout << outputStr;
+}
 
 void ExecuteSort()
 {
@@ -894,5 +925,6 @@ void ExecuteSort()
     //Problem_1427();
     //Problem_11650();
     //Problem_11651();
-    Problem_1181();
+    //Problem_1181();
+    Problem_10814();
 }
