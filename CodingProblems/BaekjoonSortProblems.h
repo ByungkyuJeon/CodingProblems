@@ -802,7 +802,7 @@ void Problem_11650()
 */
 
 // PROBLEM 11651
-
+/*
 std::pair<int, int> dots[100001];
 
 void Problem_11651()
@@ -833,6 +833,45 @@ void Problem_11651()
 
     std::cout << outputStr;
 }
+*/
+
+// PROBLEM 1181
+
+
+struct Comp
+{
+    bool operator()(const std::string& lhs, const std::string& rhs) const
+    {
+        if (lhs.size() == rhs.size())
+        {
+            return lhs < rhs;
+        }
+        return lhs.size() < rhs.size();
+    }
+};
+
+std::set<std::string, Comp> data;
+
+void Problem_1181()
+{
+    std::ios_base::sync_with_stdio(0);
+    std::cin.tie(nullptr);
+
+    std::string outputStr, input;
+    int N;
+    std::cin >> N;
+    for (int idx = 0; idx < N; idx++)
+    {
+        std::cin >> input;
+        data.emplace(input);
+    }
+
+    for(const auto& elem : data)
+    {
+        outputStr += elem + '\n';
+    }
+    std::cout << outputStr;
+}
 
 void ExecuteSort()
 {
@@ -854,5 +893,6 @@ void ExecuteSort()
     //Problem_2108();
     //Problem_1427();
     //Problem_11650();
-    Problem_11651();
+    //Problem_11651();
+    Problem_1181();
 }
