@@ -180,7 +180,7 @@ void Problem_15652()
 */
 
 // PROBLEM 9663
-
+/*
 int board[15][15];
 int N, depth, count;
 
@@ -226,6 +226,61 @@ void Problem_9663()
 	process(1);
 	std::cout << count;
 }
+*/
+
+// PROBLEM 2580
+
+int data[9][9];
+std::vector<std::pair<int, int>> zeroes;
+
+bool process(int idx)
+{
+	if (idx == zeroes.size()) { return true; }
+	std::vector<int> possibles{ 1,2,3,4,5,6,7,8,9 };
+	int xTemp, yTemp;
+	for (int y = 0; y < 9; y++) { if (std::find(possibles.begin(), possibles.end(), data[zeroes[idx].first][y]) != possibles.end()) { possibles.erase(std::remove(possibles.begin(), possibles.end(), data[zeroes[idx].first][y])); } }
+	for (int x = 0; x < 9; x++) { if (std::find(possibles.begin(), possibles.end(), data[x][zeroes[idx].second]) != possibles.end()) { possibles.erase(std::remove(possibles.begin(), possibles.end(), data[x][zeroes[idx].second])); } }
+	xTemp = zeroes[idx].first - (zeroes[idx].first % 3) + 3;
+	yTemp = zeroes[idx].second - (zeroes[idx].second % 3) + 3;
+	for (int x = zeroes[idx].first - (zeroes[idx].first % 3); x < xTemp; x++) { for (int y = zeroes[idx].second - (zeroes[idx].second % 3); y < yTemp; y++) { if (std::find(possibles.begin(), possibles.end(), data[x][y]) != possibles.end()) { possibles.erase(std::remove(possibles.begin(), possibles.end(), data[x][y])); } } }
+	for (int possIdx = 0; possIdx < possibles.size(); possIdx++)
+	{
+		data[zeroes[idx].first][zeroes[idx].second] = possibles[possIdx];
+		if (process(idx + 1)) { return true; }
+		data[zeroes[idx].first][zeroes[idx].second] = 0;
+	}
+	return false;
+}
+
+void Problem_2580()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string outputStr;
+
+	for (int x = 0; x < 9; x++)
+	{
+		for (int y = 0; y < 9; y++)
+		{
+			std::cin >> data[x][y];
+			if (!data[x][y]) { zeroes.emplace_back(std::make_pair(x, y)); }
+		}
+	}
+
+	process(0);
+
+	for (int x = 0; x < 9; x++)
+	{
+		for (int y = 0; y < 9; y++)
+		{
+			outputStr += std::to_string(data[x][y]) + " ";
+		}
+		outputStr += '\n';
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteBackTracking()
 {
@@ -233,5 +288,6 @@ void ExecuteBackTracking()
 	//Problem_15650();
 	//Problem_15651();
 	//Problem_15652();
-	Problem_9663();
+	//Problem_9663();
+	Problem_2580();
 }
