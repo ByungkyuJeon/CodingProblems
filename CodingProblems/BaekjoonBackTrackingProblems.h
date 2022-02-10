@@ -136,7 +136,7 @@ void Problem_15651()
 */
 
 // PROBLEM 15652
-
+/*
 std::vector<int> proc;
 int N, M, depth;
 std::string outputStr;
@@ -177,11 +177,61 @@ void Problem_15652()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 9663
+
+int board[15][15];
+int N, depth, count;
+
+void process(int xPrv)
+{
+	int xTemp, yTemp;
+	for (int in = 1; in <= N; in++)
+	{
+		if (board[xPrv][in] == 0)
+		{
+			if (depth + 1 == N) { count++; return; }
+			for (int x = 1; x <= N; x++) { board[x][in]++; }
+			for (int y = 1; y <= N; y++) { board[xPrv][y]++; }
+			xTemp = xPrv; yTemp = in;
+			for (int count = 1;; count++) { if (--xTemp > 0 && --yTemp > 0) { board[xTemp][yTemp]++; } else { break; } }
+			xTemp = xPrv; yTemp = in;
+			for (int count = 1;; count++) { if (++xTemp <= N && ++yTemp <= N) { board[xTemp][yTemp]++; } else { break; } }
+			xTemp = xPrv; yTemp = in;
+			for (int count = 1;; count++) { if (--xTemp > 0 && ++yTemp <= N) { board[xTemp][yTemp]++; } else { break; } }
+			xTemp = xPrv; yTemp = in;
+			for (int count = 1;; count++) { if (++xTemp <= N && --yTemp > 0) { board[xTemp][yTemp]++; } else { break; } }
+			depth++;
+			process(xPrv + 1);
+			for (int x = 1; x <= N; x++) { board[x][in]--; }
+			for (int y = 1; y <= N; y++) { board[xPrv][y]--; }
+			xTemp = xPrv; yTemp = in;
+			for (int count = 1;; count++) { if (--xTemp > 0 && --yTemp > 0) { board[xTemp][yTemp]--; } else { break; } }
+			xTemp = xPrv; yTemp = in;
+			for (int count = 1;; count++) { if (++xTemp <= N && ++yTemp <= N) { board[xTemp][yTemp]--; } else { break; } }
+			xTemp = xPrv; yTemp = in;
+			for (int count = 1;; count++) { if (--xTemp > 0 && ++yTemp <= N) { board[xTemp][yTemp]--; } else { break; } }
+			xTemp = xPrv; yTemp = in;
+			for (int count = 1;; count++) { if (++xTemp <= N && --yTemp > 0) { board[xTemp][yTemp]--; } else { break; } }
+			depth--;
+		}
+	}
+}
+
+
+void Problem_9663()
+{
+	std::cin >> N;
+	process(1);
+	std::cout << count;
+}
 
 void ExecuteBackTracking()
 {
 	//Problem_15649();
 	//Problem_15650();
 	//Problem_15651();
-	Problem_15652();
+	//Problem_15652();
+	Problem_9663();
 }
