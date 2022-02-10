@@ -6,6 +6,7 @@
 #include "BaekjoonStringProblems.h"
 #include "BinarySearch.h"
 #include "BaekjoonSortProblems.h"
+#include "BaekjoonBackTrackingProblems.h"
 
 #include "DataStructure/Tree.h"
 #include "DataStructure/Stack.h"
@@ -25,6 +26,7 @@ int main()
     ExecuteDataStructure();
     ExecuteString();
     ExecuteSort();
+    ExecuteBackTracking();
 
     ExecuteQueue();
     ExecuteTree();

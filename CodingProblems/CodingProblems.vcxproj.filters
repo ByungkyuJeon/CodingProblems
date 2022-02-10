@@ -77,5 +77,8 @@
     <ClInclude Include="BaekjoonSortProblems.h">
       <Filter>소스 파일\Baekjoon</Filter>
     </ClInclude>
+    <ClInclude Include="BaekjoonBackTrackingProblems.h">
+      <Filter>소스 파일\Baekjoon</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

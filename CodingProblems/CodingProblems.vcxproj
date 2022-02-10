@@ -142,6 +142,7 @@
     <ClCompile Include="CodingProblems.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaekjoonBackTrackingProblems.h" />
     <ClInclude Include="BaekjoonDataStructureProblems.h" />
     <ClInclude Include="BaekjoonGraphProblems.h" />
     <ClInclude Include="BaekjoonMathProblems.h" />
