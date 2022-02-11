@@ -229,7 +229,7 @@ void Problem_9663()
 */
 
 // PROBLEM 2580
-
+/*
 int data[9][9];
 std::vector<std::pair<int, int>> zeroes;
 
@@ -281,6 +281,62 @@ void Problem_2580()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 14888
+
+int N;
+int data[11];
+int operators[4];
+int max = -1000000000, min = 1000000000;
+
+void process(int num, int idx)
+{
+	if(idx == N)
+	{
+		if (num > max) { max = num; }
+		if (num < min) { min = num; }
+		return;
+	}
+	int numTemp = num;
+	for (int operIdx = 0; operIdx < 4; operIdx++)
+	{
+		if (operators[operIdx] != 0)
+		{
+			numTemp = num;
+			switch (operIdx)
+			{
+			case 0:
+				numTemp += data[idx];
+				break;
+			case 1:
+				numTemp -= data[idx];
+				break;
+			case 2:
+				numTemp *= data[idx];
+				break;
+			case 3:
+				numTemp /= data[idx];
+				break;
+			default:
+				break;
+			}
+			operators[operIdx]--;
+			process(numTemp, idx + 1);
+			operators[operIdx]++;
+		}
+	}
+}
+
+void Problem_14888()
+{
+	std::cin >> N;
+	for (int idx = 0; idx < N; idx++){ std::cin >> data[idx]; }
+	std::cin >> operators[0] >> operators[1] >> operators[2] >> operators[3];
+	process(data[0], 1);
+	std::cout << max << '\n';
+	std::cout << min << '\n';
+}
 
 void ExecuteBackTracking()
 {
@@ -289,5 +345,6 @@ void ExecuteBackTracking()
 	//Problem_15651();
 	//Problem_15652();
 	//Problem_9663();
-	Problem_2580();
+	//Problem_2580();
+	Problem_14888();
 }

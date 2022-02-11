@@ -1000,6 +1000,7 @@ void Problem_1463()
 */
 
 // PRBOELM 2447
+
 /*
 bool calc(int x, int y)
 {
@@ -1213,7 +1214,7 @@ void Problem_7568()
 */
 
 // PROBLEM 1436
-
+/*
 void Problem_1436()
 {
 	int N;
@@ -1224,6 +1225,7 @@ void Problem_1436()
 	for (int num = 666; count != N; num++){ if (std::to_string(num).find("666") != std::string::npos) { count++; result = num; } }
 	std::cout << result;
 }
+*/
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -1265,5 +1267,5 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_2798();
 	//Problem_2231();
 	//Problem_7568();
-	Problem_1436();
+	//Problem_1436();
 }

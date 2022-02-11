@@ -906,7 +906,7 @@ void Problem_10814()
 */
 
 // PROBLEM 18870
-
+/*
 std::map<int, std::vector<int>> data;
 
 void Problem_18870()
@@ -941,6 +941,7 @@ void Problem_18870()
 
     std::cout << outputStr;
 }
+*/
 
 void ExecuteSort()
 {
@@ -965,5 +966,5 @@ void ExecuteSort()
     //Problem_11651();
     //Problem_1181();
     //Problem_10814();
-    Problem_18870();
+    //Problem_18870();
 }
