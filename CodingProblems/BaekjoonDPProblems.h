@@ -49,7 +49,59 @@ void Problem_2839()
 }
 */
 
+// PROBLEM 9184
+
+struct Data 
+{ 
+	Data() = default;
+	Data(int a, int b, int c) : mA{ a }, mB{ b }, mC{ c }{}
+	int mA, mB, mC;
+
+	std::size_t operator()(const Data& data) const noexcept
+	{
+		return (data.mA + 100) * 1000000 + (data.mB + 100) * 10000 + (data.mC + 100);
+	}
+
+	bool operator==(const Data& other) const noexcept
+	{
+		return this->mA == other.mA && this->mB == other.mB && this->mC == other.mC;
+	}
+};
+
+std::unordered_map <Data, long long, Data> lookupTable;
+
+long long proc(int a, int b, int c)
+{
+	Data temp = Data(a, b, c);
+	if (lookupTable.find(temp) != lookupTable.end()) { return lookupTable[temp]; }
+	if (a <= 0 || b <= 0 || c <= 0) { return (lookupTable[temp] = 1); }
+	if (a > 20 || b > 20 || c > 20) { return (lookupTable[temp] = proc(20, 20, 20)); }
+	if (a < b && b < c) { return (lookupTable[temp] = proc(a, b, c - 1) + proc(a, b - 1, c - 1) - proc(a, b - 1, c)); }
+	return (lookupTable[temp] = proc(a - 1, b, c) + proc(a - 1, b - 1, c) + proc(a - 1, b, c - 1) - proc(a - 1, b - 1, c - 1));
+}
+
+void Problem_9184()
+{
+	std::string outputStr;
+	int inputs[3];
+	while (true)
+	{
+		std::cin >> inputs[0] >> inputs[1] >> inputs[2];
+		if (inputs[0] == -1 && inputs[1] == -1 && inputs[2] == -1)
+		{
+			break;
+		}
+		outputStr += "w(" + std::to_string(inputs[0]) + ", "
+			+ std::to_string(inputs[1]) + ", "
+			+ std::to_string(inputs[2]) + ")"
+			+ " = "
+			+ std::to_string(proc(inputs[0], inputs[1], inputs[2])) + '\n';
+	}
+	std::cout << outputStr;
+}
+
 void ExecuteDpProblems()
 {
 	//Problem_2839();
+	Problem_9184();
 }
