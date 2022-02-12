@@ -284,7 +284,7 @@ void Problem_2580()
 */
 
 // PROBLEM 14888
-
+/*
 int N;
 int data[11];
 int operators[4];
@@ -337,6 +337,81 @@ void Problem_14888()
 	std::cout << max << '\n';
 	std::cout << min << '\n';
 }
+*/
+
+// PROBLEM 14889
+
+int N, maxNum, teamNumA, min = 1000000;
+int data[20][20];
+bool teamed[20];
+std::vector<int> teamA, teamB;
+
+enum Oper { A, B };
+int calcSum(int num, Oper op)
+{
+	int ret = 0;
+	if (op == Oper::A)
+	{
+		for (const auto elem : teamA)
+		{
+			ret += data[elem][num];
+			ret += data[num][elem];
+		}
+	}
+	else
+	{
+		for (int pIdx = 0; pIdx < teamB.size(); pIdx++)
+		{
+			for (int sIdx = pIdx + 1; sIdx < teamB.size(); sIdx++)
+			{
+				ret += data[teamB[pIdx]][teamB[sIdx]];
+				ret += data[teamB[sIdx]][teamB[pIdx]];
+			}
+		}
+	}
+
+	return ret;
+}
+
+void process(int num)
+{
+	if (teamA.size() == maxNum)
+	{
+		for (int bIdx = 0; bIdx < N; bIdx++)
+		{
+			if (!teamed[bIdx]) { teamB.emplace_back(bIdx); }
+		}
+		int bNum = calcSum(0, Oper::B);
+		if (min > abs(bNum - teamNumA)) { min = abs(bNum - teamNumA); }
+		teamB.clear();
+		return;
+	}
+	int tempA;
+	for (int aIdx = num; aIdx < N; aIdx++)
+	{
+		if (teamed[aIdx]) { continue; }
+		teamed[aIdx] = true;
+		tempA = calcSum(aIdx, Oper::A);
+		teamNumA += tempA;
+		teamA.emplace_back(aIdx);
+		process(aIdx + 1);
+		teamed[aIdx] = false;
+		teamNumA -= tempA;
+		teamA.erase(teamA.end() - 1);
+	}
+}
+
+void Problem_14889()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::cin >> N;
+	maxNum = N / 2;
+	for (int i = 0; i < N; i++) { for (int j = 0; j < N; j++) { std::cin >> data[i][j]; } }
+	process(0);
+	std::cout << min;	
+}
 
 void ExecuteBackTracking()
 {
@@ -346,5 +421,6 @@ void ExecuteBackTracking()
 	//Problem_15652();
 	//Problem_9663();
 	//Problem_2580();
-	Problem_14888();
+	//Problem_14888();
+	Problem_14889();
 }
