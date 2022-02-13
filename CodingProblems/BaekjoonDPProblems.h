@@ -50,7 +50,7 @@ void Problem_2839()
 */
 
 // PROBLEM 9184
-
+/*
 struct Data 
 { 
 	Data() = default;
@@ -99,9 +99,40 @@ void Problem_9184()
 	}
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 1904
+
+void Problem_1904()
+{
+	int N, buffer[3]{1, 1, 1}, currentIdx = 0;
+	std::cin >> N;
+	for (int num = 1; num < N; num++)
+	{
+		switch (currentIdx)
+		{
+		case 0:
+			buffer[0] = (buffer[1] + buffer[2]) % 15746;
+			break;
+		case 1:
+			buffer[1] = (buffer[0] + buffer[2]) % 15746;
+			break;
+		case 2:
+			buffer[2] = (buffer[1] + buffer[0]) % 15746;
+			break;
+		default:
+			break;
+		}
+		if (num == N - 1) { break; }
+		if (++currentIdx > 2) { currentIdx = 0; }
+	}
+
+	std::cout << buffer[currentIdx];
+}
 
 void ExecuteDpProblems()
 {
 	//Problem_2839();
-	Problem_9184();
+	//Problem_9184();
+	Problem_1904();
 }
