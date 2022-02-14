@@ -102,7 +102,7 @@ void Problem_9184()
 */
 
 // PROBLEM 1904
-
+/*
 void Problem_1904()
 {
 	int N, buffer[3]{1, 1, 1}, currentIdx = 0;
@@ -129,10 +129,50 @@ void Problem_1904()
 
 	std::cout << buffer[currentIdx];
 }
+*/
+
+// PRBOELM 9461
+
+long long getNum(long long* arr, int idx)
+{
+	int prevIdx = idx - 1;
+	if (prevIdx < 0) { prevIdx = 4; }
+	return arr[idx] + arr[prevIdx];
+}
+
+void Problem_9461()
+{
+	std::string outputStr;
+	long long data[5]{ 1, 1, 1, 2, 2 };
+	int currIdx = 0;
+	int T, N;
+	std::cin >> T;
+	while (T-- > 0)
+	{
+		std::cin >> N;
+		data[0] = 1; data[1] = 1; data[2] = 1; data[3] = 2; data[4] = 2;
+		currIdx = 0;
+		if (N <= 5) { outputStr += std::to_string(data[N - 1]) + '\n'; }
+		else
+		{
+			N -= 5;
+			for (int count = 0; count < N; count++)
+			{
+				data[currIdx] = getNum(data, currIdx);
+				if (count == N - 1) { break; }
+				if (++currIdx > 4) { currIdx = 0; }
+			}
+			outputStr += std::to_string(data[currIdx]) + '\n';
+		}
+	}
+	std::cout << outputStr;
+	
+}
 
 void ExecuteDpProblems()
 {
 	//Problem_2839();
 	//Problem_9184();
-	Problem_1904();
+	//Problem_1904();
+	Problem_9461();
 }
