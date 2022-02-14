@@ -132,7 +132,7 @@ void Problem_1904()
 */
 
 // PRBOELM 9461
-
+/*
 long long getNum(long long* arr, int idx)
 {
 	int prevIdx = idx - 1;
@@ -166,7 +166,62 @@ void Problem_9461()
 		}
 	}
 	std::cout << outputStr;
-	
+}
+*/
+
+// PROBLEM 1149
+
+struct Data
+{ 
+	int mColor[3];
+
+	size_t operator()(const std::pair<int, int>& obj) const noexcept
+	{
+		return (obj.first * 1000 << 2) + obj.second;
+	}
+};
+
+std::unordered_map<std::pair<int, int>, long long, Data> lookTable;
+Data data[1000];
+int N;
+
+long long process(int idx, int prevColor)
+{
+	if (idx == N){ return 0; }
+	std::pair<int, int> pairTemp = std::make_pair(idx, prevColor);
+	std::unordered_map<std::pair<int, int>, long long, Data>::iterator itr;
+	if ((itr = lookTable.find(pairTemp)) != lookTable.end())
+	{
+		return itr->second;
+	}
+
+	long long min = 9999999999999, tempVal;
+	for (int colorIdx = 0; colorIdx < 3; colorIdx++)
+	{
+		if (colorIdx != prevColor)
+		{
+			if (min > (tempVal = process(idx + 1, colorIdx) + data[idx].mColor[colorIdx]))
+			{
+				min = tempVal;
+			}
+		}
+	}
+
+	lookTable[pairTemp] = min;
+	return min;
+}
+
+void Problem_1149()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::cin >> N;
+	for (int idx = 0; idx < N; idx++)
+	{
+		std::cin >> data[idx].mColor[0] >> data[idx].mColor[1] >> data[idx].mColor[2];
+	}
+	std::cout << process(0, -1);
 }
 
 void ExecuteDpProblems()
@@ -174,5 +229,6 @@ void ExecuteDpProblems()
 	//Problem_2839();
 	//Problem_9184();
 	//Problem_1904();
-	Problem_9461();
+	//Problem_9461();
+	Problem_1149();
 }
