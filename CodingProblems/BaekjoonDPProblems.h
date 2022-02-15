@@ -170,7 +170,7 @@ void Problem_9461()
 */
 
 // PROBLEM 1149
-
+/*
 struct Data
 { 
 	int mColor[3];
@@ -223,6 +223,47 @@ void Problem_1149()
 	}
 	std::cout << process(0, -1);
 }
+*/
+
+// PROBLEM 1932
+
+int N;
+int data[125250];
+std::unordered_map<int, int> dpTable;
+
+int getBaseIdx(int height)
+{
+	return (height * (height + 1)) / 2;
+}
+
+long long process(int height, int baseIdx, int idx)
+{
+	if (height == N - 1) { return data[idx]; }
+	if (dpTable.find(idx) != dpTable.end()){ return dpTable[idx]; }
+
+	int nxtBase = getBaseIdx(height + 1);
+	int lhsIdx = nxtBase + (idx - baseIdx);
+	long long lhs = process(height + 1, nxtBase, lhsIdx), rhs = process(height + 1, nxtBase, lhsIdx + 1);
+	dpTable[idx] = (lhs > rhs ? lhs : rhs) + data[idx];
+	return dpTable[idx];
+}
+
+void Problem_1932()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int lastIdx;
+	std::cin >> N;
+	lastIdx = getBaseIdx(N) - 1;
+	for (int idx = 0; idx <= lastIdx; idx++)
+	{
+		std::cin >> data[idx];
+	}
+
+	std:: cout << process(0, 0, 0);
+
+}
 
 void ExecuteDpProblems()
 {
@@ -230,5 +271,6 @@ void ExecuteDpProblems()
 	//Problem_9184();
 	//Problem_1904();
 	//Problem_9461();
-	Problem_1149();
+	//Problem_1149();
+	Problem_1932();
 }
