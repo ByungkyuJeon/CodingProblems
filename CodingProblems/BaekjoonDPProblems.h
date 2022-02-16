@@ -359,7 +359,7 @@ void Problem_10844()
 */
 
 // PROBLEM 2156
-
+/*
 int N;
 int data[10001];
 std::unordered_map<int, int> table[2];
@@ -394,6 +394,72 @@ void Problem_2156()
 	}
 	std::cout << process(0, 0);
 }
+*/
+
+// PROBLEM 11054
+
+int N, L = 0;
+int data[1000];
+int subsequence[1000];
+int lengths[1000];
+
+
+int binarySearch(int start, int end, int val)
+{
+	if (start == end) { int ret = val <= subsequence[start] ? start : start + 1; if (ret > L) { return ret - 1; } return ret; }
+	int mid = (start + end) / 2;
+	if (val > subsequence[mid]) { return binarySearch(mid + 1, end, val); }
+	else { return binarySearch(start, mid, val); }
+}
+
+void Problem_11054()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::cin >> N;
+	std::cin >> data[0];
+	subsequence[0] = data[0];
+	int max = 1; bool isDoubled = false;
+	for (int idx = 1; idx < N; idx++)
+	{
+		std::cin >> data[idx];
+		if (subsequence[L] < data[idx])
+		{
+			subsequence[++L] = data[idx];
+			lengths[idx] = L + 1;
+			if (lengths[idx] > max) { max = lengths[idx]; }
+		}
+		else if (subsequence[L] == data[idx]) { lengths[idx] = L + 1; }
+		else
+		{
+			subsequence[binarySearch(0, L, data[idx])] = data[idx];
+		}
+	}
+
+	for (int idx = 0; idx < N / 2; idx++)
+	{
+		std::swap(data[idx], data[N - idx - 1]);
+	}
+
+	L = 0;
+	subsequence[0] = data[0];
+	for (int idx = 1; idx < N; idx++)
+	{
+		if (subsequence[L] < data[idx])
+		{
+			subsequence[++L] = data[idx];
+			if (max < lengths[N - idx - 1] + L + 1) { max = lengths[N - idx - 1] + L + 1;  if (lengths[N - idx - 1] != 0) { isDoubled = true; } }
+		}
+		else
+		{
+			subsequence[binarySearch(0, L, data[idx])] = data[idx];
+		}
+	}
+
+	if (isDoubled) { max--; }
+	std::cout << max;
+}
 
 void ExecuteDpProblems()
 {
@@ -405,5 +471,6 @@ void ExecuteDpProblems()
 	//Problem_1932();
 	//Problem_2579();
 	//Problem_10844();
-	Problem_2156();
+	//Problem_2156();
+	Problem_11054();
 }
