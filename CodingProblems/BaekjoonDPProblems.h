@@ -305,7 +305,7 @@ void Problem_2579()
 */
 
 // PROBLEM 10844
-
+/*
 struct Data
 {
 	Data() = default;
@@ -356,6 +356,44 @@ void Problem_10844()
 	}
 	std::cout << sum;
 }
+*/
+
+// PROBLEM 2156
+
+int N;
+int data[10001];
+std::unordered_map<int, int> table[2];
+
+long long process(int num, int isContinued)
+{
+	if (num == N) { return data[num]; }
+	if (num > N) { return 0; }
+	if (table[isContinued].find(num) != table[isContinued].end()) { return table[isContinued][num]; }
+
+	int nums[3]{ INT_MIN , INT_MIN , INT_MIN };
+	if (isContinued == 0)
+	{
+		if (num != 0) { nums[0] = process(num + 1, 1); }
+		else { nums[0] = process(num + 1, 0); }
+	}
+	nums[1] = process(num + 2, 0);
+	nums[2] = process(num + 3, 0);
+	table[isContinued][num] = (*std::max_element(nums, nums + 3)) + data[num];
+	return table[isContinued][num];
+}
+
+void Problem_2156()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::cin >> N;
+	for (int idx = 1; idx <= N; idx++)
+	{
+		std::cin >> data[idx];
+	}
+	std::cout << process(0, 0);
+}
 
 void ExecuteDpProblems()
 {
@@ -366,5 +404,6 @@ void ExecuteDpProblems()
 	//Problem_1149();
 	//Problem_1932();
 	//Problem_2579();
-	Problem_10844();
+	//Problem_10844();
+	Problem_2156();
 }
