@@ -267,7 +267,7 @@ void Problem_1932()
 */
 
 // PROBLEM 2579
-
+/*
 int N;
 int data[301];
 std::unordered_map<int, int> table[2];
@@ -302,6 +302,60 @@ void Problem_2579()
 	std::cout << process(0, 0);
 	std::cout << std::endl;
 }
+*/
+
+// PROBLEM 10844
+
+struct Data
+{
+	Data() = default;
+	Data(int digit, int num) : mDigit{ digit }, mNum{ num }{}
+
+	int mDigit, mNum;
+
+	bool operator==(const Data& other) const
+	{
+		return this->mDigit == other.mDigit && this->mNum == other.mNum;
+	}
+
+	size_t operator()(const Data& obj) const noexcept
+	{
+		return (obj.mDigit * 1000) + obj.mNum;
+	}
+};
+
+int N;
+std::unordered_map<Data, int, Data> dpTable;
+
+int process(int digit, int prev)
+{
+	if (digit > N) { return 1; }
+	Data temp{ digit, 0 };
+	int sum = 0;
+	if ((temp.mNum = prev - 1) >= 0)
+	{
+		if (dpTable.find(temp) != dpTable.end()) { sum = ((long long)sum + dpTable[temp]) % 1000000000; }
+		else { sum = ((long long)sum + (dpTable[temp] = process(digit + 1, temp.mNum)) % 1000000000); }
+	}
+	if ((temp.mNum = prev + 1) <= 9)
+	{
+		if (dpTable.find(temp) != dpTable.end()) { sum = ((long long)sum + dpTable[temp]) % 1000000000; }
+		else { sum = ((long long)sum + (dpTable[temp] = process(digit + 1, temp.mNum)) % 1000000000); }
+	}
+	
+	return sum;
+}
+
+void Problem_10844()
+{
+	std::cin >> N;
+	int sum = 0;
+	for (int num = 1; num < 10; num++)
+	{
+		sum = ((long long)sum + process(2, num)) % 1000000000;
+	}
+	std::cout << sum;
+}
 
 void ExecuteDpProblems()
 {
@@ -311,5 +365,6 @@ void ExecuteDpProblems()
 	//Problem_9461();
 	//Problem_1149();
 	//Problem_1932();
-	Problem_2579();
+	//Problem_2579();
+	Problem_10844();
 }
