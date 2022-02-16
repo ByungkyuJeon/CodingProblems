@@ -226,7 +226,7 @@ void Problem_1149()
 */
 
 // PROBLEM 1932
-
+/*
 int N;
 int data[125250];
 std::unordered_map<int, int> dpTable;
@@ -264,6 +264,44 @@ void Problem_1932()
 	std:: cout << process(0, 0, 0);
 
 }
+*/
+
+// PROBLEM 2579
+
+int N;
+int data[301];
+std::unordered_map<int, int> table[2];
+
+long long process(int num, int isContinued)
+{
+	if (num == N) { return data[num]; }
+	if (num > N) { return INT_MIN; }
+	if (table[isContinued].find(num) != table[isContinued].end()) { return table[isContinued][num]; }
+
+	int lhs = INT_MIN;
+	if (isContinued == 0)
+	{
+		if(num != 0){ lhs = process(num + 1, 1); }
+		else { lhs = process(num + 1, 0); }
+	}
+	int rhs = process(num + 2, 0);
+	table[isContinued][num] = (lhs > rhs ? lhs : rhs) + data[num];
+	return table[isContinued][num];
+}
+
+void Problem_2579()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::cin >> N;
+	for (int idx = 1; idx <= N; idx++)
+	{
+		std::cin >> data[idx];
+	}
+	std::cout << process(0, 0);
+	std::cout << std::endl;
+}
 
 void ExecuteDpProblems()
 {
@@ -272,5 +310,6 @@ void ExecuteDpProblems()
 	//Problem_1904();
 	//Problem_9461();
 	//Problem_1149();
-	Problem_1932();
+	//Problem_1932();
+	Problem_2579();
 }
