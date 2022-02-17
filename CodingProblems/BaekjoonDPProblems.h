@@ -397,7 +397,7 @@ void Problem_2156()
 */
 
 // PROBLEM 11054
-
+/*
 int N, L = 0;
 int data[1000];
 int subsequence[1000];
@@ -460,6 +460,43 @@ void Problem_11054()
 	if (isDoubled) { max--; }
 	std::cout << max;
 }
+*/
+
+// PROBLEM 1912
+
+int N;
+int data[100001];
+std::unordered_map<int, long long> dpTable;
+
+long long process(int idx)
+{
+	if (idx == N) { return data[idx]; }
+	else if (idx > N) { return -1; }
+	if (dpTable.find(idx) != dpTable.end()) { return dpTable[idx]; }
+
+	long long calculated = process(idx + 1);
+	long long current = data[idx];
+	dpTable[idx] = current > calculated + current ? current : calculated + current;
+	return dpTable[idx];
+}
+
+void Problem_1912()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::cin >> N;
+	for (int idx = 1; idx <= N; idx++){ std::cin >> data[idx]; }
+	long long max = LONG_MIN, temp;
+	for (int idx = 1; idx <= N; idx++)
+	{
+		if ((temp = process(idx + 1)) < 0) { temp = data[idx]; }
+		else { temp += data[idx]; }
+		if (max < temp) { max = temp; }
+	}
+
+	std::cout << max;
+}
 
 void ExecuteDpProblems()
 {
@@ -472,5 +509,6 @@ void ExecuteDpProblems()
 	//Problem_2579();
 	//Problem_10844();
 	//Problem_2156();
-	Problem_11054();
+	//Problem_11054();
+	Problem_1912();
 }
