@@ -463,7 +463,7 @@ void Problem_11054()
 */
 
 // PROBLEM 1912
-
+/*
 int N;
 int data[100001];
 std::unordered_map<int, long long> dpTable;
@@ -497,6 +497,77 @@ void Problem_1912()
 
 	std::cout << max;
 }
+*/
+
+// PRBOELM 12865
+
+struct Data
+{
+public:
+	void sort()
+	{
+		std::sort(mData.begin(), mData.end(), [](const int& lhs, const int& rhs) {return lhs > rhs; });
+	}
+	int get() const
+	{
+		return mData[currentIdx];
+	}
+	std::vector<int> mData;
+	size_t currentIdx = 0;
+};
+
+std::unordered_map<int, Data> data;
+std::unordered_map<int, long long> dpTable;
+std::vector<int> weights;
+
+long long process(int weight)
+{
+	if (weight <= 0) { return 0; }
+	if (dpTable.find(weight) != dpTable.end()) { return dpTable[weight]; }
+
+	std::vector<long long> calculated; 
+	long long temp;
+	for (int start = (std::upper_bound(weights.begin(), weights.end(), weight) - weights.begin()) - 1; start >= 0; start--)
+	{
+		if (data[weights[start]].currentIdx != data[weights[start]].mData.size())
+		{
+			data[weights[start]].currentIdx++;
+			temp = process(weight - weights[start]);
+			data[weights[start]].currentIdx--;
+			calculated.emplace_back(temp + data[weights[start]].get());
+		}
+	}
+	if (calculated.size() > 0)
+	{
+		dpTable[weight] = *std::max_element(calculated.begin(), calculated.end());
+		return dpTable[weight];
+	}
+
+	return 0;
+}
+
+void Problem_12865_Trial()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int N, K, inputBuffer[2];
+	std::cin >> N >> K;
+	for (int idx = 0; idx < N; idx++)
+	{
+		std::cin >> inputBuffer[0] >> inputBuffer[1];
+		data[inputBuffer[0]].mData.emplace_back(inputBuffer[1]);
+		weights.emplace_back(inputBuffer[0]);
+	}
+	for (auto& elem : data)
+	{
+		elem.second.sort();
+	}
+
+	std::sort(weights.begin(), weights.end());
+
+	std::cout << process(K);
+}
 
 void ExecuteDpProblems()
 {
@@ -510,5 +581,6 @@ void ExecuteDpProblems()
 	//Problem_10844();
 	//Problem_2156();
 	//Problem_11054();
-	Problem_1912();
+	//Problem_1912();
+	Problem_12865_Trial();
 }
