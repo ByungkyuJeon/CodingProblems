@@ -572,7 +572,7 @@ void Problem_12865_Trial()
 */
 
 // PROBLEM 12865
-
+/*
 int dp[101][100001];
 
 void Problem_12865()
@@ -597,7 +597,105 @@ void Problem_12865()
 	
 	std::cout << dp[N][K];
 }
+*/
 
+// PROBLEM 7579 Trial - bruteforce (failed causing time out)
+/*
+int N, M, min = INT_MAX;
+std::pair<int, int> data[100];
+
+void process(int idx, long long val, int cost)
+{
+	if (M <= val) { if (min > cost) { min = cost; } return; }
+	if (cost > min || idx == N) { return; }
+
+	process(idx + 1, val + data[idx].first, cost + data[idx].second);
+	process(idx + 1, val, cost);
+}
+
+void Problem_7579()
+{
+	std::cin >> N >> M;
+
+	for (int idx = 0; idx < N; idx++){ std::cin >> data[idx].first; }
+	for (int idx = 0; idx < N; idx++) { std::cin >> data[idx].second; }
+	process(0, 0, 0);
+	std::cout << min;
+}
+*/
+
+// PROBLEM 7579 Trial 2 - dp with memorizing step value (failed causing memory exceed)
+/*
+struct Hash
+{
+	size_t operator()(const std::pair<int, long long>& obj) const noexcept
+	{
+		return (obj.second * 100) + obj.first;
+	}
+};
+
+int N, M;
+std::pair<int, int> data[100];
+std::unordered_map<std::pair<int, long long>, int, Hash> dp;
+
+int process(int idx, long long val)
+{
+	if (M <= val) { return 0; }
+	if (idx == N) { return INT_MAX; }
+	std::pair<int, long long> temp{ idx, M - val };
+	if (dp.find(temp) != dp.end()) { return dp[temp]; }
+
+	int lhs = process(idx + 1, val + data[idx].first);
+	int rhs = process(idx + 1, val);
+	if (lhs < rhs) { dp[temp] = lhs + data[idx].second; }
+	else { dp[temp] = rhs; }
+	return dp[temp];
+}
+
+void Problem_7579()
+{
+	std::cin >> N >> M;
+
+	for (int idx = 0; idx < N; idx++) { std::cin >> data[idx].first; }
+	for (int idx = 0; idx < N; idx++) { std::cin >> data[idx].second; }
+
+	std::cout << process(0, 0);
+}
+*/
+
+// PROBLEM 7579 knapsack dp
+
+long long knapsack[101][10001];
+std::pair<int, int> data[101];
+
+void Problem_7579()
+{
+	int N, M, min = 10001, sum = 0;
+	std::cin >> N >> M;
+
+	long long lhs, rhs;
+	for (int idx = 1; idx <= N; idx++) { std::cin >> data[idx].first; }
+	for (int idx = 1; idx <= N; idx++) { std::cin >> data[idx].second; sum += data[idx].second; }
+	for (int idx = 1; idx <= N; idx++)
+	{
+		for (int cost = 0; cost <= sum; cost++)
+		{
+			if (cost >= data[idx].second)
+			{
+				lhs = data[idx].first + knapsack[idx - 1][cost - data[idx].second];
+				rhs = knapsack[idx - 1][cost];
+				knapsack[idx][cost] = lhs > rhs ? lhs : rhs;
+			}
+			else { knapsack[idx][cost] = knapsack[idx - 1][cost]; }
+			if (knapsack[idx][cost] >= M)
+			{
+				if (min > cost) { min = cost; }
+			}
+		}
+	}
+
+	std::cout << min;
+}
 
 void ExecuteDpProblems()
 {
@@ -613,5 +711,6 @@ void ExecuteDpProblems()
 	//Problem_11054();
 	//Problem_1912();
 	//Problem_12865_Trial();
-	Problem_12865();
+	//Problem_12865();
+	Problem_7579();
 }
