@@ -670,6 +670,9 @@ std::pair<int, int> data[101];
 
 void Problem_7579()
 {
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
 	int N, M, min = 10001, sum = 0;
 	std::cin >> N >> M;
 
@@ -687,14 +690,29 @@ void Problem_7579()
 				knapsack[idx][cost] = lhs > rhs ? lhs : rhs;
 			}
 			else { knapsack[idx][cost] = knapsack[idx - 1][cost]; }
-			if (knapsack[idx][cost] >= M)
-			{
-				if (min > cost) { min = cost; }
-			}
+		}
+	}
+	for (int cost = 0; cost <= sum; cost++)
+	{
+		if (knapsack[N][cost] >= M)
+		{
+			min = cost;
+			break;
 		}
 	}
 
 	std::cout << min;
+}
+
+
+// PROBLEM 9084
+
+void Problem_9084()
+{
+	std::ios_base::sync_with_stdio(0);
+
+
+	int T;
 }
 
 void ExecuteDpProblems()
