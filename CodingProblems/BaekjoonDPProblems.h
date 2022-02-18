@@ -498,9 +498,10 @@ void Problem_1912()
 	std::cout << max;
 }
 */
+//
 
-// PRBOELM 12865
-
+// PROBLEM 12865 
+/*
 struct Data
 {
 public:
@@ -568,6 +569,35 @@ void Problem_12865_Trial()
 
 	std::cout << process(K);
 }
+*/
+
+// PROBLEM 12865
+
+int dp[101][100001];
+
+void Problem_12865()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int N, K, input[2], lhs, rhs;
+	std::cin >> N >> K;
+
+	for (int inputCount = 1; inputCount <= N; inputCount++)
+	{
+		std::cin >> input[0] >> input[1];
+		for (int weightCount = 1; weightCount <= K; weightCount++)
+		{
+			if (input[0] > weightCount) { dp[inputCount][weightCount] = dp[inputCount - 1][weightCount]; continue; }
+			lhs = input[1] + dp[inputCount - 1][weightCount - input[0]];
+			rhs = dp[inputCount - 1][weightCount];
+			dp[inputCount][weightCount] = lhs > rhs ? lhs : rhs;
+		}
+	}
+	
+	std::cout << dp[N][K];
+}
+
 
 void ExecuteDpProblems()
 {
@@ -582,5 +612,6 @@ void ExecuteDpProblems()
 	//Problem_2156();
 	//Problem_11054();
 	//Problem_1912();
-	Problem_12865_Trial();
+	//Problem_12865_Trial();
+	Problem_12865();
 }
