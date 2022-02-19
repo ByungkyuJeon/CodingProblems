@@ -46,7 +46,39 @@ void Problem_10828()
 }
 */
 
+// PROBLEM 10773
+/*
+void Problem_10773()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::stack<int> data;
+	int K, inputNum, sum = 0;
+	std::cin >> K;
+	while (K-- > 0)
+	{
+		std::cin >> inputNum;
+		if (inputNum == 0)
+		{
+			data.pop();
+			continue;
+		}
+		data.push(inputNum);
+	}
+
+	while (!data.empty())
+	{
+		sum += data.top();
+		data.pop();
+	}
+
+	std::cout << sum;
+}
+*/
+
 void ExecuteStack()
 {
 	//Problem_10828();
+	//Problem_10773();
 }
