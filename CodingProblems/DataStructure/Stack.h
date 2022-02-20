@@ -191,9 +191,8 @@ void Problem_17298()
 
 // PROBLEM 17298
 //
-// time complexity : under O(N^2)
-// best time complexity : O(N)
-
+// time complexity : O(N)
+/*
 int res[1000000];
 
 void Problem_17298()
@@ -226,6 +225,7 @@ void Problem_17298()
 
 	std::cout << outputStr;
 }
+*/
 
 void ExecuteStack()
 {
@@ -233,5 +233,5 @@ void ExecuteStack()
 	//Problem_10773();
 	//Problem_9012();
 	//Problem_4949();
-	Problem_17298();
+	//Problem_17298();
 }
