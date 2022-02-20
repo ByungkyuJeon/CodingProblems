@@ -78,7 +78,7 @@ void Problem_10773()
 */
 
 // PROBLEM 9012
-
+/*
 void Problem_9012()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -104,10 +104,50 @@ void Problem_9012()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 4949
+
+void Problem_4949()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	bool check; std::stack<char> data;
+	std::string inputStr, outputStr;
+	while (true)
+	{
+		std::getline(std::cin, inputStr);
+		if (inputStr == ".") { break; }
+		data = std::stack<char>(); check = true;
+		for (int idx = 0; idx < inputStr.size(); idx++)
+		{
+			if (inputStr[idx] == ')')
+			{
+				if (!data.empty() && data.top() == '(') { data.pop(); continue; }
+				check = false; break;
+			}
+			else if (inputStr[idx] == ']')
+			{
+				if (!data.empty() && data.top() == '[') { data.pop(); continue; }
+				check = false; break;
+			}
+			else if (inputStr[idx] == '[' || inputStr[idx] == '(')
+			{
+				data.emplace(inputStr[idx]);
+			}
+		}
+		if (check && data.empty()) { outputStr += "yes\n"; }
+		else { outputStr += "no\n"; }
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteStack()
 {
 	//Problem_10828();
 	//Problem_10773();
-	Problem_9012();
+	//Problem_9012();
+	Problem_4949();
 }
