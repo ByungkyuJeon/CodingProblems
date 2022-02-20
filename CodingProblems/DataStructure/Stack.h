@@ -107,7 +107,7 @@ void Problem_9012()
 */
 
 // PROBLEM 4949
-
+/*
 void Problem_4949()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -143,11 +143,95 @@ void Problem_4949()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 17298 Trial (time out)
+//
+// time complexity : under O(N^2)
+// best time complexity : O(N)
+/*
+int data[1000000];
+int res[1000000];
+
+void Problem_17298()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::vector<int> notSets;
+	int N;
+	std::cin >> N >> data[0];
+	notSets.emplace_back(0);
+	for (int idx = 1; idx < N; idx++)
+	{
+		std::cin >> data[idx];
+
+		for (int setIdx = 0; setIdx < notSets.size(); setIdx++)
+		{
+			if (data[notSets[setIdx]] < data[idx])
+			{
+				res[notSets[setIdx]] = data[idx];
+				notSets.erase(std::remove(notSets.begin(), notSets.end(), notSets[setIdx]));
+				setIdx--;
+			}
+		}
+		notSets.emplace_back(idx);
+	}
+
+	std::string outputStr;
+	for (int idx = 0; idx < N; idx++)
+	{
+		if (res[idx] != 0) { outputStr += std::to_string(res[idx]) + " "; }
+		else { outputStr += std::to_string(-1) + " "; }
+	}
+
+	std::cout << outputStr;
+}
+*/
+
+// PROBLEM 17298
+//
+// time complexity : under O(N^2)
+// best time complexity : O(N)
+
+int res[1000000];
+
+void Problem_17298()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> notSets;
+	int N, inputNum;
+	std::cin >> N >> inputNum;
+	notSets.emplace(std::make_pair(inputNum, 0));
+	for (int idx = 1; idx < N; idx++)
+	{
+		std::cin >> inputNum;
+
+		while (!notSets.empty() && notSets.top().first < inputNum)
+		{
+			res[notSets.top().second] = inputNum;
+			notSets.pop();
+		}
+		notSets.emplace(std::make_pair(inputNum, idx));
+	}
+
+	std::string outputStr;
+	for (int idx = 0; idx < N; idx++)
+	{
+		if (res[idx] != 0) { outputStr += std::to_string(res[idx]) + " "; }
+		else { outputStr += std::to_string(-1) + " "; }
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteStack()
 {
 	//Problem_10828();
 	//Problem_10773();
 	//Problem_9012();
-	Problem_4949();
+	//Problem_4949();
+	Problem_17298();
 }
