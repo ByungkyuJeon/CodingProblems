@@ -405,7 +405,7 @@ void Problem_1039_Tester()
 */
 
 // PROBLEM 2164
-
+/*
 void Problem_2164()
 {
 	int N;
@@ -424,6 +424,35 @@ void Problem_2164()
 
 	std::cout << data.front();
 }
+*/
+
+// PROBLEM 11866
+
+void Problem_11866()
+{
+	int N, K;
+	std::cin >> N >> K;
+	std::string outputStr = "<";
+	std::queue<int> data;
+	for (int num = 1; num <= N; num++) { data.emplace(num); }
+	int itrCount;
+	while (data.size() != 1)
+	{
+		if(K <= data.size()) { itrCount = K; }
+		else{ itrCount = (K % data.size()) + data.size(); }
+
+		for (int cnt = 1; cnt < itrCount; cnt++)
+		{
+			data.emplace(data.front());
+			data.pop();
+		}
+		outputStr += std::to_string(data.front()) + ", ";
+		data.pop();
+	}
+	outputStr += std::to_string(data.front()) += ">";
+
+	std::cout << outputStr;
+}
 
 void ExecuteQueue()
 {
@@ -431,5 +460,6 @@ void ExecuteQueue()
 	//Problem_18258();
 	//Problem_1039_Tester();
 	//Problem_1039();
-	Problem_2164();
+	//Problem_2164();
+	Problem_11866();
 }
