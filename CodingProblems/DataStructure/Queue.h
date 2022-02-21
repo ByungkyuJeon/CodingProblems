@@ -456,7 +456,7 @@ void Problem_11866()
 */
 
 // PROBLEM 1966
-
+/*
 void Problem_1966()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -500,6 +500,65 @@ void Problem_1966()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 10866
+
+void Problem_10866()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int N, inputBuffer;
+	std::cin >> N;
+	std::string inputStr, outputStr;
+	std::deque<int> data;
+	while (N-- > 0)
+	{
+		std::cin >> inputStr;
+		if (inputStr == "push_front")
+		{
+			std::cin >> inputBuffer;
+			data.emplace_front(inputBuffer);
+		}
+		else if (inputStr == "push_back")
+		{
+			std::cin >> inputBuffer;
+			data.emplace_back(inputBuffer);
+		}
+		else if (inputStr == "pop_front")
+		{
+			if (data.empty()){ outputStr += std::to_string(-1) + '\n'; }
+			else { outputStr += std::to_string(data.front()) + '\n'; data.pop_front(); }
+		}
+		else if (inputStr == "pop_back")
+		{
+			if (data.empty()) { outputStr += std::to_string(-1) + '\n'; }
+			else { outputStr += std::to_string(data.back()) + '\n'; data.pop_back();}
+		}
+		else if (inputStr == "size")
+		{
+			outputStr += std::to_string(data.size()) + '\n';
+		}
+		else if (inputStr == "empty")
+		{
+			if (data.empty()) { outputStr += std::to_string(1) + '\n'; }
+			else { outputStr += std::to_string(0) + '\n'; }
+		}
+		else if (inputStr == "front")
+		{
+			if (data.empty()) { outputStr += std::to_string(-1) + '\n'; }
+			else { outputStr += std::to_string(data.front()) + '\n'; }
+		}
+		else if (inputStr == "back")
+		{
+			if (data.empty()) { outputStr += std::to_string(-1) + '\n'; }
+			else { outputStr += std::to_string(data.back()) + '\n'; }
+		}
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteQueue()
 {
@@ -509,5 +568,6 @@ void ExecuteQueue()
 	//Problem_1039();
 	//Problem_2164();
 	//Problem_11866();
-	Problem_1966();
+	//Problem_1966();
+	Problem_10866();
 }
