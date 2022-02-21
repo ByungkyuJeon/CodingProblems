@@ -503,7 +503,7 @@ void Problem_1966()
 */
 
 // PROBLEM 10866
-
+/*
 void Problem_10866()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -559,6 +559,75 @@ void Problem_10866()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 1021
+
+bool outs[51];
+
+int getDistance(int start, int dest, int max)
+{
+	int ldist = 0, rdist = 0;
+	for (int num = start;; num++)
+	{
+		if (num > max) { num = 1; }
+		if (num == dest) { break; }
+		if (outs[num]) { continue; }
+		ldist++;
+	}
+
+	for (int num = start;; num--)
+	{
+		if (num < 1) { num = max; }
+		if (num == dest) { break; }
+		if (outs[num]) { continue; }
+		rdist++;
+	}
+
+	return ldist < rdist ? ldist : -rdist;
+}
+
+void Problem_1021()
+{
+	int N, M;
+	std::cin >> N >> M;
+	std::vector<int> data(M);
+	for (int idx = 0; idx < M; idx++)
+	{
+		std::cin >> data[idx];
+	}
+	std::deque<int> dataQueue;
+	for (int num = 1; num <= N; num++)
+	{
+		dataQueue.emplace_back(num);
+	}
+	int currentPos = 1, dist, currIdx = 0, result = 0;
+
+	while (M-- > 0)
+	{
+		dist = getDistance(currentPos, data[currIdx++], N);
+		while (dist != 0)
+		{
+			result++;
+			if (dist > 0)
+			{
+				dataQueue.emplace_back(dataQueue.front());
+				dataQueue.pop_front(); dist--;
+			}
+			else
+			{
+				dataQueue.emplace_front(dataQueue.back());
+				dataQueue.pop_back(); dist++;
+			}
+		}
+		outs[dataQueue.front()] = true;
+		dataQueue.pop_front();
+		if (dataQueue.empty()) { break; }
+		currentPos = dataQueue.front();
+	}
+
+	std::cout << result;
+}
 
 void ExecuteQueue()
 {
@@ -569,5 +638,6 @@ void ExecuteQueue()
 	//Problem_2164();
 	//Problem_11866();
 	//Problem_1966();
-	Problem_10866();
+	//Problem_10866();
+	Problem_1021();
 }
