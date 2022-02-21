@@ -427,7 +427,7 @@ void Problem_2164()
 */
 
 // PROBLEM 11866
-
+/*
 void Problem_11866()
 {
 	int N, K;
@@ -453,6 +453,53 @@ void Problem_11866()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 1966
+
+void Problem_1966()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string outputStr;
+	int N, T, M, input, count;
+	std::cin >> T;
+	while (T-- > 0)
+	{
+		std::cin >> N >> M;
+		std::queue<std::pair<int, int>> ret;
+		std::priority_queue<int> data;
+		for (int idx = 0; idx < N; idx++)
+		{
+			std::cin >> input;
+			data.emplace(input);
+			ret.emplace(std::make_pair(input, idx));
+		}
+		count = 0;
+		while (true)
+		{
+			if (data.top() != ret.front().first)
+			{
+				ret.emplace(ret.front());
+				ret.pop();
+			}
+			else
+			{
+				count++;
+				data.pop();
+				if (ret.front().second == M)
+				{
+					outputStr += std::to_string(count) + '\n';
+					break;
+				}
+				ret.pop();
+			}
+		}
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteQueue()
 {
@@ -461,5 +508,6 @@ void ExecuteQueue()
 	//Problem_1039_Tester();
 	//Problem_1039();
 	//Problem_2164();
-	Problem_11866();
+	//Problem_11866();
+	Problem_1966();
 }
