@@ -404,7 +404,26 @@ void Problem_1039_Tester()
 }
 */
 
+// PROBLEM 2164
 
+void Problem_2164()
+{
+	int N;
+	std::cin >> N;
+	std::queue<int> data;
+	for (int num = 1; num <= N; num++)
+	{
+		data.emplace(num);
+	}
+	while (data.size() != 1)
+	{
+		data.pop();
+		data.emplace(data.front());
+		data.pop();
+	}
+
+	std::cout << data.front();
+}
 
 void ExecuteQueue()
 {
@@ -412,4 +431,5 @@ void ExecuteQueue()
 	//Problem_18258();
 	//Problem_1039_Tester();
 	//Problem_1039();
+	Problem_2164();
 }
