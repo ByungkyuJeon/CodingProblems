@@ -562,7 +562,7 @@ void Problem_10866()
 */
 
 // PROBLEM 1021
-
+/*
 bool outs[51];
 
 int getDistance(int start, int dest, int max)
@@ -628,6 +628,70 @@ void Problem_1021()
 
 	std::cout << result;
 }
+*/
+
+// PROBLEM 5430
+
+void Problem_5430()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+	
+	int T;
+	std::cin >> T;
+
+	std::string funcStr, numStr, temp, outputStr;
+	std::deque<int> data; bool isError = false, direction = false;
+	int numCount;
+	while (T-- > 0)
+	{
+		std::cin >> funcStr >> numCount >> numStr;
+		data.clear(); direction = false; isError = false;
+		for (int idx = 0; idx < numStr.size(); idx++)
+		{
+			if ((numStr[idx] == ',' || numStr[idx] == ']') && !temp.empty())
+			{
+				data.emplace_back(std::stoi(temp));
+				temp.clear();
+			}
+			else if (numStr[idx] >= '0' && numStr[idx] <= '9')
+			{
+				temp += numStr[idx];
+			}
+		}
+
+		for (const auto& func : funcStr)
+		{
+			if (func == 'R'){ direction = !direction; }
+			else
+			{
+				if (data.empty()) { isError = true; break; }
+				if (direction){ data.pop_back(); }
+				else{ data.pop_front(); }
+			}
+		}
+
+		if (isError) { outputStr += "error\n"; continue; }
+		outputStr += '[';
+		while (data.size() > 1)
+		{
+			if (direction)
+			{
+				outputStr += std::to_string(data.back()) + ',';
+				data.pop_back();
+			}
+			else
+			{
+				outputStr += std::to_string(data.front()) + ',';
+				data.pop_front();
+			}
+		}
+		if (!data.empty()) { outputStr += std::to_string(data.front()); }
+		outputStr += "]\n";
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteQueue()
 {
@@ -639,5 +703,6 @@ void ExecuteQueue()
 	//Problem_11866();
 	//Problem_1966();
 	//Problem_10866();
-	Problem_1021();
+	//Problem_1021();
+	Problem_5430();
 }
