@@ -227,6 +227,41 @@ void Problem_17298()
 }
 */
 
+// PRBOLEM 2493
+
+int ret[500000];
+int data[500000];
+
+void Problem_2493()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> maxData;
+	
+	int N;
+	std::cin >> N;
+	for (int idx = 0; idx < N; idx++){ std::cin >> data[idx]; }
+	maxData.emplace(std::make_pair(data[N - 1], N - 1));
+	for (int idx = N - 2; idx >= 0; idx--)
+	{
+		while (!maxData.empty() && data[idx] >= maxData.top().first)
+		{
+			ret[maxData.top().second] = idx + 1;
+			maxData.pop();
+		}
+		maxData.emplace(std::make_pair(data[idx], idx));
+	}
+
+	std::string outputStr;
+	for (int idx = 0; idx < N; idx++)
+	{
+		if (ret[idx] != 0){ outputStr += std::to_string(ret[idx]) + " "; continue; }
+		outputStr += "0 ";
+	}
+	std::cout << outputStr;
+}
+
 void ExecuteStack()
 {
 	//Problem_10828();
@@ -234,4 +269,5 @@ void ExecuteStack()
 	//Problem_9012();
 	//Problem_4949();
 	//Problem_17298();
+	Problem_2493();
 }
