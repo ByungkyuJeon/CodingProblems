@@ -1356,6 +1356,7 @@ void Problem_11444_Test()
 /// <summary>
 /// 문제 11444와 마찬가지로 피보나치의 점화식을 행렬 곱셈으로 풀이하면 된다.
 /// </summary>
+/*
 void mult(long long(*lhs)[2], long long(*rhs)[2])
 {
 	long long ret[2][2];
@@ -1404,6 +1405,77 @@ void Problem_7677()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 2086
+
+void mult(long long(*lhs)[2], long long(*rhs)[2])
+{
+	long long ret[2][2];
+	ret[0][0] = (lhs[0][0] * rhs[0][0]) + (lhs[0][1] * rhs[1][0]);
+	ret[0][1] = (lhs[0][0] * rhs[0][1]) + (lhs[0][1] * rhs[1][1]);
+	ret[1][0] = ret[0][1];
+	ret[1][1] = (lhs[1][0] * rhs[0][1]) + (lhs[1][1] * rhs[1][1]);
+	for (int row = 0; row < 2; row++)
+	{
+		for (int col = 0; col < 2; col++)
+		{
+			lhs[row][col] = ret[row][col] % 1000000007;
+		}
+	}
+}
+
+std::map<int, long long[2][2]> map;
+
+void Problem_2086()
+{
+	long long nums[2] = { 0 };
+	long long num;
+
+	map[1][0][0] = 1; map[1][0][1] = 1; map[1][1][0] = 1; map[1][1][1] = 0;
+	long long current = 1, size = sizeof(long long) * 4;
+	std::map<int, long long[2][2]>::iterator itr;
+	std::cin >> nums[0] >> nums[1];
+
+	long long temp;
+	if (nums[0] < nums[1])
+	{
+		temp = nums[0];
+		nums[0] = nums[1];
+		nums[0] = temp;
+	}
+
+	if (nums[1] == 0) { num = 0; }
+	else
+	{
+		while ((temp = nums[0] % nums[1]) != 0)
+		{
+			nums[0] = nums[1];
+			nums[1] = temp;
+		}
+
+		num = nums[1];
+	}
+
+
+	num %= 2000000016;
+	if (num == 0) { std::cout << 0; }
+	else
+	{
+		long long result[2][2]{ {1, 1}, {1, 0} };
+		while (num > current)
+		{
+			itr = map.begin();
+			while (itr != map.end() && (*(itr)).first < num - current) { std::advance(itr, 1); }
+			if (itr != map.begin()) { std::advance(itr, -1); }
+			mult(result, (*(itr)).second);
+			current += (*(itr)).first;
+			memcpy(map[current], result, size);
+		}
+
+		std::cout << result[0][1];
+	}
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -1448,5 +1520,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_1436();
 	//Problem_11444();
 	//Problem_11444_Test();
-	Problem_7677();
+	//Problem_7677();
+	Problem_2086();
 }
