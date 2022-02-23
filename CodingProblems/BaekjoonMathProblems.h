@@ -1237,6 +1237,7 @@ void Problem_1436()
 /// 
 /// 결과 : 시간초과. 모듈러 연산자가 큰 수의 파사노 주기를 가지고 있어, 파사노 주기로 해결할 수 없는 문제이다.
 /// </summary>
+/*
 void Problem_11444_Trial()
 {
 	long long input;
@@ -1269,11 +1270,15 @@ void Problem_11444_Trial()
 		std::cout << nums[current];
 	}
 }
+*/
+
+// PROBLEM 11444 Final : 피보나치 수 6
 
 /// <summary>
 /// 피보나치의 점화식을 행렬의 곱셈을 통해 분할 정복으로 풀이해야 한다.
 /// 행렬의 제곱 연산을 이용하면 n 번째 피보나치 행렬을 통해 2n 번째 피보나치 행렬을 빠르게 구할 수 있기 때문이다.
 /// </summary>
+/*
 void mult(long long (*lhs)[2], long long (*rhs)[2])
 {
 	long long ret[2][2];
@@ -1319,10 +1324,12 @@ void Problem_11444(long long i)
 		//std::cout << result[0][1];
 	}
 }
+*/
 
 /// <summary>
 /// Test code for 11444
 /// </summary>
+/*
 void Problem_11444_Test()
 {
 	long long num = 0;
@@ -1341,6 +1348,61 @@ void Problem_11444_Test()
 			std::cout << max << "   " << dataSize << std::endl;
 		}
 	}
+}
+*/
+
+// PROBLEM 7677
+
+/// <summary>
+/// 문제 11444와 마찬가지로 피보나치의 점화식을 행렬 곱셈으로 풀이하면 된다.
+/// </summary>
+void mult(long long(*lhs)[2], long long(*rhs)[2])
+{
+	long long ret[2][2];
+	ret[0][0] = (lhs[0][0] * rhs[0][0]) + (lhs[0][1] * rhs[1][0]);
+	ret[0][1] = (lhs[0][0] * rhs[0][1]) + (lhs[0][1] * rhs[1][1]);
+	ret[1][0] = (lhs[1][0] * rhs[0][0]) + (lhs[1][1] * rhs[1][0]);
+	ret[1][1] = (lhs[1][0] * rhs[0][1]) + (lhs[1][1] * rhs[1][1]);
+	for (int row = 0; row < 2; row++)
+	{
+		for (int col = 0; col < 2; col++)
+		{
+			lhs[row][col] = ret[row][col] % 10000;
+		}
+	}
+}
+
+std::map<int, long long[2][2]> map;
+
+void Problem_7677()
+{
+	map[1][0][0] = 1; map[1][0][1] = 1; map[1][1][0] = 1; map[1][1][1] = 0;
+	long long input, current = 1, size = sizeof(long long) * 4;
+	std::map<int, long long[2][2]>::iterator itr;
+	std::string outputStr;
+	while (true)
+	{
+		std::cin >> input;
+		if (input == -1) { break; }
+		input %= 15000;
+		if (input == 0) { outputStr += "0\n"; continue; }
+
+		long long result[2][2]{ {1, 1}, {1, 0} };
+		current = 1;
+		while (input > current)
+		{
+			itr = map.begin();
+			while (itr != map.end() && (*(itr)).first < input - current) { std::advance(itr, 1); }
+			if (itr != map.begin()) { std::advance(itr, -1); }
+			mult(result, (*(itr)).second);
+			current += (*(itr)).first;
+			memcpy(map[current], result, size);
+		}
+
+		outputStr += std::to_string(result[0][1]) + '\n';
+	}
+
+	std::cout << outputStr;
 }
 
 void ExecuteBaekjoonMathProblems()
@@ -1385,5 +1447,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_7568();
 	//Problem_1436();
 	//Problem_11444();
-	Problem_11444_Test();
+	//Problem_11444_Test();
+	Problem_7677();
 }
