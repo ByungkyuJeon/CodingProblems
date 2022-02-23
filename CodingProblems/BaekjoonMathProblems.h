@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include <queue>
 #include <stack>
+#include <map>
 #include "TimeChecker.h"
 
 // PROBLEM 8393
@@ -917,7 +918,7 @@ void Problem_10826()
 }
 */
 
-// PROBLEM 9471
+// PROBLEM 9471 : 파사노 주기
 /*
 void Problem_9471()
 {
@@ -955,7 +956,7 @@ void Problem_9471()
 }
 */
 
-// PRBOELM 2749
+// PRBOELM 2749 : 피보나치 수 3
 /*
 void Problem_2749()
 {
@@ -977,7 +978,7 @@ void Problem_2749()
 }
 */
 
-// PROBLEM 1463
+// PROBLEM 1463 : 1로 만들기
 /*
 int maxDepth = 1000000;
 
@@ -1000,7 +1001,7 @@ void Problem_1463()
 */
 
 // PRBOELM 2447
-
+//
 /*
 bool calc(int x, int y)
 {
@@ -1030,7 +1031,7 @@ void Problem_2447()
 }
 */
 
-// PROBLEM 11729
+// PROBLEM 11729 : 하노이 탑 이동 순서
 /*
 std::stack<int> table[3];
 std::vector<std::pair<int, int>> trace;
@@ -1130,7 +1131,7 @@ void Problem_11729()
 }
 */
 
-// PROBLEM 2798
+// PROBLEM 2798 : 블랙잭
 /*
 void Problem_2798()
 {
@@ -1161,7 +1162,7 @@ void Problem_2798()
 }
 */
 
-// PROBLEM 2231
+// PROBLEM 2231 : 분해합
 /*
 void Problem_2231()
 {
@@ -1183,7 +1184,7 @@ void Problem_2231()
 }
 */
 
-// PROBLEM 7568
+// PROBLEM 7568 : 덩치
 /*
 void Problem_7568()
 {
@@ -1227,6 +1228,121 @@ void Problem_1436()
 }
 */
 
+// PROBLEM 11444 Trial : 피보나치 수 6
+
+/// <summary>
+/// 파사노 주기 법칙을 활용해 최적화하는 알고리즘으로 해결해야 한다.
+/// 입력값의 크기가 크기 때문에 일반적인 3항 바텀업 알고리즘 또는 탑다운 DP 알고리즘으로는 시간 초과이다.
+/// 모듈러 연산자가 1,000,000,007로 고정되어 있기 때문에 파사노 주기는 2,000,000,016이다.
+/// 
+/// 결과 : 시간초과. 모듈러 연산자가 큰 수의 파사노 주기를 가지고 있어, 파사노 주기로 해결할 수 없는 문제이다.
+/// </summary>
+void Problem_11444_Trial()
+{
+	long long input;
+	std::cin >> input;
+	input %= 2000000016;
+	long long nums[3]{0, 1, 1};
+	int current = 0;
+	if (input < 3) { std::cout << nums[input]; }
+	else
+	{
+		for (int num = 3; num <= input; num++)
+		{
+			switch (current)
+			{
+			case 0:
+				nums[0] = (nums[1] + nums[2]) % 1000000007;
+				break;
+			case 1:
+				nums[1] = (nums[0] + nums[2]) % 1000000007;
+				break;
+			case 2:
+				nums[2] = (nums[0] + nums[1]) % 1000000007;
+				break;
+			default:
+				break;
+			}
+			if (num != input && ++current > 2) { current = 0; }
+		}
+
+		std::cout << nums[current];
+	}
+}
+
+/// <summary>
+/// 피보나치의 점화식을 행렬의 곱셈을 통해 분할 정복으로 풀이해야 한다.
+/// 행렬의 제곱 연산을 이용하면 n 번째 피보나치 행렬을 통해 2n 번째 피보나치 행렬을 빠르게 구할 수 있기 때문이다.
+/// </summary>
+void mult(long long (*lhs)[2], long long (*rhs)[2])
+{
+	long long ret[2][2];
+	ret[0][0] = (lhs[0][0] * rhs[0][0]) + (lhs[0][1] * rhs[1][0]);
+	ret[0][1] = (lhs[0][0] * rhs[0][1]) + (lhs[0][1] * rhs[1][1]);
+	ret[1][0] = (lhs[1][0] * rhs[0][0]) + (lhs[1][1] * rhs[1][0]);
+	ret[1][1] = (lhs[1][0] * rhs[0][1]) + (lhs[1][1] * rhs[1][1]);
+	for (int row = 0; row < 2; row++)
+	{
+		for (int col = 0; col < 2; col++)
+		{
+			lhs[row][col] = ret[row][col] % 1000000007;
+		}
+	}
+}
+
+std::map<int, long long[2][2]> map;
+int count, dataSize;
+void Problem_11444(long long i)
+{
+	map[1][0][0] = 1; map[1][0][1] = 1; map[1][1][0] = 1; map[1][1][1] = 0;
+	long long input, current = 1, size = sizeof(long long) * 4;
+	std::map<int, long long[2][2]>::iterator itr;
+	//std::cin >> input;
+	input = i;
+	input %= 2000000016;
+	if (input == 0) { std::cout << 0; }
+	else 
+	{
+		long long result[2][2]{ {1, 1}, {1, 0} };
+		while (input > current)
+		{
+			count++;
+			itr = map.begin();
+			while (itr != map.end() && (*(itr)).first < input - current) { std::advance(itr, 1); }
+			if (itr != map.begin()) { std::advance(itr, -1); }
+			mult(result, (*(itr)).second);
+			current += (*(itr)).first;
+			memcpy(map[current], result, size);
+		}
+
+		dataSize = map.size();
+		//std::cout << result[0][1];
+	}
+}
+
+/// <summary>
+/// Test code for 11444
+/// </summary>
+void Problem_11444_Test()
+{
+	long long num = 0;
+	long long max = 0;
+	while (num < 2000000016)
+	{
+		count = 0;
+		dataSize = 0;
+		map = std::map<int, long long[2][2]>();
+		num++;
+
+		Problem_11444(num);
+		if (max < count) 
+		{ 
+			max = count; 
+			std::cout << max << "   " << dataSize << std::endl;
+		}
+	}
+}
+
 void ExecuteBaekjoonMathProblems()
 {
 	//Problem_8393();
@@ -1268,4 +1384,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_2231();
 	//Problem_7568();
 	//Problem_1436();
+	//Problem_11444();
+	Problem_11444_Test();
 }
