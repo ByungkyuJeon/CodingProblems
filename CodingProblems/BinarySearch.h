@@ -485,6 +485,36 @@ void Problem_1365()
 }
 */
 
+// PROBLEM 1920
+
+int data[100001];
+
+void Problem_1920()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int N, M, inputNum;
+	std::cin >> N;
+	for (int idx = 0; idx < N; idx++)
+	{
+		std::cin >> data[idx];
+	}
+
+	std::sort(data, data + N);
+
+	std::string outputStr;
+	std::cin >> M;
+	while (M-- > 0)
+	{
+		std::cin >> inputNum;
+		if ((*std::lower_bound(data, data + N, inputNum)) == inputNum) { outputStr += "1\n"; }
+		else { outputStr += "0\n"; }
+	}
+	
+	std::cout << outputStr;
+}
+
 void ExecuteBinarySearch()
 {
 	//Problem_3020();
@@ -494,4 +524,5 @@ void ExecuteBinarySearch()
 	//Problem_2568();
 	//Problem_17441();
 	//Problem_1365();
+	Problem_1920();
 }
