@@ -486,7 +486,7 @@ void Problem_1365()
 */
 
 // PROBLEM 1920
-
+/*
 int data[100001];
 
 void Problem_1920()
@@ -514,6 +514,35 @@ void Problem_1920()
 	
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 10816
+
+std::unordered_map<int, int> data;
+
+void Problem_10816()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int N, M, inputNum;
+	std::cin >> N;
+	for (int idx = 0; idx < N; idx++) { std::cin >> inputNum; data[inputNum]++; }
+	std::cin >> M;
+	std::string outputStr;
+	while (M-- > 0)
+	{
+		std::cin >> inputNum;
+		if (data.find(inputNum) != data.end())
+		{
+			outputStr += std::to_string(data[inputNum]) + '\n';
+		}
+		else { outputStr += "0\n"; }
+	}
+
+	std::cout << outputStr;
+
+}
 
 void ExecuteBinarySearch()
 {
@@ -524,5 +553,6 @@ void ExecuteBinarySearch()
 	//Problem_2568();
 	//Problem_17441();
 	//Problem_1365();
-	Problem_1920();
+	//Problem_1920();
+	Problem_10816();
 }
