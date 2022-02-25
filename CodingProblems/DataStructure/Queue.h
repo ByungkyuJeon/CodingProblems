@@ -631,7 +631,7 @@ void Problem_1021()
 */
 
 // PROBLEM 5430
-
+/*
 void Problem_5430()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -692,6 +692,53 @@ void Problem_5430()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 11286
+
+struct comp
+{
+	bool operator()(const std::pair<int, int>& lhs, const std::pair<int, int>& rhs) const noexcept
+	{
+		if (lhs.first == rhs.first)
+		{
+			return lhs.second > rhs.second;
+		}
+		return lhs.first > rhs.first;
+	}
+};
+
+void Problem_11286()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, comp> data;
+
+	std::string outputStr;
+	int N, inputBuffer;
+	std::cin >> N;
+	while (N-- > 0)
+	{
+		std::cin >> inputBuffer;
+		if (inputBuffer == 0)
+		{ 
+			if (!data.empty())
+			{
+				outputStr += std::to_string(data.top().second) + '\n';
+				data.pop();
+			}
+			else
+			{
+				outputStr += "0\n";
+			}
+			continue;
+		}
+		data.emplace(std::make_pair(std::abs(inputBuffer), inputBuffer));
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteQueue()
 {
@@ -704,5 +751,6 @@ void ExecuteQueue()
 	//Problem_1966();
 	//Problem_10866();
 	//Problem_1021();
-	Problem_5430();
+	//Problem_5430();
+	Problem_11286();
 }
