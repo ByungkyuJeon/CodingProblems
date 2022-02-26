@@ -1287,6 +1287,36 @@ void Problem_1161_Official()
 }
 */
 
+// PROBLEM 11047
+
+void Problem_11047()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int data[10];
+
+	int N, K, result = 0;
+	std::cin >> N >> K;
+	for (int idx = 0; idx < N; idx++)
+	{
+		std::cin >> data[idx];
+	}
+
+	for (int idx = N - 1; idx >= 0; idx--)
+	{
+		if (K >= data[idx])
+		{
+			result += K / data[idx];
+			K %= data[idx];
+			if (K == 0) { break; }
+		}
+	}
+
+	std::cout << result;
+
+}
+
 void ExecuteGreedy()
 {
 	//Problem_1040();
@@ -1302,4 +1332,5 @@ void ExecuteGreedy()
 	//Problem_1161_Trial();
 	//Problem_1161_Final();
 	//Problem_1161_Official();
+	Problem_11047();
 }
