@@ -1408,7 +1408,7 @@ void Problem_7677()
 */
 
 // PROBLEM 2086
-
+/*
 void mult(long long(*lhs)[2], long long(*rhs)[2])
 {
 	long long ret[2][2];
@@ -1476,6 +1476,17 @@ void Problem_2086()
 		std::cout << result[0][1];
 	}
 }
+*/
+
+// PROBLEM 2525
+
+void Problem_2525()
+{
+	int H, M, S;
+	std::cin >> H >> M >> S;
+
+	std::cout << (H + ((M + S) / 60)) % 24 << " " << (M + S) % 60;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -1521,5 +1532,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_11444();
 	//Problem_11444_Test();
 	//Problem_7677();
-	Problem_2086();
+	//Problem_2086();
+	Problem_2525();
 }
