@@ -1479,13 +1479,29 @@ void Problem_2086()
 */
 
 // PROBLEM 2525
-
+/*
 void Problem_2525()
 {
 	int H, M, S;
 	std::cin >> H >> M >> S;
 
 	std::cout << (H + ((M + S) / 60)) % 24 << " " << (M + S) % 60;
+}
+*/
+
+// PROBLEM 2480
+
+void Problem_2480()
+{
+	int n[3];
+	std::cin >> n[0] >> n[1] >> n[2];
+
+	if (n[0] == n[1] && n[1] == n[2]) { std::cout << n[0] * 1000 + 10000; }
+	else if(n[0] != n[1] && n[0] != n[2] && n[1] != n[2]) { std::cout << *(std::max_element(n, n + 3)) * 100; }
+	else if(n[0] == n[1]) { std::cout << n[0] * 100 + 1000; }
+	else if (n[0] == n[2]) { std::cout << n[0] * 100 + 1000; }
+	else{ std::cout << n[1] * 100 + 1000; }
+
 }
 
 void ExecuteBaekjoonMathProblems()
@@ -1533,5 +1549,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_11444_Test();
 	//Problem_7677();
 	//Problem_2086();
-	Problem_2525();
+	//Problem_2525();
+	Problem_2480();
 }
