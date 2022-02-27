@@ -1317,6 +1317,34 @@ void Problem_11047()
 }
 */
 
+// PROBLEM 11399
+
+int data[1001];
+
+void Problem_11399()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int N;
+	std::cin >> N;
+	for (int idx = 0; idx < N; idx++)
+	{
+		std::cin >> data[idx];
+	}
+
+	std::sort(data, data + N);
+	int sum = 0;
+	long long result = 0;
+	for (int idx = 0; idx < N; idx++)
+	{
+		sum += data[idx];
+		result += sum;
+	}
+
+	std::cout << result;
+}
+
 void ExecuteGreedy()
 {
 	//Problem_1040();
@@ -1333,4 +1361,5 @@ void ExecuteGreedy()
 	//Problem_1161_Final();
 	//Problem_1161_Official();
 	//Problem_11047();
+	Problem_11399();
 }
