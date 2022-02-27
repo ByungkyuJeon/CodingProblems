@@ -1288,7 +1288,7 @@ void Problem_1161_Official()
 */
 
 // PROBLEM 11047
-
+/*
 void Problem_11047()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -1314,8 +1314,8 @@ void Problem_11047()
 	}
 
 	std::cout << result;
-
 }
+*/
 
 void ExecuteGreedy()
 {
@@ -1332,5 +1332,5 @@ void ExecuteGreedy()
 	//Problem_1161_Trial();
 	//Problem_1161_Final();
 	//Problem_1161_Official();
-	Problem_11047();
+	//Problem_11047();
 }
