@@ -1318,7 +1318,7 @@ void Problem_11047()
 */
 
 // PROBLEM 11399
-
+/*
 int data[1001];
 
 void Problem_11399()
@@ -1344,6 +1344,60 @@ void Problem_11399()
 
 	std::cout << result;
 }
+*/
+
+// PROBLEM 1541
+
+void Problem_1541()
+{
+	std::string inputStr, strBuffer;
+	std::cin >> inputStr;
+
+	bool started = false;
+	int result = 0;
+	for (const auto& elem : inputStr)
+	{
+		if (elem == '-')
+		{
+			if (started)
+			{
+				result -= std::stoi(strBuffer);
+			}
+			else
+			{
+				result += std::stoi(strBuffer);
+			}
+			strBuffer.clear();
+			started = true;
+		}
+		else if(elem == '+')
+		{
+			if (started)
+			{
+				result -= std::stoi(strBuffer);
+			}
+			else
+			{
+				result += std::stoi(strBuffer);
+			}
+			strBuffer.clear();
+		}
+		else
+		{
+			strBuffer += elem;
+		}
+	}
+	if (started)
+	{
+		result -= std::stoi(strBuffer);
+	}
+	else
+	{
+		result += std::stoi(strBuffer);
+	}
+
+	std::cout << result;
+}
 
 void ExecuteGreedy()
 {
@@ -1361,5 +1415,6 @@ void ExecuteGreedy()
 	//Problem_1161_Final();
 	//Problem_1161_Official();
 	//Problem_11047();
-	Problem_11399();
+	//Problem_11399();
+	Problem_1541();
 }
