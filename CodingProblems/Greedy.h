@@ -1347,7 +1347,7 @@ void Problem_11399()
 */
 
 // PROBLEM 1541
-
+/*
 void Problem_1541()
 {
 	std::string inputStr, strBuffer;
@@ -1398,6 +1398,50 @@ void Problem_1541()
 
 	std::cout << result;
 }
+*/
+
+// PROBLEM 13305
+
+int distances[100000];
+int prices[100000];
+
+void Problem_13305()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+	
+	int N;
+	std::cin >> N;
+	for (int idx = 0; idx < N - 1; idx++)
+	{
+		std::cin >> distances[idx];
+	}
+	for (int idx = 0; idx < N; idx++)
+	{
+		std::cin >> prices[idx];
+	}
+
+	long long sum = 0;
+	for (int idx = 0; idx < N - 1; idx++)
+	{
+		sum += (long long)prices[idx] * distances[idx];
+		for (int sub = idx + 1; sub < N; sub++)
+		{
+			if (prices[idx] > prices[sub])
+			{
+				idx = sub - 1;
+				break;
+			}
+			else
+			{
+				sum += (long long)prices[idx] * distances[sub];
+				if (sub == N - 1) { idx = N; }
+			}
+		}
+	}
+
+	std::cout << sum;
+}
 
 void ExecuteGreedy()
 {
@@ -1416,5 +1460,6 @@ void ExecuteGreedy()
 	//Problem_1161_Official();
 	//Problem_11047();
 	//Problem_11399();
-	Problem_1541();
+	//Problem_1541();
+	Problem_13305();
 }
