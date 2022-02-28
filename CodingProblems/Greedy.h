@@ -1401,7 +1401,7 @@ void Problem_1541()
 */
 
 // PROBLEM 13305
-
+/*
 int distances[100000];
 int prices[100000];
 
@@ -1442,6 +1442,64 @@ void Problem_13305()
 
 	std::cout << sum;
 }
+*/
+
+// PROBLEM 2630
+
+int N;
+bool data[128][128];
+
+std::pair<int, int> operator+(const std::pair<int, int>& lhs, const std::pair<int, int>& rhs)
+{
+	return std::make_pair(lhs.first + rhs.first, lhs.second + rhs.second);
+}
+
+std::pair<int, int> process(int sX, int sY, int length)
+{
+	bool lhs = data[sX][sY], check = true;
+	for (int row = sX; row < sX + length; row++)
+	{
+		for (int col = sY; col < sY + length; col++)
+		{
+			if (data[row][col] != lhs)
+			{
+				check = false;
+			}
+		}
+	}
+	if (!check)
+	{
+		int halfLength = length / 2;
+		int midX = sX + halfLength;
+		int midY = sY + halfLength;
+		return process(sX, sY, halfLength)
+			+ process(midX, sY, halfLength)
+			+ process(sX, midY, halfLength)
+			+ process(midX, midY, halfLength);
+	}
+	if (lhs){ return std::make_pair(1, 0); }
+	else { return std::make_pair(0, 1); }
+}
+
+void Problem_2630()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int input;
+	std::cin >> N;
+	for (int row = 0; row < N; row++)
+	{
+		for (int col = 0; col < N; col++)
+		{
+			std::cin >> data[row][col];
+		}
+	}
+
+	std::pair<int, int> result = process(0, 0, N);
+
+	std::cout << result.second << '\n' << result.first;
+}
 
 void ExecuteGreedy()
 {
@@ -1461,5 +1519,6 @@ void ExecuteGreedy()
 	//Problem_11047();
 	//Problem_11399();
 	//Problem_1541();
-	Problem_13305();
+	//Problem_13305();
+	Problem_2630();
 }
