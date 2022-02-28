@@ -1445,7 +1445,7 @@ void Problem_13305()
 */
 
 // PROBLEM 2630
-
+/*
 int N;
 bool data[128][128];
 
@@ -1500,6 +1500,68 @@ void Problem_2630()
 
 	std::cout << result.second << '\n' << result.first;
 }
+*/
+
+// PROBLEM 1992
+
+int N;
+bool data[64][64];
+std::string outputStr;
+
+void process(int sX, int sY, int length)
+{
+	bool lhs = data[sX][sY], check = true;
+	for (int row = sX; row < sX + length; row++)
+	{
+		for (int col = sY; col < sY + length; col++)
+		{
+			if (data[row][col] != lhs)
+			{
+				check = false;
+				break;
+			}
+		}
+		if (!check) { break; }
+	}
+
+	if (!check)
+	{
+		int halfLength = length / 2;
+		int midX = sX + halfLength;
+		int midY = sY + halfLength;
+		outputStr += "(";
+		process(sX, sY, halfLength);
+		process(sX, midY, halfLength);
+		process(midX, sY, halfLength);
+		process(midX, midY, halfLength);
+		outputStr += ")";
+		return;
+	}
+
+	if (lhs){ outputStr += "1"; }
+	else{ outputStr += "0"; }
+}
+
+void Problem_2630()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+	std::string input;
+
+	std::cin >> N;
+	std::cin.ignore();
+	for (int row = 0; row < N; row++)
+	{
+		std::getline(std::cin, input);
+		for (int col = 0; col < N; col++)
+		{
+			data[row][col] = input[col] == '1';
+		}
+	}
+
+	process(0, 0, N);
+	std::cout << outputStr;
+}
 
 void ExecuteGreedy()
 {
@@ -1520,5 +1582,6 @@ void ExecuteGreedy()
 	//Problem_11399();
 	//Problem_1541();
 	//Problem_13305();
+	//Problem_2630();
 	Problem_2630();
 }
