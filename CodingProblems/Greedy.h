@@ -1504,6 +1504,8 @@ void Problem_2630()
 
 // PROBLEM 1992
 
+// PROBLEM 1192
+/*
 int N;
 bool data[64][64];
 std::string outputStr;
@@ -1542,7 +1544,7 @@ void process(int sX, int sY, int length)
 	else{ outputStr += "0"; }
 }
 
-void Problem_2630()
+void Problem_1192()
 {
 	std::ios_base::sync_with_stdio(0);
 	std::cin.tie(nullptr);
@@ -1562,6 +1564,7 @@ void Problem_2630()
 	process(0, 0, N);
 	std::cout << outputStr;
 }
+*/
 
 void ExecuteGreedy()
 {
@@ -1583,5 +1586,5 @@ void ExecuteGreedy()
 	//Problem_1541();
 	//Problem_13305();
 	//Problem_2630();
-	Problem_2630();
+	//Problem_1192();
 }
