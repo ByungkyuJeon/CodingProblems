@@ -1549,7 +1549,7 @@ void Problem_1931()
 */
 
 // PROBLEM 1780
-
+/*
 int N, result[3];
 int data[2187][2187];
 
@@ -1605,6 +1605,27 @@ void Problem_1780()
 		std::cout << result[idx] << '\n';
 	}
 }
+*/
+
+// PROBLEM 1629
+
+int num, mod;
+
+int process(int exp)
+{
+	if (exp == 1) { return num % mod; }
+	long long ret = process(exp / 2);
+	if (exp % 2 == 0){ return (ret * ret) % mod; }
+	else{ return (((ret * ret) % mod) * num) % mod; }
+}
+
+void Problem_1629()
+{
+	int b;
+	std::cin >> num >> b >> mod;
+
+	std::cout << process(b);
+}
 
 
 void ExecuteBaekjoonMathProblems()
@@ -1655,5 +1676,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_2525();
 	//Problem_2480();
 	//Problem_1931();
-	Problem_1780();
+	//Problem_1780();
+	Problem_1629();
 }
