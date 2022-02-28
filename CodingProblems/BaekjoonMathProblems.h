@@ -1608,7 +1608,7 @@ void Problem_1780()
 */
 
 // PROBLEM 1629
-
+/*
 int num, mod;
 
 int process(int exp)
@@ -1626,7 +1626,89 @@ void Problem_1629()
 
 	std::cout << process(b);
 }
+*/
 
+// PROBLEM 10830
+
+int N;
+int data[5][5];
+int calc[5][5];
+
+void process(long long exp)
+{
+	if (exp == 1)
+	{ 
+		for (int r = 0; r < N; r++){ for (int c = 0; c < N; c++) { calc[r][c] = data[r][c] % 1000; } }
+		return; 
+	}
+
+	process(exp / 2);
+	int sum = 0; int temp[5][5];
+	for (int row = 0; row < N; row++)
+	{
+		for (int col = 0; col < N; col++)
+		{
+			sum = 0;
+			for (int mult = 0; mult < N; mult++)
+			{
+				sum += (calc[row][mult] * calc[mult][col]) % 1000;
+			}
+			temp[row][col] = sum % 1000;
+		}
+	}
+
+	if (exp % 2 == 0)
+	{
+		for (int r = 0; r < N; r++) { for (int c = 0; c < N; c++) { calc[r][c] = temp[r][c]; } }
+	}
+	else
+	{
+		for (int row = 0; row < N; row++)
+		{
+			for (int col = 0; col < N; col++)
+			{
+				sum = 0;
+				for (int mult = 0; mult < N; mult++)
+				{
+					sum += (temp[row][mult] * data[mult][col]) % 1000;
+				}
+				calc[row][col] = sum % 1000;
+			}
+		}
+	}
+}
+
+
+void Problem_10830()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	long long B;
+	std::cin >> N >> B;
+	for (int row = 0; row < N; row++)
+	{
+		for (int col = 0; col < N; col++)
+		{
+			std::cin >> data[row][col];
+		}
+	}
+
+	process(B);
+
+	std::string outputStr;
+
+	for (int row = 0; row < N; row++)
+	{
+		for (int col = 0; col < N; col++)
+		{
+			outputStr += std::to_string(calc[row][col]) + " ";
+		}
+		outputStr += '\n';
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -1677,5 +1759,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_2480();
 	//Problem_1931();
 	//Problem_1780();
-	Problem_1629();
+	//Problem_1629();
+	Problem_10830();
 }
