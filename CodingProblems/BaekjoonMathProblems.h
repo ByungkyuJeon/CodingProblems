@@ -1490,7 +1490,7 @@ void Problem_2525()
 */
 
 // PROBLEM 2480
-
+/*
 void Problem_2480()
 {
 	int n[3];
@@ -1503,6 +1503,109 @@ void Problem_2480()
 	else{ std::cout << n[1] * 100 + 1000; }
 
 }
+*/
+
+// PROBLEM 1931
+/*
+struct Comp_EndTime
+{
+	bool operator()(const std::pair<int, int>& lhs, const std::pair<int, int>& rhs) const noexcept
+	{
+		if (lhs.second == rhs.second)
+		{
+			return lhs.first > rhs.first;	
+		}
+		return lhs.second > rhs.second;
+	}
+};
+
+void Problem_1931()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, Comp_EndTime> standby;
+	int N, num[2];
+	std::cin >> N;
+	while (N-- > 0)
+	{
+		std::cin >> num[0] >> num[1];
+		standby.emplace(std::make_pair(num[0], num[1]));
+	}
+
+	int currentEndTime = 0, count = 0;
+	while (!standby.empty())
+	{
+		if (currentEndTime <= standby.top().first)
+		{
+			count++;
+			currentEndTime = standby.top().second;
+		}
+		standby.pop();
+	}
+
+	std::cout << count;
+}
+*/
+
+// PROBLEM 1780
+
+int N, result[3];
+int data[2187][2187];
+
+void process(int sX, int sY, int length)
+{
+	int lhs = data[sX][sY], check = true;
+	for (int row = sX; row < sX + length; row++)
+	{
+		for (int col = sY; col < sY + length; col++)
+		{
+			if (data[row][col] != lhs)
+			{
+				check = false;
+				break;
+			}
+		}
+		if (!check) { break; }
+	}
+	if (!check)
+	{
+		int oneThirdLength = length / 3;
+		for (int x = 0; x < 3; x++)
+		{
+			for (int y = 0; y < 3; y++)
+			{
+				process(sX + x * oneThirdLength, sY + y * oneThirdLength, oneThirdLength);
+			}
+		}
+		return;
+	}
+	
+	result[lhs + 1]++;
+}
+
+void Problem_1780()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::cin >> N;
+	for (int row = 0; row < N; row++)
+	{
+		for (int col = 0; col < N; col++)
+		{
+			std::cin >> data[row][col];
+		}
+	}
+
+	process(0, 0, N);
+
+	for (int idx = 0; idx < 3; idx++)
+	{
+		std::cout << result[idx] << '\n';
+	}
+}
+
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -1550,5 +1653,7 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_7677();
 	//Problem_2086();
 	//Problem_2525();
-	Problem_2480();
+	//Problem_2480();
+	//Problem_1931();
+	Problem_1780();
 }
