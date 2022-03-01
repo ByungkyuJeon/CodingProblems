@@ -1629,7 +1629,7 @@ void Problem_1629()
 */
 
 // PROBLEM 10830
-
+/*
 int N;
 int data[5][5];
 int calc[5][5];
@@ -1709,6 +1709,65 @@ void Problem_10830()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 2740
+
+int a[100][100];
+int b[100][100];
+int res[100][100];
+int aRow, aCol;
+int bRow, bCol;
+
+void Problem_2740()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::cin >> aRow >> aCol;
+	for (int row = 0; row < aRow; row++)
+	{
+		for (int col = 0; col < aCol; col++)
+		{
+			std::cin >> a[row][col];
+		}
+	}
+	std::cin >> bRow >> bCol;
+	for (int row = 0; row < bRow; row++)
+	{
+		for (int col = 0; col < bCol; col++)
+		{
+			std::cin >> b[row][col];
+		}
+	}
+
+	int sum;
+	for (int row = 0; row < aRow; row++)
+	{
+		for (int col = 0; col < bCol; col++)
+		{
+			sum = 0;
+			for (int rCol = 0; rCol < aCol; rCol++)
+			{
+				sum += a[row][rCol] * b[rCol][col];
+			}
+			res[row][col] = sum;
+		}
+	}
+
+	std::string outputStr;
+
+	for (int row = 0; row < aRow; row++)
+	{
+		for (int col = 0; col < bCol; col++)
+		{
+			outputStr += std::to_string(res[row][col]) + " ";
+		}
+		outputStr += '\n';
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -1760,5 +1819,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_1931();
 	//Problem_1780();
 	//Problem_1629();
-	Problem_10830();
+	//Problem_10830();
+	Problem_2740();
 }
