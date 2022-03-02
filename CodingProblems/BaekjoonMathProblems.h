@@ -1771,6 +1771,7 @@ void Problem_2740()
 */
 
 // PROBLELM 11401
+/*
 long long d = 1, n = 1;
 
 long long process(int exp)
@@ -1794,6 +1795,53 @@ void Problem_11401()
 	for(int num = N; num > 0; num--){ n = (n * num) % 1000000007; }
 
 	std::cout << (n * process(1000000005)) % 1000000007;
+}
+*/
+
+// PROBLEM 1654
+
+int K, N;
+int data[10001];
+int res;
+
+long long getCount(int val)
+{
+	long long count = 0, temp;
+	for (int idx = 0; idx < K; idx++)
+	{
+		if ((temp = data[idx] / val) == 0) { break; }
+		count += temp;
+	}
+	return count;
+}
+
+void binarySearch(int start, int end)
+{
+	if (start == end) 
+	{ 
+		res = getCount(start) == N ? start : start - 1;
+		return;
+	}
+	int mid = ((long long)start + end) / 2;
+	long long count = getCount(mid);
+	if (count < N){ binarySearch(start, mid); }
+	else{ binarySearch(mid + 1, end); }
+}
+
+void Problem_1654()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+	std::cin >> K >> N;
+
+	for (int idx = 0; idx < K; idx++){ std::cin >> data[idx]; }
+
+	std::sort(data, data + K, [&](const int& lhs, const int& rhs) {return lhs > rhs; });
+
+	binarySearch(1, data[0]);
+
+	std::cout << res;
+
 }
 
 void ExecuteBaekjoonMathProblems()
@@ -1848,5 +1896,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_1629();
 	//Problem_10830();
 	//Problem_2740();
-	Problem_11401();
+	//Problem_11401();
+	Problem_1654();
 }
