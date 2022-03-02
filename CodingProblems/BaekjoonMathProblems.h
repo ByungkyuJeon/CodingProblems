@@ -1712,7 +1712,7 @@ void Problem_10830()
 */
 
 // PROBLEM 2740
-
+/*
 int a[100][100];
 int b[100][100];
 int res[100][100];
@@ -1768,6 +1768,33 @@ void Problem_2740()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLELM 11401
+long long d = 1, n = 1;
+
+long long process(int exp)
+{
+	if (exp == 1) { return d; }
+	int half = exp / 2;
+	long long temp = process(half);
+	long long ret = (temp * temp) % 1000000007;
+	if (exp % 2 == 0) { return ret; }
+	return (ret * d) % 1000000007;
+}
+
+void Problem_11401()
+{
+	int N, K;
+	std::cin >> N >> K;
+
+	for (int num = K; num > 0; num--){ d = (d * num) % 1000000007; }
+	for (int num = N - K; num > 0; num--) { d = (d * num) % 1000000007; }
+
+	for(int num = N; num > 0; num--){ n = (n * num) % 1000000007; }
+
+	std::cout << (n * process(1000000005)) % 1000000007;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -1820,5 +1847,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_1780();
 	//Problem_1629();
 	//Problem_10830();
-	Problem_2740();
+	//Problem_2740();
+	Problem_11401();
 }
