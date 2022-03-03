@@ -1799,7 +1799,7 @@ void Problem_11401()
 */
 
 // PROBLEM 1654
-
+/*
 int K, N;
 int data[10001];
 int res;
@@ -1842,6 +1842,60 @@ void Problem_1654()
 
 	std::cout << res;
 
+}
+*/
+
+// PROBLEM 2805
+
+int N, M, res;
+int data[1000001];
+
+long long getLength(int height)
+{
+	long long sum = 0, temp;
+	for (int idx = 0; idx < N; idx++)
+	{
+		if ((temp = data[idx] - height) <= 0) { break; }
+		sum += temp;
+	}
+	return sum;
+}
+
+void binarySearch(int start, int end)
+{
+	if (start == end)
+	{
+		res = getLength(start) == M ? start : start - 1;
+		return;
+	}
+
+	int mid = ((long long)start + end) / 2;
+	long long temp = getLength(mid);
+	if (temp >= M)
+	{
+		binarySearch(mid + 1, end);
+	}
+	else
+	{
+		binarySearch(start, mid);
+	}
+}
+
+void Problem_2805()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::cin >> N >> M;
+	for (int idx = 0; idx < N; idx++)
+	{
+		std::cin >> data[idx];
+	}
+	std::sort(data, data + N, [&](const int& lhs, const int& rhs) {return lhs > rhs; });
+
+	binarySearch(1, data[0]);
+
+	std::cout << res;
 }
 
 void ExecuteBaekjoonMathProblems()
@@ -1897,5 +1951,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_10830();
 	//Problem_2740();
 	//Problem_11401();
-	Problem_1654();
+	//Problem_1654();
+	Problem_2805();
 }
