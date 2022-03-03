@@ -1846,7 +1846,7 @@ void Problem_1654()
 */
 
 // PROBLEM 2805
-
+/*
 int N, M, res;
 int data[1000001];
 
@@ -1894,6 +1894,70 @@ void Problem_2805()
 	std::sort(data, data + N, [&](const int& lhs, const int& rhs) {return lhs > rhs; });
 
 	binarySearch(1, data[0]);
+
+	std::cout << res;
+}
+*/
+
+// PROBLEM 2110
+
+int N, C, res;
+int data[200000];
+int lengths[200000] = {1000000001};
+
+int tryPlace(int length)
+{
+	int count = 0;
+	long long sum = 0;
+	for (int idx = 0; idx < N; idx++)
+	{
+		if ((sum += lengths[idx]) >= length)
+		{
+			sum = 0;
+			count++;
+		}
+	}
+	return count;
+}
+
+void binarySearch(int start, int end)
+{
+	if (start == end)
+	{
+		res = tryPlace(start) == C ? start : start - 1;
+		return;
+	}
+
+	int mid = (start + end) / 2;
+	int temp = tryPlace(mid);
+	if (temp >= C)
+	{
+		binarySearch(mid + 1, end);
+	}
+	else
+	{
+		binarySearch(start, mid);
+	}
+}
+
+void Problem_2110()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::cin >> N >> C;
+	for (int idx = 0; idx < N; idx++)
+	{
+		std::cin >> data[idx];
+	}
+	std::sort(data, data + N);
+	for (int idx = 1; idx < N; idx++)
+	{
+		lengths[idx] = data[idx] - data[idx - 1];
+	}
+
+
+	binarySearch(1, data[N - 1] - data[0]);
 
 	std::cout << res;
 }
@@ -1952,5 +2016,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_2740();
 	//Problem_11401();
 	//Problem_1654();
-	Problem_2805();
+	//Problem_2805();
+	Problem_2110();
 }
