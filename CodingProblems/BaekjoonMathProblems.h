@@ -1900,7 +1900,7 @@ void Problem_2805()
 */
 
 // PROBLEM 2110
-
+/*
 int N, C, res;
 int data[200000];
 int lengths[200000] = {1000000001};
@@ -1961,6 +1961,132 @@ void Problem_2110()
 
 	std::cout << res;
 }
+*/
+
+// PROBLEM 1300
+
+long long N, K, res = 1;
+
+int bsSub(int start, int end, int col, long long val)
+{
+	int mid = (start + end) / 2;
+	long long temp = (long long)col * mid;
+	if (start == end) 
+	{ 
+		if (temp <= val) 
+		{ 
+			if (res < temp) { res = temp; }
+			return start;
+		}
+		if (start - 1 - (col - 1) > 0) { temp = (long long)col * (start - 1); if (res < temp) { res = temp; } }
+		return start - 1; 
+	}
+	if (temp == val)
+	{
+		if (res < temp) { res = temp; }
+		return mid;
+	}
+	else if(temp > val)
+	{
+		return bsSub(start, mid, col, val);
+	}
+	else
+	{
+		return bsSub(mid + 1, end, col, val);
+	}
+}
+
+long long calc(long long num)
+{
+	long long ret = 0, temp; res = 1;
+	for (int nTemp = 1; nTemp <= N; nTemp++)
+	{
+		if ((temp = bsSub(nTemp, N, nTemp, num) - (nTemp - 1)) <= 0) { break; }
+		ret += (temp * 2) - 1;
+	}
+	return ret;
+}	
+
+void bsMain(long long start, long long end)
+{
+	if (start == end) { calc(start); return; }
+	long long mid = (start + end) / 2;
+	long long temp = calc(mid);
+	if (temp == K) { return; }
+	if (temp > K){ bsMain(start, mid); }
+	else{ bsMain(mid + 1, end); }
+}
+
+void Problem_1300()
+{
+	std::cin >> N >> K;
+
+	bsMain(1, N * N);
+
+	std::cout << res;
+}
+
+void Problem_1300_Testee(long long n, long long k)
+{
+	N = n; K = k;
+	bsMain(1, N * N);
+}
+
+long long TEST_N, TEST_K, TEST_Res;
+
+long long lessNum_inMatrix(long long mid) {
+	long long cnt = 0;
+	for (int i = 1; i <= TEST_N; i++) {
+		// i행은 i의 배수의 집합이므로 
+		// mid를 i로 나눠주면 mid가 i행에서 몇 번째에 위치하는지 알 수 있다
+		// i행의 최댓값보다 mid/i가 더 크다면 N(행의 크기)을 cnt에 더해준다
+		cnt += std::min(TEST_N, (long long)mid / i);
+		if (i > mid) break;
+	}
+	return cnt;
+}
+
+void Problem_1300_Test()
+{
+	while (true)
+	{
+		TEST_N++;
+		for (; TEST_K < (TEST_N * TEST_N);)
+		{
+			TEST_K++;
+
+			long long lo = 1;
+			long long hi = TEST_N * TEST_N;
+
+			TEST_Res = 0;
+
+
+			while (lo <= hi) {
+				long long mid = (lo + hi) / 2;
+				// mid와 같거나 작은 값의 개수가 K보다 작으면
+				if (lessNum_inMatrix(mid) < TEST_K) lo = mid + 1;
+				else {
+					TEST_Res = mid;
+					hi = mid - 1;
+				}
+			}
+
+			Problem_1300_Testee(TEST_N, TEST_K);
+			if (TEST_Res != res)
+			{
+				std::cout << "FAIL";
+				Problem_1300_Testee(TEST_N, TEST_K);
+			}
+			else
+			{
+				std::cout << TEST_N << " " << TEST_K << std::endl;
+			}
+		}
+		TEST_K = 0;
+	}
+
+	
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -2017,5 +2143,8 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_11401();
 	//Problem_1654();
 	//Problem_2805();
-	Problem_2110();
+	//Problem_2110();
+	//Problem_1300();
+	//Problem_1300_Test();
+	Problem_1300();
 }
