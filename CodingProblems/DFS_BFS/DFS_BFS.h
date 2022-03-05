@@ -71,7 +71,85 @@ void Problem_1376()
 }
 */
 
+// PROBLEM 1260
+
+std::vector<int> data[1001];
+bool visited[1001];
+std::vector<int> dfsRes, bfsRes;
+
+
+void resetVisited(int num)
+{
+	for (int idx = 1; idx <= num; idx++) { visited[idx] = false; }
+}
+
+void dfs(int node)
+{
+	if (visited[node]) { return; }
+	visited[node] = true;
+	dfsRes.emplace_back(node);
+	for (const auto& elem : data[node])
+	{
+		dfs(elem);
+	}
+}
+
+void bfs(int node)
+{
+	std::queue<int> bfsQueue;
+	bfsQueue.emplace(node);
+	while (!bfsQueue.empty())
+	{
+		if (visited[bfsQueue.front()]) { bfsQueue.pop(); continue; }
+		visited[bfsQueue.front()] = true;
+		bfsRes.emplace_back(bfsQueue.front());
+		for (const auto& elem : data[bfsQueue.front()])
+		{
+			bfsQueue.emplace(elem);
+		}
+		bfsQueue.pop();
+	}
+	
+}
+
+void Problem_1260()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int N, M, start, input[2];
+	std::cin >> N >> M >> start;
+	while (M-- > 0)
+	{
+		std::cin >> input[0] >> input[1];
+		data[input[0]].emplace_back(input[1]);
+		data[input[1]].emplace_back(input[0]);
+	}
+
+	for (int idx = 1; idx <= N; idx++)
+	{
+		std::sort(data[idx].begin(), data[idx].end());
+	}
+
+	dfs(start);
+	resetVisited(N);
+	bfs(start);
+	std::string outputStr;
+	for (const auto& elem : dfsRes)
+	{
+		outputStr += std::to_string(elem) += " ";
+	}
+	outputStr += '\n';
+	for (const auto& elem : bfsRes)
+	{
+		outputStr += std::to_string(elem) + " ";
+	}
+
+	std::cout << outputStr;
+}
+
 void ExecuteDFS_BFS()
 {
 	//Problem_1376();
+	Problem_1260();
 }
