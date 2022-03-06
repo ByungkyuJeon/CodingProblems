@@ -150,7 +150,7 @@ void Problem_1260()
 */
 
 // PROBLEM 2606
-
+/*
 int N, count;
 
 std::vector<int> data[101];
@@ -183,10 +183,72 @@ void Problem_2606()
 	process(1);
 	std::cout << count - 1;
 }
+*/
+
+// PROBLEM 2667
+
+int xDirec[4]{ 0, 0, 1, -1 };
+int yDirec[4]{ 1, -1, 0, 0 };
+int N;
+bool data[25][25];
+bool visited[25][25];
+std::vector<int> res;
+
+int process(int x, int y, bool add)
+{
+	if (visited[x][y]) { return 0; }
+	visited[x][y] = true;
+	if (!data[x][y]) { return 0; }
+	int sum = 1, nxtX, nxtY;
+	for (int dIdx = 0; dIdx < 4; dIdx++)
+	{
+		if ((nxtX = x + xDirec[dIdx]) >= 0 && nxtX < N
+			&& (nxtY = y + yDirec[dIdx]) >= 0 && nxtY < N)
+		{
+			sum += process(nxtX, nxtY, false);
+		}
+	}
+	if (add) { res.emplace_back(sum); }
+	return sum;
+}
+
+void Problem_2667()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string input;
+	std::cin >> N;
+	std::cin.ignore();
+	for (int x = 0; x < N; x++)
+	{
+		std::cin >> input;
+		for (int y = 0; y < N; y++)
+		{
+			data[x][y] = input[y] == '1';
+		}
+	}
+
+	for (int x = 0; x < N; x++)
+	{
+		for (int y = 0; y < N; y++)
+		{
+			process(x, y, true);
+		}
+	}
+
+	std::sort(res.begin(), res.end());
+	std::cout << res.size() << '\n';
+	for (const auto& elem : res)
+	{
+		std::cout << elem << '\n';
+	}
+}
 
 void ExecuteDFS_BFS()
 {
 	//Problem_1376();
 	//Problem_1260();
-	Problem_2606();
+	//Problem_2606();
+	Problem_2667();
 }
