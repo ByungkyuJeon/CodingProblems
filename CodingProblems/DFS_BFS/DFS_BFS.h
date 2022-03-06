@@ -72,7 +72,7 @@ void Problem_1376()
 */
 
 // PROBLEM 1260
-
+/*
 std::vector<int> data[1001];
 bool visited[1001];
 std::vector<int> dfsRes, bfsRes;
@@ -147,9 +147,46 @@ void Problem_1260()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 2606
+
+int N, count;
+
+std::vector<int> data[101];
+bool visited[101];
+
+void process(int node)
+{
+	if (visited[node]) { return; }
+	visited[node] = true;
+	count++;
+	for (const auto& elem : data[node])
+	{
+		process(elem);
+	}
+}
+
+void Problem_2606()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int M, input[2];
+	std::cin >> N >> M;
+	while (M-- > 0)
+	{
+		std::cin >> input[0] >> input[1];
+		data[input[0]].emplace_back(input[1]);
+		data[input[1]].emplace_back(input[0]);
+	}
+	process(1);
+	std::cout << count - 1;
+}
 
 void ExecuteDFS_BFS()
 {
 	//Problem_1376();
-	Problem_1260();
+	//Problem_1260();
+	Problem_2606();
 }
