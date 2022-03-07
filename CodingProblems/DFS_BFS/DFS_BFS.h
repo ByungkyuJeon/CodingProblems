@@ -186,7 +186,7 @@ void Problem_2606()
 */
 
 // PROBLEM 2667
-
+/*
 int xDirec[4]{ 0, 0, 1, -1 };
 int yDirec[4]{ 1, -1, 0, 0 };
 int N;
@@ -244,11 +244,72 @@ void Problem_2667()
 		std::cout << elem << '\n';
 	}
 }
+*/
+
+// PROBLEM 1012
+
+int M, N;
+bool base[50][50];
+int count;
+
+int xDirec[4]{ 0, 0, 1, -1 };
+int yDirec[4]{ 1, -1, 0, 0 };
+
+void process(int x, int y, bool started)
+{
+	if (!base[x][y]) { return; }
+	if (!started) { count++; }
+	
+	base[x][y] = false;
+	int newX, newY;
+
+	for (int idx = 0; idx < 4; idx++)
+	{
+		newX = x + xDirec[idx];
+		newY = y + yDirec[idx];
+		if (newX < 0 || newX >= N || newY < 0 || newY >= M) { continue; }
+		process(newX, newY, true);
+	}
+}
+
+void Problem_1012()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string outputStr;
+
+	int T, K, x, y;
+	std::cin >> T;
+	while (T-- > 0)
+	{
+		std::cin >> N >> M >> K;
+		count = 0;
+		while (K-- > 0)
+		{
+			std::cin >> x >> y;
+			base[x][y] = true;
+		}
+
+		for (int i = 0; i < N; i++)
+		{
+			for (int j = 0; j < M; j++)
+			{
+				process(i, j, false);
+			}
+		}
+
+		outputStr += std::to_string(count) + '\n';
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteDFS_BFS()
 {
 	//Problem_1376();
 	//Problem_1260();
 	//Problem_2606();
-	Problem_2667();
+	//Problem_2667();
+	Problem_1012();
 }
