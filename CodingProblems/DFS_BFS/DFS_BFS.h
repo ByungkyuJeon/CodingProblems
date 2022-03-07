@@ -247,7 +247,7 @@ void Problem_2667()
 */
 
 // PROBLEM 1012
-
+/*
 int M, N;
 bool base[50][50];
 int count;
@@ -304,6 +304,88 @@ void Problem_1012()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 7576
+
+int M, N;
+int data[1000][1000];
+bool visited[1000][1000];
+int xDirec[4]{ 0 , 0, 1, -1 };
+int yDirec[4]{ 1, -1, 0, 0 };
+std::queue<std::pair<int, int>> workQ;
+
+long long process()
+{
+	long long res = -1;
+
+	for (int x = 0; x < N; x++)
+	{
+		for (int y = 0; y < M; y++)
+		{
+			if (data[x][y] == 1)
+			{
+				workQ.emplace(std::make_pair(x, y));
+			}
+		}
+	}
+	workQ.emplace(std::make_pair(-1, -1));
+
+	int newX, newY;
+	while (!workQ.empty())
+	{
+		if (workQ.front().first == -1) 
+		{ 
+			res++; workQ.pop(); 
+			if (workQ.empty()) { break; }
+			workQ.emplace(std::make_pair(-1, -1));
+			continue; 
+		}
+		data[workQ.front().first][workQ.front().second] = 1;
+		for (int idx = 0; idx < 4; idx++)
+		{
+			newX = workQ.front().first + xDirec[idx];
+			newY = workQ.front().second + yDirec[idx];
+			if (newX < 0 || newX >= N || newY < 0 || newY >= M || visited[newX][newY]) { continue; }
+			if (data[newX][newY] == 0)
+			{
+				visited[newX][newY] = true;
+				workQ.emplace(std::make_pair(newX, newY));
+			}
+		}
+		workQ.pop();
+	}
+
+	return res;
+}
+
+void Problem_7576()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+	bool check = true;
+
+	std::cin >> M >> N;
+	for (int x = 0; x < N; x++)
+	{
+		for (int y = 0; y < M; y++)
+		{
+			std::cin >> data[x][y];
+		}
+	}
+	long long res = process();
+	for (int x = 0; x < N; x++)
+	{
+		for (int y = 0; y < M; y++)
+		{
+			if (data[x][y] == 0) { check = false; break; }
+		}
+		if (!check) { break; }
+	}
+
+	if (check) { std::cout << res; }
+	else { std::cout << -1; }
+}
 
 void ExecuteDFS_BFS()
 {
@@ -311,5 +393,6 @@ void ExecuteDFS_BFS()
 	//Problem_1260();
 	//Problem_2606();
 	//Problem_2667();
-	Problem_1012();
+	//Problem_1012();
+	Problem_7576();
 }
