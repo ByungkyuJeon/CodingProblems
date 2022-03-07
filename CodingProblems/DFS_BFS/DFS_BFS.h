@@ -325,6 +325,7 @@ long long process()
 		{
 			if (data[x][y] == 1)
 			{
+				visited[x][y] = true;
 				workQ.emplace(std::make_pair(x, y));
 			}
 		}
@@ -347,9 +348,9 @@ long long process()
 			newX = workQ.front().first + xDirec[idx];
 			newY = workQ.front().second + yDirec[idx];
 			if (newX < 0 || newX >= N || newY < 0 || newY >= M || visited[newX][newY]) { continue; }
+			visited[newX][newY] = true;
 			if (data[newX][newY] == 0)
 			{
-				visited[newX][newY] = true;
 				workQ.emplace(std::make_pair(newX, newY));
 			}
 		}
