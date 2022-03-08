@@ -166,7 +166,56 @@ int solution_CountDiv(int A, int B, int K) {
     return (B / K) - (A % K == 0 ? A / K : (A / K) + 1) + 1;
 }
 
+int getNum(char ch)
+{
+    switch (ch)
+    {
+    case 'A': return 1;
+    case 'C': return 2;
+    case 'G': return 3;
+    case 'T': return 4;
+
+    default:
+        break;
+    }
+}
+
+long long makeSegTree(std::vector<int>& segTree, const std::string& data, int start, int end, int node)
+{
+    if (start == end) { segTree[node] = getNum(data[start - 1]); return segTree[node]; }
+    int mid = (start + end) / 2;
+    
+    segTree[node] = std::min(makeSegTree(segTree, data, start, mid, 2 * node), makeSegTree(segTree, data, mid + 1, end, 2 * node + 1));
+    return segTree[node];
+}
+
+long long getSegNode(std::vector<int>& segTree, int start, int end, int node, int left, int right)
+{
+    if (left > end || right < start) { return INT_MAX; }
+
+    if (start >= left && end <= right) { return segTree[node]; }
+
+    int mid = (start + end) / 2;
+    return std::min(getSegNode(segTree, start, mid, 2 * node, left, right), getSegNode(segTree, mid + 1, end, 2 * node + 1, left, right));
+}
+
+std::vector<int> solution_GenomicRangeQuery(std::string& S, std::vector<int>& P, std::vector<int>& Q) {
+    // write your code in C++14 (g++ 6.2.0)
+    std::vector<int> segTree(S.size() * 4);
+    makeSegTree(segTree, S, 1, S.size(), 1);
+    std::vector<int> res;
+    int lhs, rhs;
+    for (int idx = 0; idx < P.size(); idx++)
+    {
+        res.emplace_back(getSegNode(segTree, 1, S.size(), 1, P[idx] + 1, Q[idx] + 1));
+    }
+    return res;
+}
+
 void executeCodilityLessons()
 {
-    
+    std::vector<int> p{ 2,5,0 };
+    std::vector<int> q{ 4,5,6 };
+    std::string s = "CAGCCTA";
+    solution_GenomicRangeQuery(s, p, q);
 }
