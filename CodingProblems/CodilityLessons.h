@@ -161,6 +161,11 @@ int solution_PassingCars(std::vector<int>& A) {
     return res;
 }
 
+int solution_CountDiv(int A, int B, int K) {
+    // write your code in C++14 (g++ 6.2.0)
+    return (B / K) - (A % K == 0 ? A / K : (A / K) + 1) + 1;
+}
+
 void executeCodilityLessons()
 {
     
