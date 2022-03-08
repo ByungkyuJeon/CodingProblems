@@ -80,7 +80,51 @@ int solution_PermCheck(std::vector<int>& A) {
     else { return 0; }
 }
 
+std::vector<int> solution_MaxCounters_77p(int N, std::vector<int>& A) {
+    // write your code in C++14 (g++ 6.2.0)
+    std::vector<int> res(N);
+    int max = 0;
+    for (const auto& elem : A)
+    {
+        if (elem <= N)
+        {
+            res[elem - 1]++;
+            if (res[elem - 1] > max) { max = res[elem - 1]; }
+        }
+        else
+        {
+            std::fill(res.begin(), res.end(), max);
+        }
+    }
+    return res;
+}
+
+std::vector<int> solution_MaxCounters(int N, std::vector<int>& A) {
+    // write your code in C++14 (g++ 6.2.0)
+    std::vector<int> res(N);
+    int max = 0, alocMax = 0, idx;
+    for (const auto& elem : A)
+    {
+        if (elem == N + 1)
+        {
+            alocMax = max;
+            continue;
+        }
+
+        idx = elem - 1;
+        if (res[idx] < alocMax) { res[idx] = alocMax; }
+        if (++res[idx] > max) { max = res[idx]; }
+    }
+    for (auto& elem : res)
+    {
+        if (elem < alocMax) { elem = alocMax; }
+    }
+
+    return res;
+}
+
 void executeCodilityLessons()
 {
-    
+    std::vector<int> d{ 3,4,4,6,1,4,4 };
+    solution_MaxCounters(5, d);
 }
