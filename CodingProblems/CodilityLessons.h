@@ -216,7 +216,7 @@ std::vector<int> solution_GenomicRangeQuery(std::string& S, std::vector<int>& P,
 }
 */
 
-
+/*
 long long makeSegTree(std::vector<long long>& seg, const std::vector<int>& data, int start, int end, int node)
 {
     if (start == end) { seg[node] = data[start - 1]; return seg[node]; }
@@ -284,9 +284,24 @@ int solution_MinAvgTwoSlice(std::vector<int>& A) {
 
     return minIdx;
 }
+*/
+
+int solution_MaxProductOfThree(std::vector<int>& A) {
+    // write your code in C++14 (g++ 6.2.0)
+
+    std::sort(A.begin(), A.end());
+    long long lhs = *(A.end() - 1) * *(A.end() - 2) * *(A.end() - 3);
+    long long rhs = LLONG_MIN;
+    if ((rhs = *A.begin() * *(A.begin() + 1)) > 0)
+    {
+        rhs *= *(A.end() - 1);
+    }
+
+    return lhs > rhs ? lhs : rhs;
+}
 
 void executeCodilityLessons()
 {
-    std::vector<int> a{ 4,2,2,5,1,5,8 };
-    solution_MinAvgTwoSlice(a);
+    std::vector<int> d{ -3,1,2,-2,5,6 };
+    std::cout << solution_MaxProductOfThree(d);
 }
