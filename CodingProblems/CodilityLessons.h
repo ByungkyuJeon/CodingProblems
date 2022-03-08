@@ -161,11 +161,14 @@ int solution_PassingCars(std::vector<int>& A) {
     return res;
 }
 
+/*
 int solution_CountDiv(int A, int B, int K) {
     // write your code in C++14 (g++ 6.2.0)
     return (B / K) - (A % K == 0 ? A / K : (A / K) + 1) + 1;
 }
+*/
 
+/*
 int getNum(char ch)
 {
     switch (ch)
@@ -180,23 +183,23 @@ int getNum(char ch)
     }
 }
 
-long long makeSegTree(std::vector<int>& segTree, const std::string& data, int start, int end, int node)
+long long makeSegTree(std::vector<int>& seg, const std::string& data, int start, int end, int node)
 {
-    if (start == end) { segTree[node] = getNum(data[start - 1]); return segTree[node]; }
+    if (start == end) { seg[node] = getNum(data[start - 1]); return seg[node]; }
     int mid = (start + end) / 2;
     
-    segTree[node] = std::min(makeSegTree(segTree, data, start, mid, 2 * node), makeSegTree(segTree, data, mid + 1, end, 2 * node + 1));
-    return segTree[node];
+    seg[node] = std::min(makeSegTree(seg, data, start, mid, 2 * node), makeSegTree(seg, data, mid + 1, end, 2 * node + 1));
+    return seg[node];
 }
 
-long long getSegNode(std::vector<int>& segTree, int start, int end, int node, int left, int right)
+long long getSegNode(std::vector<int>& seg, int start, int end, int node, int left, int right)
 {
     if (left > end || right < start) { return INT_MAX; }
 
-    if (start >= left && end <= right) { return segTree[node]; }
+    if (start >= left && end <= right) { return seg[node]; }
 
     int mid = (start + end) / 2;
-    return std::min(getSegNode(segTree, start, mid, 2 * node, left, right), getSegNode(segTree, mid + 1, end, 2 * node + 1, left, right));
+    return std::min(getSegNode(seg, start, mid, 2 * node, left, right), getSegNode(seg, mid + 1, end, 2 * node + 1, left, right));
 }
 
 std::vector<int> solution_GenomicRangeQuery(std::string& S, std::vector<int>& P, std::vector<int>& Q) {
@@ -211,11 +214,79 @@ std::vector<int> solution_GenomicRangeQuery(std::string& S, std::vector<int>& P,
     }
     return res;
 }
+*/
+
+
+long long makeSegTree(std::vector<long long>& seg, const std::vector<int>& data, int start, int end, int node)
+{
+    if (start == end) { seg[node] = data[start - 1]; return seg[node]; }
+    int mid = (start + end) / 2;
+    int size = end - start + 1;
+
+    seg[node] = makeSegTree(seg, data, start, mid, 2 * node) + makeSegTree(seg, data, mid + 1, end, 2 * node + 1);
+    return seg[node];
+}
+
+long long getSegNode(std::vector<long long>& seg, int start, int end, int node, int left, int right)
+{
+    if (left > end || right < start) { return 0; }
+
+    if (start >= left && end <= right) { return seg[node]; }
+
+    int mid = (start + end) / 2;
+    int size = end - start + 1;
+    return getSegNode(seg, start, mid, 2 * node, left, right) + getSegNode(seg, mid + 1, end, 2 * node + 1, left, right);
+}
+
+// 60%
+int solution_MinAvgTwoSlice60p(std::vector<int>& A) {
+    double min = 1000000000;
+    double temp;
+    int minIdx = 0;
+    std::vector<long long> seg(A.size() * 4);
+    makeSegTree(seg, A, 1, A.size(), 1);
+    for (int idx = 0; idx < A.size(); idx++)
+    {
+        for (int slice = 2; slice <= 3; slice++)
+        {
+            if (min > (temp = (double)getSegNode(seg, 1, A.size(), 1, idx + 1, idx + slice) / slice))
+            {
+                min = temp;
+                minIdx = idx;
+            }
+        }
+    }
+    return minIdx;
+}
+
+int solution_MinAvgTwoSlice(std::vector<int>& A) {
+    double min = 1000000000;
+    double temp;
+    int minIdx = 0;
+    int slice = 2;
+    for (int idx = 0; idx < A.size() - 1; idx++)
+    {
+        if (min > (temp = (double)(A[idx] + A[idx + 1]) / 2))
+        {
+            min = temp;
+            minIdx = idx;
+        }
+    }
+
+    for (int idx = 0; idx < A.size() - 2; idx++)
+    {
+        if (min > (temp = (double)(A[idx] + A[idx + 1] + A[idx + 2]) / 3))
+        {
+            min = temp;
+            minIdx = idx;
+        }
+    }
+
+    return minIdx;
+}
 
 void executeCodilityLessons()
 {
-    std::vector<int> p{ 2,5,0 };
-    std::vector<int> q{ 4,5,6 };
-    std::string s = "CAGCCTA";
-    solution_GenomicRangeQuery(s, p, q);
+    std::vector<int> a{ 4,2,2,5,1,5,8 };
+    solution_MinAvgTwoSlice(a);
 }
