@@ -52,6 +52,34 @@ int solution_FrogRiverOne(int X, std::vector<int>& A) {
     else { return -1; }
 }
 
+int solution_PermCheck(std::vector<int>& A) {
+    // write your code in C++14 (g++ 6.2.0)
+    std::unordered_set<int> check;
+    std::unordered_set<int>::iterator itr;
+    check.reserve(sizeof(int) * A.size());
+    for (int num = 1; num <= A.size(); num++)
+    {
+        check.emplace(num);
+    }
+    for (const auto& elem : A)
+    {
+        if ((itr = check.find(elem)) != check.end())
+        {
+            check.erase(itr);
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    if (check.empty())
+    {
+        return 1;
+    }
+    else { return 0; }
+}
+
 void executeCodilityLessons()
 {
     
