@@ -143,6 +143,24 @@ int solution_MissingInteger(std::vector<int>& A) {
     return *data.begin();
 }
 
+int solution_PassingCars(std::vector<int>& A) {
+    // write your code in C++14 (g++ 6.2.0)
+    int easts = 0, res = 0;
+    for (const auto& elem : A)
+    {
+        if (elem)
+        {
+            res += easts;
+            if (res > 1000000000) { res = -1; break; }
+        }
+        else
+        {
+            easts++;
+        }
+    }
+    return res;
+}
+
 void executeCodilityLessons()
 {
     
