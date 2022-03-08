@@ -123,8 +123,27 @@ std::vector<int> solution_MaxCounters(int N, std::vector<int>& A) {
     return res;
 }
 
+int solution_MissingInteger(std::vector<int>& A) {
+    // write your code in C++14 (g++ 6.2.0)
+
+    std::set<int> data;
+    for (int num = 1; num <= A.size() + 1; num++)
+    {
+        data.emplace(num);
+    }
+
+    std::set<int>::iterator itr;
+    for (const auto& elem : A)
+    {
+        if ((itr = data.find(elem)) != data.end())
+        {
+            data.erase(itr);
+        }
+    }
+    return *data.begin();
+}
+
 void executeCodilityLessons()
 {
-    std::vector<int> d{ 3,4,4,6,1,4,4 };
-    solution_MaxCounters(5, d);
+    
 }
