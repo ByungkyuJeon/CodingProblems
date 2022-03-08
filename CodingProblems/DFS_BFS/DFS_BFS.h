@@ -307,7 +307,7 @@ void Problem_1012()
 */
 
 // PROBLEM 7576
-
+/*
 int M, N;
 int data[1000][1000];
 bool visited[1000][1000];
@@ -387,6 +387,115 @@ void Problem_7576()
 	if (check) { std::cout << res; }
 	else { std::cout << -1; }
 }
+*/
+
+// PROBLEM 7569
+
+int xDirec[6]{ 0,0,1,-1,0,0 };
+int yDirec[6]{ 1,-1,0,0,0,0 };
+int zDirec[6]{ 0,0,0,0,1,-1 };
+int M, N, H;
+int data[100][100][100];
+int count;
+
+struct Cordinate
+{
+	Cordinate(int x, int y, int z) : x{ x }, y{ y }, z{ z }{}
+	int x, y, z;
+};
+
+void process()
+{
+	std::queue<Cordinate> searchQueue;
+	for (int xCor = 0; xCor < N; xCor++)
+	{
+		for (int yCor = 0; yCor < M; yCor++)
+		{
+			for (int zCor = 0; zCor < H; zCor++)
+			{
+				if (data[xCor][yCor][zCor] == 1)
+				{
+					searchQueue.emplace(Cordinate(xCor, yCor, zCor));
+				}
+			}
+		}
+	}
+
+	int newX, newY, newZ;
+	searchQueue.emplace(Cordinate(-2, -2, -2));
+	while (!searchQueue.empty())
+	{
+		if (searchQueue.front().x == -2)
+		{
+			count++;
+			searchQueue.pop();
+			if (searchQueue.empty())
+			{
+				break;
+			}
+			searchQueue.emplace(Cordinate(-2, -2, -2));
+			continue;
+		}
+		for (int idx = 0; idx < 6; idx++)
+		{
+			newX = searchQueue.front().x + xDirec[idx];
+			newY = searchQueue.front().y + yDirec[idx];
+			newZ = searchQueue.front().z + zDirec[idx];
+			if (newX < 0 || newX >= N
+				|| newY < 0 || newY >= M
+				|| newZ < 0 || newZ >= H )
+			{
+				continue;
+			}
+			if (data[newX][newY][newZ] == 0)
+			{
+				data[newX][newY][newZ] = 1;
+				searchQueue.emplace(Cordinate(newX, newY, newZ));
+			}
+		}
+		searchQueue.pop();
+	}
+}
+
+void Problem_7569()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+	bool check = false;
+	std::cin >> M >> N >> H;
+	for (int zCor = 0; zCor < H; zCor++)
+	{
+		for (int xCor = 0; xCor < N; xCor++)
+		{
+			for (int yCor = 0; yCor < M; yCor++)
+			{
+				std::cin >> data[xCor][yCor][zCor];
+			}
+		}
+	}
+
+	process();
+
+	for (int xCor = 0; xCor < N; xCor++)
+	{
+		for (int yCor = 0; yCor < M; yCor++)
+		{
+			for (int zCor = 0; zCor < H; zCor++)
+			{
+				if (data[xCor][yCor][zCor] == 0)
+				{
+					check = true;
+					break;
+				}
+			}
+			if (check) { break; }
+		}
+		if (check) { break; }
+	}
+
+	if (check) { std::cout << -1; }
+	else { std::cout << count - 1; }
+}
 
 void ExecuteDFS_BFS()
 {
@@ -395,5 +504,6 @@ void ExecuteDFS_BFS()
 	//Problem_2606();
 	//Problem_2667();
 	//Problem_1012();
-	Problem_7576();
+	//Problem_7576();
+	Problem_7569();
 }
