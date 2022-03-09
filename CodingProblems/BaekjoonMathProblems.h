@@ -1964,7 +1964,7 @@ void Problem_2110()
 */
 
 // PROBLEM 1300
-
+/*
 long long N, K, res = 1;
 
 int bsSub(int start, int end, int col, long long val)
@@ -2087,6 +2087,86 @@ void Problem_1300_Test()
 
 	
 }
+*/
+
+// PROBLEM 1081
+
+int expNum = 0;
+void countNums_proc(std::vector<long long>& arr, std::string num)
+{
+	for (const auto& elem : num)
+	{
+		arr[elem - '0'] += pow(10, expNum);
+	}
+}
+
+void countNums_pushCounts(std::vector<long long>& arr, int lhs, int rhs)
+{
+	for (int idx = 0; idx < 10; idx++)
+	{
+		arr[idx] += (rhs - lhs + 1) * pow(10, expNum);
+	}
+
+	expNum++;
+}
+
+void countNums(std::vector<long long>& res, int s, int e)
+{
+	// 0 부터 9까지의 등장 횟수
+	int end = e, start = s;
+
+	while (end != 0)
+	{
+		// 시작 번호 끝자리를 0으로 맞추기
+		while (start % 10 != 0)
+		{
+			countNums_proc(res, std::to_string(start));
+			if (start == end) { break; }
+			start++;
+		}
+
+		if (start == end)
+		{
+			if (start % 10 == 0)
+			{
+				countNums_proc(res, std::to_string(start));
+			}
+			break;
+		}
+
+		while (end % 10 != 9)
+		{
+			countNums_proc(res, std::to_string(end));
+			if (start == end) { break; }
+			end--;
+		}
+
+		if (start == end)
+		{
+			if (end % 10 == 9)
+			{
+				countNums_proc(res, std::to_string(end));
+			}
+			break;
+		}
+
+		countNums_pushCounts(res, (start /= 10), (end /= 10));
+	}
+}
+
+void Problem_1081()
+{
+	int N, M;
+	std::cin >> N >> M;
+	std::vector<long long> res(10);
+	countNums(res, N, M);
+	long long sum = 0;
+	for (int idx = 1; idx < 10; idx++)
+	{
+		sum += res[idx] * idx;
+	}
+	std::cout << sum;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -2146,5 +2226,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_2110();
 	//Problem_1300();
 	//Problem_1300_Test();
-	Problem_1300();
+	//Problem_1300();
+	Problem_1081();
 }
