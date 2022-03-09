@@ -390,7 +390,7 @@ void Problem_7576()
 */
 
 // PROBLEM 7569
-
+/*
 int xDirec[6]{ 0,0,1,-1,0,0 };
 int yDirec[6]{ 1,-1,0,0,0,0 };
 int zDirec[6]{ 0,0,0,0,1,-1 };
@@ -496,6 +496,63 @@ void Problem_7569()
 	if (check) { std::cout << -1; }
 	else { std::cout << count - 1; }
 }
+*/
+
+// PROBLEM 1753
+void dijkstra(std::vector<int>& res, std::vector<std::vector<std::pair<int, int>>> vertices, int start)
+{
+	std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> minHeap;
+	minHeap.push(std::make_pair(0, start));
+	res[start] = 0;
+
+	while (minHeap.empty() == 0)
+	{
+		int Cost = minHeap.top().first;
+		int Cur = minHeap.top().second;
+		minHeap.pop();
+
+		for (int i = 0; i < vertices[Cur].size(); i++)
+		{
+			int Next = vertices[Cur][i].first;
+			int nCost = vertices[Cur][i].second;
+
+			if (res[Next] > Cost + nCost)
+			{
+				res[Next] = Cost + nCost;
+				minHeap.push(std::make_pair(res[Next], Next));
+			}
+		}
+	}
+}
+
+void Problem_1753()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int V, E, start, u, v, w;
+	std::cin >> V >> E >> start;
+	std::vector<std::vector<std::pair<int, int>>> vertices(V + 1);
+	std::vector<int> res(V + 1);
+	for (int idx = 0; idx <= V; idx++) 
+	{
+		res[idx] = INT_MAX;
+	}
+	for (int idx = 1; idx <= E; idx++)
+	{
+		std::cin >> u >> v >> w;
+		vertices[u].emplace_back(std::make_pair(v, w));
+	}
+
+	dijkstra(res, vertices, start);
+	std::string outputStr;
+	for (int idx = 1; idx <= V; idx++)
+	{
+		if (res[idx] == INT_MAX) { outputStr += "INF\n"; continue; }
+		outputStr += std::to_string(res[idx]) + '\n';
+	}
+	std::cout << outputStr;
+}
 
 void ExecuteDFS_BFS()
 {
@@ -505,5 +562,6 @@ void ExecuteDFS_BFS()
 	//Problem_2667();
 	//Problem_1012();
 	//Problem_7576();
-	Problem_7569();
+	//Problem_7569();
+	Problem_1753();
 }
