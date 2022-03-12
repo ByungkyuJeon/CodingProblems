@@ -90,7 +90,7 @@ void Problem_2470()
 */
 
 // PROBLEM 1806
-
+/*
 void Problem_1806()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -132,10 +132,73 @@ void Problem_1806()
 		std::cout << 0;
 	}
 }
+*/
+
+// PROBLEM 1644
+
+std::vector<int> primeRange(int start, int end)
+{
+	int m = start, n = end, squrtNum, temp = 2, nxtNum, firstErased = 0;
+	bool checker;
+
+	if (m == 1) { m = 2; }
+	std::vector<int> result(n - m + 1);
+	for (int idx = 0; idx < result.size(); idx++) { result[idx] = m + idx; }
+	squrtNum = sqrt(n);
+	while (temp <= squrtNum)
+	{
+		nxtNum = -1;
+		checker = false;
+		result.erase(std::remove_if(result.begin() + firstErased, result.end(), [&](int n)
+			{
+				bool res = n != temp && n % temp == 0;
+				if (!checker && !res && temp < n) 
+				{
+					firstErased++;
+					nxtNum = n;
+					checker = true;
+				} 
+				return res;
+			}), result.end());
+		temp = nxtNum;
+	}
+	return result;
+}
+
+void Problem_1644()
+{
+	int N;
+	std::cin >> N;
+	if (N == 1) { std::cout << 0; }
+	else
+	{
+		std::vector<int> primes = primeRange(2, N);
+
+		int sIdx = 0, eIdx = 0, resCnt = N == 2, sum = primes[0];
+		while (true)
+		{
+			if (sum <= N || sIdx == eIdx)
+			{
+				if (eIdx + 1 == primes.size()) { break; }
+				sum += primes[++eIdx];
+			}
+			else
+			{
+				sum -= primes[sIdx++];
+			}
+			if (sum == N)
+			{
+				resCnt++;
+			}
+		}
+		std::cout << resCnt;
+	}
+}
 
 void executeTwoPointer()
 {
 	//Problem_3273();
 	//Problem_2470();
-	Problem_1806();
+	//Problem_1806();
+	Problem_1644();
 }
