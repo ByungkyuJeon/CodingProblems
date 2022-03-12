@@ -617,7 +617,7 @@ void Problem_11653()
 */
 
 // PROBLEM 1929
-/*
+
 void Problem_1929_Simple()
 {
 	int m, n, squrtNum;
@@ -641,11 +641,8 @@ void Problem_1929_Simple()
 
 int primesUnder1000[168] = { 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,211,223,227,229,233,239,241,251,257,263,269,271,277,281,283,293,307,311,313,317,331,337,347,349,353,359,367,373,379,383,389,397,401,409,419,421,431,433,439,443,449,457,461,463,467,479,487,491,499,503,509,521,523,541,547,557,563,569,571,577,587,593,599,601,607,613,617,619,631,641,643,647,653,659,661,673,677,683,691,701,709,719,727,733,739,743,751,757,761,769,773,787,797,809,811,821,823,827,829,839,853,857,859,863,877,881,883,887,907,911,919,929,937,941,947,953,967,971,977,983,991,997 };
 
-void Problem_1929()
+void Problem_1929_ver1()
 {
-	std::ios_base::sync_with_stdio(0);
-	std::cin.tie(nullptr);
-
 	int m, n, squrtNum, temp;
 	std::cin >> m >> n;
 	bool checker;
@@ -666,7 +663,100 @@ void Problem_1929()
 
 	std::cout << outputStr;
 }
-*/
+
+// PROBLEM 1929 ver.2
+
+std::vector<int> primeRange(int start, int end)
+{
+	std::vector<bool> isPrime(end + 1, true);
+	int sqrtNum = std::sqrt(end);
+	isPrime[1] = false;
+	int s = 4;
+	int f = 3;
+	while (f <= sqrtNum || s <= end)
+	{
+		if(s <= end && isPrime[s]){ isPrime[s] = false; }
+		if (f <= sqrtNum && isPrime[f])
+		{
+			for (int j = f * f; j <= end; j += f * 2) { isPrime[j] = false; }
+		}
+		s += 2;
+		f += 2;
+	}
+	std::vector<int> res;
+	for (int num = start; num <= end; num++)
+	{
+		if (isPrime[num]) { res.emplace_back(num); }
+	}
+
+	return res;
+}
+
+void Problem_1929()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int m, n;
+	std::cin >> m >> n;
+	std::vector<int> result = primeRange(m, n);
+
+	std::string outputStr;
+	for (int idx = 0; idx < result.size(); idx++) { outputStr += std::to_string(result[idx]) + '\n'; }
+
+	std::cout << outputStr;
+}
+
+
+
+std::vector<int> Problem_1929_test(int m, int n)
+{
+	int squrtNum, temp;
+	bool checker;
+	int count = 0;
+	std::string outputStr;
+	if (m == 1) { m = 2; }
+	std::vector<int> result(n - m + 1);
+	for (int idx = 0; idx < result.size(); idx++) { result[idx] = m + idx; }
+	squrtNum = sqrt(n);
+	for (int pIdx = 0; pIdx < 168; pIdx++)
+	{
+		temp = primesUnder1000[pIdx];
+		if (temp > squrtNum) { break; }
+		result.erase(std::remove_if(result.begin(), result.end(), [=](int n) {return n != temp && n % temp == 0; }), result.end());
+	}
+
+	return result;
+}
+
+void Problem_1929_TEST()
+{
+	int m, n;
+	
+	std::srand(std::time(NULL));
+	while (true)
+	{
+		m = 1 + (std::rand() % 100);
+		n = m + (std::rand() % 1000);
+		std::vector<int> temp = Problem_1929_test(m, n);
+		std::vector<int> result = primeRange(m, n);
+		if (temp.size() != result.size())
+		{
+			std::cout << "fail";
+			for (int idx = 0; idx < result.size(); idx++)
+			{
+				if (std::find(temp.begin(), temp.end(), result[idx]) == temp.end())
+				{
+					std::cout << "fail";
+				}
+			}
+		}
+		else
+		{
+			std::cout << "Pass" << std::endl;
+		}
+	}
+}
 
 // PROBLEM 4948
 /*
@@ -2090,7 +2180,7 @@ void Problem_1300_Test()
 */
 
 // PROBLEM 1081
-
+/*
 int expNum = 0;
 void countNums_proc(std::vector<long long>& arr, std::string num)
 {
@@ -2167,6 +2257,7 @@ void Problem_1081()
 	}
 	std::cout << sum;
 }
+*/
 
 void ExecuteBaekjoonMathProblems()
 {
@@ -2227,5 +2318,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_1300();
 	//Problem_1300_Test();
 	//Problem_1300();
-	Problem_1081();
+	//Problem_1081();
+	Problem_1929_TEST();
 }
