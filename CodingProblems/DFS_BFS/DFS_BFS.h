@@ -499,6 +499,8 @@ void Problem_7569()
 */
 
 // PROBLEM 1753
+//
+/*
 void dijkstra(std::vector<int>& res, std::vector<std::vector<std::pair<int, int>>> vertices, int start)
 {
 	std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> minHeap;
@@ -553,6 +555,63 @@ void Problem_1753()
 	}
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 1697
+
+int process(int start, int end)
+{
+	std::queue<int> procQueue;
+	procQueue.emplace(start);
+	procQueue.emplace(INT_MAX);
+
+	std::vector<bool> visited(100001, false);
+
+	int count = 0;
+	int pOne, mOne, mult;
+
+	while (!procQueue.empty())
+	{
+		if (procQueue.front() == end) { break; }
+		if (procQueue.front() == INT_MAX)
+		{
+			procQueue.pop();
+			if (procQueue.empty()) { break; }
+			procQueue.emplace(INT_MAX);
+			count++;
+			continue;
+		}
+		visited[procQueue.front()] = true;
+		pOne = procQueue.front() + 1;
+		mOne = procQueue.front() - 1;
+		mult = procQueue.front() * 2;
+		if(pOne <= 100000 && !visited[pOne]){ procQueue.emplace(pOne); }
+		if (mOne >= 0 && !visited[mOne]) { procQueue.emplace(mOne); }
+		if (mult <= 100000 && !visited[mult]) { procQueue.emplace(mult); }
+		procQueue.pop();
+	}
+
+	return count;
+}
+
+void Problem_1697()
+{
+	int N, K;
+	std::cin >> N >> K;
+	std::cout << process(N, K);
+}
+
+void Problem_1697_Test()
+{
+	int N, K;
+	std::srand(std::time(NULL));
+	while (true)
+	{
+		N = std::rand() % 100000;
+		K = std::rand() % 100000;
+		std::cout << process(N, K) << std::endl;
+	}
+}
 
 void ExecuteDFS_BFS()
 {
@@ -563,5 +622,7 @@ void ExecuteDFS_BFS()
 	//Problem_1012();
 	//Problem_7576();
 	//Problem_7569();
-	Problem_1753();
+	//Problem_1753();
+	//Problem_1697();
+	Problem_1697_Test();
 }
