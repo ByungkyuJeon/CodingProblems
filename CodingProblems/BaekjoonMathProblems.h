@@ -617,7 +617,7 @@ void Problem_11653()
 */
 
 // PROBLEM 1929
-
+/*
 void Problem_1929_Simple()
 {
 	int m, n, squrtNum;
@@ -757,6 +757,7 @@ void Problem_1929_TEST()
 		}
 	}
 }
+*/
 
 // PROBLEM 4948
 /*
@@ -2259,6 +2260,26 @@ void Problem_1081()
 }
 */
 
+// PROBLEM 1225
+
+void Problem_1225()
+{
+	std::string a, b;
+	std::cin >> a >> b;
+
+	long long sum = 0;
+
+	for (const auto& aElem : a)
+	{
+		for (const auto& bElem : b)
+		{
+			sum += (aElem - '0') * (bElem - '0');
+		}
+	}
+
+	std::cout << sum;
+}
+
 void ExecuteBaekjoonMathProblems()
 {
 	//Problem_8393();
@@ -2319,5 +2340,6 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_1300_Test();
 	//Problem_1300();
 	//Problem_1081();
-	Problem_1929_TEST();
+	//Problem_1929_TEST();
+	Problem_1225();
 }
