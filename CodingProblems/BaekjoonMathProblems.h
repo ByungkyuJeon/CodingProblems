@@ -2261,7 +2261,7 @@ void Problem_1081()
 */
 
 // PROBLEM 1225
-
+/*
 void Problem_1225()
 {
 	std::string a, b;
@@ -2279,9 +2279,41 @@ void Problem_1225()
 
 	std::cout << sum;
 }
+*/
+
+// PROBLEM 2166
+
+void Problem_2166()
+{
+	int N;
+	std::cin >> N;
+
+	std::vector<double> xAxis(N + 1);
+	std::vector<double> yAxis(N + 1);
+
+	double fX, fY, input[2], prev[2];
+	std::cin >> fX >> fY;
+	prev[0] = fX; prev[1] = fY;
+
+	double res = 0;
+	for (int idx = 1; idx < N; idx++)
+	{
+		std::cin >> input[0] >> input[1];
+		res += prev[0] * input[1] - input[0] * prev[1];
+		prev[0] = input[0]; prev[1] = input[1];
+	}
+	res += prev[0] * fY - fX * prev[1];
+	res /= 2.0;
+
+	std::cout.precision(1);
+	std::cout.setf(std::ios::fixed, std::ios::floatfield);
+	if (res < 0) { res = -res; }
+	std::cout << res;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
+	Problem_2166();
 	//Problem_8393();
 	//Problem_2753();
 	//Problem_4344();
@@ -2341,5 +2373,5 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_1300();
 	//Problem_1081();
 	//Problem_1929_TEST();
-	Problem_1225();
+	//Problem_1225();
 }
