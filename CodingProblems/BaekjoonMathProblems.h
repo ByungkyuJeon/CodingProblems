@@ -2282,7 +2282,7 @@ void Problem_1225()
 */
 
 // PROBLEM 2166
-
+/*
 void Problem_2166()
 {
 	int N;
@@ -2310,10 +2310,64 @@ void Problem_2166()
 	if (res < 0) { res = -res; }
 	std::cout << res;
 }
+*/
+
+// PROBLEM 1010
+
+struct Comp
+{
+	size_t operator()(const std::pair<int, int>& obj) const noexcept
+	{
+		return obj.first * 100 + obj.second;
+	}
+};
+
+std::unordered_map<std::pair<int, int>, long long, Comp> map;
+
+long long calc(int node, int count, int size)
+{
+	if (count == 0)
+	{
+		return 1;
+	}
+
+	if (node == size) { return 0; }
+
+	std::pair<int, int> key{ node, count };
+	std::unordered_map<std::pair<int, int>, long long, Comp>::iterator itr;
+
+	if ((itr = map.find(key)) != map.end())
+	{
+		return itr->second;
+	}
+
+	map[key] = calc(node + 1, count, size) + calc(node + 1, count - 1, size);
+	return map[key];
+}
+
+void Problem_1010()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int T, a, b, count;
+	std::cin >> T;
+	std::string outputStr;
+	while (T-- > 0)
+	{
+		std::cin >> a >> b;
+
+		map = std::unordered_map<std::pair<int, int>, long long, Comp>();
+		outputStr += std::to_string(calc(0, a, b)) + '\n';
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
-	Problem_2166();
+	Problem_1010();
+	//Problem_2166();
 	//Problem_8393();
 	//Problem_2753();
 	//Problem_4344();
