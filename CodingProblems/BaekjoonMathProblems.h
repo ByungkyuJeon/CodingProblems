@@ -2313,7 +2313,7 @@ void Problem_2166()
 */
 
 // PROBLEM 1010
-
+/*
 struct Comp
 {
 	size_t operator()(const std::pair<int, int>& obj) const noexcept
@@ -2363,10 +2363,43 @@ void Problem_1010()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 1158
+
+void Problem_1158()
+{
+	int N, K;
+	std::cin >> N >> K;
+
+
+	std::queue<int> data;
+	for (int num = 1; num <= N; num++)
+	{
+		data.emplace(num);
+	}
+
+	std::string outputStr{ "<" };
+
+	while (data.size() > 1)
+	{
+		for (int count = 1; count < K; count++)
+		{
+			data.emplace(data.front());
+			data.pop();
+		}
+		outputStr += std::to_string(data.front()) + ", ";
+		data.pop();
+	}
+	outputStr += std::to_string(data.front()) + ">";
+
+	std::cout << outputStr;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
-	Problem_1010();
+	Problem_1158();
+	//Problem_1010();
 	//Problem_2166();
 	//Problem_8393();
 	//Problem_2753();
