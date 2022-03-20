@@ -1836,8 +1836,26 @@ void Problem_1316()
 }
 */
 
+// PROBLEM 11718
+
+void Problem_11718()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string inputStr, outputStr;
+
+	while (std::getline(std::cin, inputStr))
+	{
+		outputStr += inputStr + '\n';
+	}
+
+	std::cout << outputStr;
+}
+
 void ExecuteString()
 {
+	Problem_11718();
 	//Problem_4354();
 	//Problem_18441_Trial();
 	//Problem_18441();
