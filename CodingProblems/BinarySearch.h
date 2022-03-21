@@ -517,7 +517,7 @@ void Problem_1920()
 */
 
 // PROBLEM 10816
-
+/*
 std::unordered_map<int, int> data;
 
 void Problem_10816()
@@ -543,9 +543,66 @@ void Problem_10816()
 	std::cout << outputStr;
 
 }
+*/
+
+// PROBLEM 1024
+
+long long calc(int start, int end)
+{
+	return (long long)(start + end) * (end - start + 1) / 2;
+}
+
+int binarySearch_Num(int sNum, int eNum, int length, int val)
+{
+	if (sNum == eNum)
+	{
+		return calc(sNum, sNum + length - 1) == val ? sNum : -1;
+	}
+
+	int mid = (sNum + eNum) / 2;
+	long long temp = calc(mid, mid + length - 1);
+	if (temp == val) { return mid; }
+	if (temp > val) { return binarySearch_Num(sNum, mid, length, val); }
+	else { return binarySearch_Num(mid + 1, eNum, length, val); }
+}
+
+void Problem_1024()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int N, L, temp, resLength = -1, resNum = 0;
+	std::cin >> N >> L;
+
+	for (int len = L; len <= 100; len++)
+	{
+		temp = binarySearch_Num(0, N / L, len, N);
+		if (temp != -1)
+		{
+			resNum = temp;
+			resLength = len;
+			break;
+		}
+	}
+
+	if (resLength == -1)
+	{
+		std::cout << -1;
+	}
+	else
+	{
+		std::string outputStr;
+		for (int num = resNum; num <= resNum + resLength - 1; num++)
+		{
+			outputStr += std::to_string(num) + " ";
+		}
+		std::cout << outputStr;
+	}
+}
 
 void ExecuteBinarySearch()
 {
+	Problem_1024();
 	//Problem_3020();
 	//Problem_2352();
 	//Problem_1208();
@@ -554,5 +611,6 @@ void ExecuteBinarySearch()
 	//Problem_17441();
 	//Problem_1365();
 	//Problem_1920();
-	Problem_10816();
+	//Problem_10816();
+	//Problem_1300();
 }
