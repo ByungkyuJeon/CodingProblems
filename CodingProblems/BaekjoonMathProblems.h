@@ -2366,7 +2366,7 @@ void Problem_1010()
 */
 
 // PROBLEM 1158
-
+/*
 void Problem_1158()
 {
 	int N, K;
@@ -2395,10 +2395,35 @@ void Problem_1158()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 1100
+
+void Problem_1100()
+{
+	std::string data[8];
+	
+	for (int row = 0; row < 8; row++)
+	{
+		std::cin >> data[row];
+	}
+
+	int count = 0;
+	for (int row = 0; row < 8; row++)
+	{
+		for (int col = row % 2; col < 8; col += 2)
+		{
+			if (data[row][col] == 'F') { count++; }
+		}
+	}
+
+	std::cout << count;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
-	Problem_1158();
+	Problem_1100();
+	//Problem_1158();
 	//Problem_1010();
 	//Problem_2166();
 	//Problem_8393();
