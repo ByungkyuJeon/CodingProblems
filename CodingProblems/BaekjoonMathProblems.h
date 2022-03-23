@@ -2398,7 +2398,7 @@ void Problem_1158()
 */
 
 // PROBLEM 1100
-
+/*
 void Problem_1100()
 {
 	std::string data[8];
@@ -2419,10 +2419,22 @@ void Problem_1100()
 
 	std::cout << count;
 }
+*/
+
+// PROBLEM 3046
+
+void Problem_3046()
+{
+	int R1, S;
+	std::cin >> R1 >> S;
+
+	std::cout << (S * 2) - R1;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
-	Problem_1100();
+	Problem_3046();
+	//Problem_1100();
 	//Problem_1158();
 	//Problem_1010();
 	//Problem_2166();
