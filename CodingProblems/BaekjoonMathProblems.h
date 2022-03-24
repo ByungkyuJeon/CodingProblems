@@ -2422,7 +2422,7 @@ void Problem_1100()
 */
 
 // PROBLEM 3046
-
+/*
 void Problem_3046()
 {
 	int R1, S;
@@ -2430,10 +2430,39 @@ void Problem_3046()
 
 	std::cout << (S * 2) - R1;
 }
+*/
+
+// PROBLEM 1934
+
+int gcd(int lhs, int rhs)
+{
+	if (rhs == 0) { return lhs; }
+	return gcd(rhs, lhs % rhs);
+}
+
+void Problem_1934()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int T;
+	std::cin >> T;
+	std::string outputStr;
+	while (T-- > 0)
+	{
+		int a, b;
+		std::cin >> a >> b;
+
+		outputStr += std::to_string(a * b / gcd(a, b)) + '\n';
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
-	Problem_3046();
+	Problem_1934();
+	//Problem_3046();
 	//Problem_1100();
 	//Problem_1158();
 	//Problem_1010();
