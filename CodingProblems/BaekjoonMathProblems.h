@@ -2433,7 +2433,7 @@ void Problem_3046()
 */
 
 // PROBLEM 1934
-
+/*
 int gcd(int lhs, int rhs)
 {
 	if (rhs == 0) { return lhs; }
@@ -2458,10 +2458,29 @@ void Problem_1934()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 2609
+
+int gcd(int lhs, int rhs)
+{
+	if (rhs == 0) { return lhs; }
+	return gcd(rhs, lhs % rhs);
+}
+
+void Problem_2609()
+{
+	int a, b;
+	std::cin >> a >> b;
+
+	std::cout << gcd(std::max(a, b), std::min(a, b)) << '\n';
+	std::cout << a * b / gcd(std::max(a, b), std::min(a, b));
+}
 
 void ExecuteBaekjoonMathProblems()
 {
-	Problem_1934();
+	Problem_2609();
+	//Problem_1934();
 	//Problem_3046();
 	//Problem_1100();
 	//Problem_1158();
