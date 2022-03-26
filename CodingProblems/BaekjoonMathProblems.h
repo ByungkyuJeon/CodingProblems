@@ -2461,7 +2461,7 @@ void Problem_1934()
 */
 
 // PROBLEM 2609
-
+/*
 int gcd(int lhs, int rhs)
 {
 	if (rhs == 0) { return lhs; }
@@ -2476,10 +2476,35 @@ void Problem_2609()
 	std::cout << gcd(std::max(a, b), std::min(a, b)) << '\n';
 	std::cout << a * b / gcd(std::max(a, b), std::min(a, b));
 }
+*/
+
+// PROBLEM 5086
+
+void Problem_5086()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int nums[2];
+
+	std::string outputStr;
+	while (true)
+	{
+		std::cin >> nums[0] >> nums[1];
+		if (nums[0] == 0 && nums[1] == 0) { break; }
+
+		if (nums[1] % nums[0] == 0){ outputStr += "factor\n"; }
+		else if (nums[0] % nums[1] == 0){ outputStr += "multiple\n"; }
+		else{ outputStr += "neither\n"; }
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
-	Problem_2609();
+	Problem_5086();
+	//Problem_2609();
 	//Problem_1934();
 	//Problem_3046();
 	//Problem_1100();
