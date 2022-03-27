@@ -2479,7 +2479,7 @@ void Problem_2609()
 */
 
 // PROBLEM 5086
-
+/*
 void Problem_5086()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -2500,10 +2500,55 @@ void Problem_5086()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 1271
+/*
+void Problem_1271()
+{
+	double n, m;
+	std::cin >> n >> m;
+
+	std::cout << std::fixed;
+	std::cout.precision(0);
+	std::cout << (n / m) << '\n' << n - m * std::floor(n / m);
+}
+*/
+
+// PREOBLEM 10950
+
+void Problem_10950()
+{
+	int T, n = 0;
+	std::cin >> T;
+	std::string outputStr, numStr, temp;
+	while (T-- > 0)
+	{
+		std::cin >> numStr;
+		n = 0;
+		temp.clear();
+		for (const auto& elem : numStr)
+		{
+			if (elem == ',')
+			{
+				n = std::stoi(temp);
+				temp.clear();
+				continue;
+			}
+			temp += elem;
+		}
+		n += std::stoi(temp);
+		outputStr += std::to_string(n) + '\n';
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
-	Problem_5086();
+	Problem_10950();
+	//Problem_1271();
+	//Problem_5086();
 	//Problem_2609();
 	//Problem_1934();
 	//Problem_3046();
