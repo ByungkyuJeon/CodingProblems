@@ -2516,7 +2516,7 @@ void Problem_1271()
 */
 
 // PREOBLEM 10950
-
+/*
 void Problem_10950()
 {
 	int T, n = 0;
@@ -2543,10 +2543,42 @@ void Problem_10950()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 1271
+
+void Problem_1271()
+{
+
+}
+
+// PROBLEM 1037
+
+void Problem_1037()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+	int N;
+	std::cin >> N;
+
+	int num;
+	int max = 0, min = 1000000;
+	while (N-- > 0)
+	{
+		std::cin >> num;
+
+		if (num > max) { max = num; }
+		if (num < min) { min = num; }
+
+	}
+
+	std::cout << (long long)max * min;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
-	Problem_10950();
+	Problem_1037();
+	//Problem_10950();
 	//Problem_1271();
 	//Problem_5086();
 	//Problem_2609();
