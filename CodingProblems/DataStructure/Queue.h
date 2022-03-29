@@ -695,7 +695,7 @@ void Problem_5430()
 */
 
 // PROBLEM 11286
-
+/*
 struct comp
 {
 	bool operator()(const std::pair<int, int>& lhs, const std::pair<int, int>& rhs) const noexcept
@@ -739,9 +739,85 @@ void Problem_11286()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 10845
+
+void Problem_10845()
+{
+	int N;
+	std::cin >> N;
+
+	std::queue<int> data;
+	std::string str, outputStr;
+	int num;
+
+	while (N-- > 0)
+	{
+		std::cin >> str;
+		
+		if (str == "push")
+		{
+			std::cin >> num;
+			data.emplace(num);
+		}
+		else if (str == "pop")
+		{
+			if (data.empty())
+			{
+				outputStr += std::to_string(-1) + '\n';
+			}
+			else
+			{
+				outputStr += std::to_string(data.front()) + '\n';
+				data.pop();
+			}
+		}
+		else if (str == "size")
+		{
+			outputStr += std::to_string(data.size()) + '\n';
+		}
+		else if (str == "empty")
+		{
+			if (data.empty())
+			{
+				outputStr += std::to_string(1) + '\n';
+			}
+			else
+			{
+				outputStr += std::to_string(0) + '\n';
+			}
+		}
+		else if (str == "front")
+		{
+			if (data.empty())
+			{
+				outputStr += std::to_string(-1) + '\n';
+			}
+			else
+			{
+				outputStr += std::to_string(data.front()) + '\n';
+			}
+		}
+		else
+		{
+			if (data.empty())
+			{
+				outputStr += std::to_string(-1) + '\n';
+			}
+			else
+			{
+				outputStr += std::to_string(data.back()) + '\n';
+			}
+		}
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteQueue()
 {
+	Problem_10845();
 	//Problem_2075();
 	//Problem_18258();
 	//Problem_1039_Tester();
@@ -752,5 +828,5 @@ void ExecuteQueue()
 	//Problem_10866();
 	//Problem_1021();
 	//Problem_5430();
-	Problem_11286();
+	//Problem_11286();
 }
