@@ -742,7 +742,7 @@ void Problem_11286()
 */
 
 // PROBLEM 10845
-
+/*
 void Problem_10845()
 {
 	int N;
@@ -814,10 +814,43 @@ void Problem_10845()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 10799
+
+void Problem_10799()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string inputStr;
+	std::cin >> inputStr;
+
+	long long result = 0, lhsSum = 0;
+	for (int idx = 0; idx < inputStr.size(); idx++)
+	{
+		if (inputStr[idx] == '(')
+		{
+			lhsSum++;
+		}
+		else if(inputStr[idx] == ')' && inputStr[idx - 1] == '(')
+		{
+			result += (--lhsSum);
+		}
+		else
+		{
+			result += 1;
+			--lhsSum;
+		}
+	}
+
+	std::cout << result;
+}
 
 void ExecuteQueue()
 {
-	Problem_10845();
+	Problem_10799();
+	//Problem_10845();
 	//Problem_2075();
 	//Problem_18258();
 	//Problem_1039_Tester();
