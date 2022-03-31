@@ -2553,7 +2553,7 @@ void Problem_1271()
 }
 
 // PROBLEM 1037
-
+/*
 void Problem_1037()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -2574,10 +2574,28 @@ void Problem_1037()
 
 	std::cout << (long long)max * min;
 }
+*/
+
+// PROBLEM 10039
+
+void Problem_10039()
+{
+	int num, sum = 0;
+
+	for (int count = 0; count < 5; count++)
+	{
+		std::cin >> num;
+		if (num < 40) { sum += 40; continue; }
+		sum += num;
+	}
+
+	std::cout << (float)sum / 5.0f;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
-	Problem_1037();
+	Problem_10039();
+	//Problem_1037();
 	//Problem_10950();
 	//Problem_1271();
 	//Problem_5086();
