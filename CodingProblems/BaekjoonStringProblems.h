@@ -1837,7 +1837,7 @@ void Problem_1316()
 */
 
 // PROBLEM 11718
-
+/*
 void Problem_11718()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -1852,10 +1852,33 @@ void Problem_11718()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 11721
+
+void Problem_11721()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string input, output;
+
+	std::cin >> input;
+
+	while (input.length() > 10)
+	{
+		output += input.substr(0, 10) + '\n';
+		input = input.substr(10, input.length() - 10);
+	}
+	output += input + '\n';
+
+	std::cout << output;
+}
 
 void ExecuteString()
 {
-	Problem_11718();
+	Problem_11721();
+	//Problem_11718();
 	//Problem_4354();
 	//Problem_18441_Trial();
 	//Problem_18441();
