@@ -2577,7 +2577,7 @@ void Problem_1037()
 */
 
 // PROBLEM 10039
-
+/*
 void Problem_10039()
 {
 	int num, sum = 0;
@@ -2591,10 +2591,27 @@ void Problem_10039()
 
 	std::cout << (float)sum / 5.0f;
 }
+*/
+
+// PROBLEM 2475
+
+void Problem_2475()
+{
+	int num, sum = 0;
+
+	for (int count = 0; count < 5; count++)
+	{
+		std::cin >> num;
+		sum += num * num;
+	}
+
+	std::cout << sum % 10;
+}
 
 void ExecuteBaekjoonMathProblems()
 {
-	Problem_10039();
+	Problem_2475();
+	//Problem_10039();
 	//Problem_1037();
 	//Problem_10950();
 	//Problem_1271();
