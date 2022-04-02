@@ -1877,7 +1877,7 @@ void Problem_11721()
 */
 
 // PROBLEM 11719
-
+/*
 void Problem_11719()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -1892,10 +1892,51 @@ void Problem_11719()
 
 	std::cout << output;
 }
+*/
+
+// PROBLEM 10808
+/*
+void Problem_10808()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string input, output;
+	int counts[26] = { 0 };
+
+	std::cin >> input;
+	for (const auto& elem : input)
+	{
+		counts[elem - 'a']++;
+	}
+
+	for (int idx = 0; idx < 26; idx++)
+	{
+		output += std::to_string(counts[idx]) + ' ';
+	}
+
+	std::cout << output;
+}
+*/
+
+// PROBLEM 2743
+/*
+void Problem_2743()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string input;
+	std::cin >> input;
+	std::cout << input.size();
+}
+*/
 
 void ExecuteString()
 {
-	Problem_11719();
+	//Problem_2743();
+	//Problem_10808();
+	//Problem_11719();
 	//Problem_11721();
 	//Problem_11718();
 	//Problem_4354();
