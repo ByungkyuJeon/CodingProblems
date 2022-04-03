@@ -1933,7 +1933,7 @@ void Problem_2743()
 */
 
 // PROBLEM 1764
-
+/*
 void Problem_1764()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -1973,10 +1973,51 @@ void Problem_1764()
 
 	std::cout << count << '\n' << outputStr;
 }
+*/
+
+// PROBLEM 1259
+
+void Problem_1259()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string inputStr, outputStr;
+	while (true)
+	{
+		std::cin >> inputStr;
+		if (inputStr == "0")
+		{
+			break;
+		}
+
+		bool checker = true;
+		for (int idx = 0; idx < inputStr.size() / 2; idx++)
+		{
+			if (inputStr[idx] != inputStr[inputStr.size() - 1 - idx])
+			{
+				checker = false;
+				break;
+			}
+		}
+
+		if (checker)
+		{
+			outputStr += "yes\n";
+		}
+		else
+		{
+			outputStr += "no\n";
+		}
+	}
+
+	std::cout << outputStr;
+}
 
 void ExecuteString()
 {
-	Problem_1764();
+	Problem_1259();
+	//Problem_1764();
 	//Problem_2743();
 	//Problem_10808();
 	//Problem_11719();
