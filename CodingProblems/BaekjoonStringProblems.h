@@ -1932,8 +1932,51 @@ void Problem_2743()
 }
 */
 
+// PROBLEM 1764
+
+void Problem_1764()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int n, m;
+	std::cin >> n >> m;
+
+	std::string str;
+	std::unordered_set<std::string> data;
+	std::set<std::string> res;
+	while (n-- > 0)
+	{
+		std::cin >> str;
+		data.emplace(str);
+	}
+
+	int count = 0;
+
+	while (m-- > 0)
+	{
+		std::cin >> str;
+		if (data.find(str) == data.end())
+		{
+			continue;
+		}
+
+		count++;
+		res.emplace(str);
+	}
+
+	std::string outputStr;
+	for (const auto& elem : res)
+	{
+		outputStr += elem + '\n';
+	}
+
+	std::cout << count << '\n' << outputStr;
+}
+
 void ExecuteString()
 {
+	Problem_1764();
 	//Problem_2743();
 	//Problem_10808();
 	//Problem_11719();
