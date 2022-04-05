@@ -1976,7 +1976,7 @@ void Problem_1764()
 */
 
 // PROBLEM 1259
-
+/*
 void Problem_1259()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -2013,10 +2013,51 @@ void Problem_1259()
 
 	std::cout << outputStr;
 }
+*/
+
+// PROBLEM 1032
+
+void Problem_1032()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	int num;
+	std::cin >> num;
+
+	std::vector<std::string> data(num);
+
+	std::cin >> data[0];
+	for(int idx = 1; idx < num; idx++)
+	{
+		std::cin >> data[idx];
+	}
+	
+	std::string res = data[0];
+	res.resize(data[0].size());
+
+	for (int idx = 1; idx < num; idx++)
+	{
+		for (int secIdx = idx - 1; secIdx >= 0; secIdx--)
+		{
+			for (int strIdx = 0; strIdx < data[idx].size(); strIdx++)
+			{
+				if (res[strIdx] == '?') { continue; }
+				if (data[idx][strIdx] != data[secIdx][strIdx])
+				{
+					res[strIdx] = '?';
+				}
+			}
+		}
+	}
+
+	std::cout << res;
+}
 
 void ExecuteString()
 {
-	Problem_1259();
+	Problem_1032();
+	//Problem_1259();
 	//Problem_1764();
 	//Problem_2743();
 	//Problem_10808();
