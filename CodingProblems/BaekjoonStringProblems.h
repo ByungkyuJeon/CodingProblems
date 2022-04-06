@@ -2016,7 +2016,7 @@ void Problem_1259()
 */
 
 // PROBLEM 1032
-
+/*
 void Problem_1032()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -2053,10 +2053,42 @@ void Problem_1032()
 
 	std::cout << res;
 }
+*/
+
+// PROBLEM 10610
+/*
+void Problem_10610()
+{
+	std::string numStr;
+	std::cin >> numStr;
+
+	int sum = 0; bool hasZero = false;
+	for (const auto& elem : numStr)
+	{
+		if (elem == '0') { hasZero = true; }
+		sum += elem - '0';
+	}
+
+	if (sum % 3 == 0 && hasZero)
+	{
+		std::sort(numStr.begin(), numStr.end(), [&](const char& lhs, const char& rhs) {
+			return lhs > rhs;
+			}
+		);
+
+		std::cout << numStr;
+	}
+	else
+	{
+		std::cout << -1;
+	}
+}
+*/
 
 void ExecuteString()
 {
-	Problem_1032();
+	//Problem_10610();
+	//Problem_1032();
 	//Problem_1259();
 	//Problem_1764();
 	//Problem_2743();
