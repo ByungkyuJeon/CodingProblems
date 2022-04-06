@@ -486,7 +486,7 @@ void Problem_1365()
 */
 
 // PROBLEM 1920
-/*
+
 int data[100001];
 
 void Problem_1920()
@@ -508,13 +508,13 @@ void Problem_1920()
 	while (M-- > 0)
 	{
 		std::cin >> inputNum;
-		if ((*std::lower_bound(data, data + N, inputNum)) == inputNum) { outputStr += "1\n"; }
+		if ((*std::lower_bound(data, data + N - 1, inputNum)) == inputNum) { outputStr += "1\n"; }
 		else { outputStr += "0\n"; }
 	}
 	
 	std::cout << outputStr;
 }
-*/
+
 
 // PROBLEM 10816
 /*
@@ -546,7 +546,7 @@ void Problem_10816()
 */
 
 // PROBLEM 1024
-
+/*
 long long calc(int start, int end)
 {
 	return (long long)(start + end) * (end - start + 1) / 2;
@@ -591,7 +591,7 @@ void Problem_1024()
 	}
 	else
 	{
-		std::string outputStr;
+		std::string outputStr;		
 		for (int num = resNum; num <= resNum + resLength - 1; num++)
 		{
 			outputStr += std::to_string(num) + " ";
@@ -599,10 +599,11 @@ void Problem_1024()
 		std::cout << outputStr;
 	}
 }
+*/
 
 void ExecuteBinarySearch()
 {
-	Problem_1024();
+	//Problem_1024();
 	//Problem_3020();
 	//Problem_2352();
 	//Problem_1208();
@@ -610,7 +611,7 @@ void ExecuteBinarySearch()
 	//Problem_2568();
 	//Problem_17441();
 	//Problem_1365();
-	//Problem_1920();
+	Problem_1920();
 	//Problem_10816();
 	//Problem_1300();
 }
