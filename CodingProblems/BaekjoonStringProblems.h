@@ -2085,8 +2085,28 @@ void Problem_10610()
 }
 */
 
+// PROBLEM 2902
+
+void Problem_2902()
+{
+	std::string inputStr;
+	std::cin >> inputStr;
+
+	std::string output;
+	for (const auto& elem : inputStr)
+	{
+		if (elem >= 'A' && elem <= 'Z')
+		{
+			output += elem;
+		}
+	}
+
+	std::cout << output;
+}
+
 void ExecuteString()
 {
+	Problem_2902();
 	//Problem_10610();
 	//Problem_1032();
 	//Problem_1259();
