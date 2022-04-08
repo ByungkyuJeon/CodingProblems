@@ -2086,7 +2086,7 @@ void Problem_10610()
 */
 
 // PROBLEM 2902
-
+/*
 void Problem_2902()
 {
 	std::string inputStr;
@@ -2103,10 +2103,60 @@ void Problem_2902()
 
 	std::cout << output;
 }
+*/
+
+// PROBLEM 1212
+
+std::string toBinary(int inOct)
+{
+	std::string res;
+	res.resize(3);
+
+	int digit = 0;
+	int temp, check;
+	
+	while (digit < 3)
+	{
+		temp = std::pow(2, 2 - digit);
+		res[digit++] = (check = inOct >= temp) ? '1' : '0';
+		inOct -= check * temp;
+	}
+
+	return res;
+}
+
+void Problem_1212()
+{
+	std::string input;
+	std::cin >> input;
+	if (input == "0")
+	{
+		std::cout << 0;
+	}
+	else
+	{
+		std::string output;
+		
+		std::string first = toBinary(input[0] - '0');
+		while (first[0] == '0')
+		{
+			first = first.substr(1, first.size() - 1);
+		}
+		output += first;
+
+		for (int idx = 1; idx < input.size(); idx++)
+		{
+			output += toBinary(input[idx] - '0');
+		}
+
+		std::cout << output;
+	}
+}
 
 void ExecuteString()
 {
-	Problem_2902();
+	Problem_1212();
+	//Problem_2902();
 	//Problem_10610();
 	//Problem_1032();
 	//Problem_1259();
