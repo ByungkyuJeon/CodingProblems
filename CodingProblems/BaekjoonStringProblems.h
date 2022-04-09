@@ -2106,7 +2106,7 @@ void Problem_2902()
 */
 
 // PROBLEM 1212
-
+/*
 std::string toBinary(int inOct)
 {
 	std::string res;
@@ -2152,10 +2152,43 @@ void Problem_1212()
 		std::cout << output;
 	}
 }
+*/
+
+// PROBLEM 1373
+
+void Problem_1373()
+{
+	std::string input;
+	std::cin >> input;
+
+	std::string output;
+	int temp, tempIdx, exp;
+	for (int idx = input.size() - 1; idx >= 0; idx--)
+	{
+		tempIdx = idx - 2 >= 0 ? idx - 2 : 0;
+		exp = 0;
+		temp = 0;
+		for (int numIdx = idx; numIdx >= tempIdx; numIdx--)
+		{
+			temp += std::pow(2, exp) * (input[numIdx] - '0');
+			exp++;
+		}
+		output += std::to_string(temp);
+		idx = tempIdx;
+	}
+
+	for (int idx = 0; idx < output.size() / 2; idx++)
+	{
+		std::swap(output[idx], output[output.size() - 1 - idx]);
+	}
+
+	std::cout << output;
+}
 
 void ExecuteString()
 {
-	Problem_1212();
+	Problem_1373();
+	//Problem_1212();
 	//Problem_2902();
 	//Problem_10610();
 	//Problem_1032();
