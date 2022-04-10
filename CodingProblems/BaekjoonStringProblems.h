@@ -2155,7 +2155,7 @@ void Problem_1212()
 */
 
 // PROBLEM 1373
-
+/*
 void Problem_1373()
 {
 	std::string input;
@@ -2184,10 +2184,53 @@ void Problem_1373()
 
 	std::cout << output;
 }
+*/
+
+// PROBLEM 9093
+
+void Problem_9093()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string input, output, temp;
+	int T;
+	std::cin >> T;
+	std::cin.ignore();
+
+	while (T-- > 0)
+	{
+		std::getline(std::cin, input);
+		for (const auto& elem : input)
+		{
+			if (elem == ' ')
+			{
+				for (int idx = 0; idx < temp.size() / 2; idx++)
+				{
+					std::swap(temp[idx], temp[temp.size() - 1 - idx]);
+				}
+				output += temp + ' ';
+				temp.clear();
+				continue;
+			}
+			temp += elem;
+		}
+		for (int idx = 0; idx < temp.size() / 2; idx++)
+		{
+			std::swap(temp[idx], temp[temp.size() - 1 - idx]);
+		}
+		output += temp + ' ';
+		temp.clear();
+		output += '\n';
+	}
+
+	std::cout << output;
+}
 
 void ExecuteString()
 {
-	Problem_1373();
+	Problem_9093();
+	//Problem_1373();
 	//Problem_1212();
 	//Problem_2902();
 	//Problem_10610();
