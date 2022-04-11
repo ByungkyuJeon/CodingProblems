@@ -2187,7 +2187,7 @@ void Problem_1373()
 */
 
 // PROBLEM 9093
-
+/*
 void Problem_9093()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -2226,10 +2226,42 @@ void Problem_9093()
 
 	std::cout << output;
 }
+*/
+
+// PROBLEM 11656
+
+void Problem_11656()
+{
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
+
+	std::string input, output;
+
+	std::vector<std::string> data(input.size());
+
+	std::cin >> input;
+	for (int idx = 0; idx <= input.size() - 1; idx++)
+	{
+		data.emplace_back(input.substr(idx, input.size() - idx));
+	}
+	
+	std::sort(data.begin(), data.end(), [&](const std::string& lhs, const std::string& rhs)
+		{
+			return lhs < rhs;
+		});
+
+	for (const auto& elem : data)
+	{
+		output += elem + '\n';
+	}
+
+	std::cout << output;
+}
 
 void ExecuteString()
 {
-	Problem_9093();
+	Problem_11656();
+	//Problem_9093();
 	//Problem_1373();
 	//Problem_1212();
 	//Problem_2902();
