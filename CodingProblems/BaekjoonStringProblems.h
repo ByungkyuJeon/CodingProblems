@@ -2229,7 +2229,7 @@ void Problem_9093()
 */
 
 // PROBLEM 11656
-
+/*
 void Problem_11656()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -2245,7 +2245,7 @@ void Problem_11656()
 		data.emplace_back(input.substr(idx, input.size() - idx));
 	}
 	
-	std::sort(data.begin(), data.end(), [&](const std::string& lhs, const std::string& rhs)
+	std::sort(data.begin(), data.end(), [](const std::string& lhs, const std::string& rhs)
 		{
 			return lhs < rhs;
 		});
@@ -2257,10 +2257,31 @@ void Problem_11656()
 
 	std::cout << output;
 }
+*/
+
+// PROBLEM 10988
+
+void Problem_10988()
+{
+	std::string input;
+	std::cin >> input;
+	int res = 1;
+	for (int idx = 0; idx < input.size() / 2; idx++)
+	{
+		if (input[idx] != input[input.size() - idx - 1])
+		{
+			res = 0;
+			break;
+		}
+	}
+
+	std::cout << res;
+}
 
 void ExecuteString()
 {
-	Problem_11656();
+	Problem_10988();
+	//Problem_11656();
 	//Problem_9093();
 	//Problem_1373();
 	//Problem_1212();
