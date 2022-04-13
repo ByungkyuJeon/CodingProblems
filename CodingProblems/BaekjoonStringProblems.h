@@ -2294,7 +2294,7 @@ void Problem_10798()
 	{
 		for (int idx = 0; idx < 5; idx++)
 		{
-			if (input[idx].size() > ch + 1)
+			if (input[idx].size() >= ch + 1)
 			{
 				output += input[idx][ch];
 			}
