@@ -2260,7 +2260,7 @@ void Problem_11656()
 */
 
 // PROBLEM 10988
-
+/*
 void Problem_10988()
 {
 	std::string input;
@@ -2277,10 +2277,37 @@ void Problem_10988()
 
 	std::cout << res;
 }
+*/
+
+// PROBLEM 10798
+
+void Problem_10798()
+{
+	std::string input[5];
+	for (int idx = 0; idx < 5; idx++)
+	{
+		std::cin >> input[idx];
+	}
+
+	std::string output;
+	for (int ch = 0; ch < 15; ch++)
+	{
+		for (int idx = 0; idx < 5; idx++)
+		{
+			if (input[idx].size() > ch + 1)
+			{
+				output += input[idx][ch];
+			}
+		}
+	}
+
+	std::cout << output;
+}
 
 void ExecuteString()
 {
-	Problem_10988();
+	Problem_10798();
+	//Problem_10988();
 	//Problem_11656();
 	//Problem_9093();
 	//Problem_1373();
