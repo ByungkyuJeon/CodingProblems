@@ -2312,14 +2312,24 @@ void Problem_4458()
 	int n;
 	std::cin >> n;
 	std::string input, output;
+	std::cin.ignore();
 	while (n-- > 0)
 	{
+		std::getline(std::cin, input);
+		if (input[0] >= 'a' && input[0] <= 'z')
+		{
+			input[0] -= 32;
+		}
 
+		output += input + '\n';
 	}
+
+	std::cout << output;
 }
 
 void ExecuteString()
 {
+	Problem_4458();
 	//Problem_10798();
 	//Problem_10988();
 	//Problem_11656();
