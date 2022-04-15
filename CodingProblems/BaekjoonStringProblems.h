@@ -2280,7 +2280,7 @@ void Problem_10988()
 */
 
 // PROBLEM 10798
-
+/*
 void Problem_10798()
 {
 	std::string input[5];
@@ -2303,10 +2303,24 @@ void Problem_10798()
 
 	std::cout << output;
 }
+*/
+
+// PROBLEM 4458
+
+void Problem_4458()
+{
+	int n;
+	std::cin >> n;
+	std::string input, output;
+	while (n-- > 0)
+	{
+
+	}
+}
 
 void ExecuteString()
 {
-	Problem_10798();
+	//Problem_10798();
 	//Problem_10988();
 	//Problem_11656();
 	//Problem_9093();
