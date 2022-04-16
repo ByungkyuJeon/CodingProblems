@@ -2306,7 +2306,7 @@ void Problem_10798()
 */
 
 // PROBLEM 4458
-
+/*
 void Problem_4458()
 {
 	int n;
@@ -2326,10 +2326,34 @@ void Problem_4458()
 
 	std::cout << output;
 }
+*/
+
+// PROBLEM 11655
+
+void Problme_11655()
+{
+	std::string input;
+	std::getline(std::cin, input);
+
+	for (int idx = 0; idx < input.size(); idx++)
+	{
+		if (input[idx] >= 'a' && input[idx] <= 'z')
+		{
+			input[idx] = ((input[idx] - 'a' + 13) % 26) + 'a';
+		}
+		else if (input[idx] >= 'A' && input[idx] <= 'Z')
+		{
+			input[idx] = ((input[idx] - 'A' + 13) % 26) + 'A';
+		}
+	}
+
+	std::cout << input;
+}
 
 void ExecuteString()
 {
-	Problem_4458();
+	Problme_11655();
+	//Problem_4458();
 	//Problem_10798();
 	//Problem_10988();
 	//Problem_11656();
