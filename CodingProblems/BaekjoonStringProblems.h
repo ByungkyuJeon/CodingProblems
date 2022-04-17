@@ -2329,7 +2329,7 @@ void Problem_4458()
 */
 
 // PROBLEM 11655
-
+/*
 void Problme_11655()
 {
 	std::string input;
@@ -2349,10 +2349,41 @@ void Problme_11655()
 
 	std::cout << input;
 }
+*/
+
+// PROBLEM 10820
+
+void Problem_10820()
+{
+	std::string output;
+	std::string input;
+
+	while (std::getline(std::cin, input))
+	{
+		int res[4] = { 0 };
+
+		for (const auto& elem : input)
+		{
+			if (elem >= 'a' && elem <= 'z') { res[0]++; continue; }
+			if (elem >= 'A' && elem <= 'Z') { res[1]++; continue; }
+			if (elem >= '0' && elem <= '9') { res[2]++; continue; }
+			if (elem == ' ') { res[3]++; }
+		}
+
+		for (int idx = 0; idx < 4; idx++)
+		{
+			output += std::to_string(res[idx]) + ' ';
+		}
+		output += '\n';
+	}
+
+	std::cout << output;
+}
 
 void ExecuteString()
 {
-	Problme_11655();
+	Problem_10820();
+	//Problme_11655();
 	//Problem_4458();
 	//Problem_10798();
 	//Problem_10988();
