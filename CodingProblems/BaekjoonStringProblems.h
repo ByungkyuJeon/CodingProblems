@@ -2352,7 +2352,7 @@ void Problme_11655()
 */
 
 // PROBLEM 10820
-
+/*
 void Problem_10820()
 {
 	std::string output;
@@ -2379,10 +2379,33 @@ void Problem_10820()
 
 	std::cout << output;
 }
+*/
+
+// PROBLEM 1439
+
+void Problem_1439()
+{
+	std::string input;
+	std::cin >> input;
+	char current = input[0];
+	int nums[2] = { 0 };
+	for (const auto& elem : input)
+	{
+		if (current != elem)
+		{
+			nums[current - '0']++;
+			current = elem;
+		}
+	}
+	nums[current - '0']++;
+
+	std::cout << std::min(nums[0], nums[1]);
+}
 
 void ExecuteString()
 {
-	Problem_10820();
+	Problem_1439();
+	//Problem_10820();
 	//Problme_11655();
 	//Problem_4458();
 	//Problem_10798();
