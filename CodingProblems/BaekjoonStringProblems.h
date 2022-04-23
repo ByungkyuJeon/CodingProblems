@@ -2408,21 +2408,32 @@ void Problem_1439()
 
 void Problem_1406()
 {
-	std::string input;
-	int T;
-	std::cin >> input >> T;
+	std::ios_base::sync_with_stdio(0);
+	std::cin.tie(nullptr);
 
+	int T;
+	std::string num;
 	std::list<char> data;
-	for (const auto& elem : input)
+	char inCh;
+
+	while (true)
 	{
-		data.emplace_back(elem);
+		std::cin >> inCh;
+		if (inCh >= '0' && inCh <= '9') { num += inCh;  continue; }
+		if (num.size() != 0) { break; }
+		data.emplace_back(inCh);
 	}
 
+	T = std::stoi(num);
+
 	std::list<char>::iterator cursorPos = data.end();
-	char operation;
+	char operation = inCh;
+	bool isFirst = true;
 	while (T-- > 0)
 	{
-		std::cin >> operation;
+		if(!isFirst){ std::cin >> operation; }
+		else { isFirst = false; }
+
 		switch (operation)
 		{
 		case 'L':
