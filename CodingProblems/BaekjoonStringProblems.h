@@ -4,6 +4,7 @@
 #include <map>
 #include <unordered_set>
 #include <bitset>
+#include <list>
 
 // PROBLEM 4354
 /*
@@ -2382,7 +2383,7 @@ void Problem_10820()
 */
 
 // PROBLEM 1439
-
+/*
 void Problem_1439()
 {
 	std::string input;
@@ -2401,10 +2402,60 @@ void Problem_1439()
 
 	std::cout << std::min(nums[0], nums[1]);
 }
+*/
+
+// PROBLEM 1406
+
+void Problem_1406()
+{
+	std::string input;
+	int T;
+	std::cin >> input >> T;
+
+	std::list<char> data;
+	for (const auto& elem : input)
+	{
+		data.emplace_back(elem);
+	}
+
+	std::list<char>::iterator cursorPos = data.end();
+	char operation;
+	while (T-- > 0)
+	{
+		std::cin >> operation;
+		switch (operation)
+		{
+		case 'L':
+			if (cursorPos != data.begin()) { cursorPos--; }
+			break;
+		case 'D' :
+			if (cursorPos != data.end()) { cursorPos++; }
+			break;
+		case 'B':
+			if (cursorPos != data.begin()) { cursorPos = data.erase(--cursorPos); }
+			break;
+		case 'P':
+			std::cin >> operation;
+			data.insert(cursorPos, operation);
+			break;
+		default:
+			break;
+		}
+	}
+
+	std::string output;
+	for (const auto& elem : data)
+	{
+		output += elem;
+	}
+
+	std::cout << output;
+}
 
 void ExecuteString()
 {
-	Problem_1439();
+	Problem_1406();
+	//Problem_1439();
 	//Problem_10820();
 	//Problme_11655();
 	//Problem_4458();
