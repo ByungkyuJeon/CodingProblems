@@ -2405,7 +2405,7 @@ void Problem_1439()
 */
 
 // PROBLEM 1406
-
+/*
 void Problem_1406()
 {
 	std::ios_base::sync_with_stdio(0);
@@ -2462,10 +2462,35 @@ void Problem_1406()
 
 	std::cout << output;
 }
+*/
+
+// PROBLEM 7567
+
+void Problem_7567()
+{
+	std::string input;
+	std::cin >> input;
+
+	long long sum = 10;
+	char prev = input[0];
+
+	for (int idx = 1; idx < input.size(); idx++)
+	{
+		if (prev == input[idx])
+		{
+			sum += 5;
+		}
+		else { sum += 10; }
+		prev = input[idx];
+	}
+
+	std::cout << sum;
+}
 
 void ExecuteString()
 {
-	Problem_1406();
+	Problem_7567();
+	//Problem_1406();
 	//Problem_1439();
 	//Problem_10820();
 	//Problme_11655();
