@@ -2608,9 +2608,62 @@ void Problem_2475()
 	std::cout << sum % 10;
 }
 
+void Problem_1051()
+{
+	std::ios_base::sync_with_stdio(false);
+	std::cin.tie(nullptr);
+
+	int N, M;
+	std::cin >> N >> M;
+
+	int input[50][50] = { 0 };
+	int count = N;
+	while (count > 0)
+	{
+		std::string inputStr;
+		std::cin >> inputStr;
+		int currCol = N - count--;
+		for (int idx = 0; idx < M; idx++)
+		{
+			input[currCol][idx] = inputStr[idx] - '0';
+		}
+	}
+
+	int max = 0;
+	for (int colIdx = 0; colIdx < N - 1; colIdx++)
+	{
+		for (int rowIdx = 0; rowIdx < M - 1; rowIdx++)
+		{
+			int colMaxLength = N - colIdx - 1;
+			int rowMaxLength = M - rowIdx - 1;
+			bool rectResult = false;
+			for (int length = colMaxLength <= rowMaxLength ? colMaxLength : rowMaxLength; length > max; length--)
+			{
+				bool rectResult = false;
+
+				if ((rectResult = input[colIdx][rowIdx] ^ input[colIdx + length][rowIdx + length]))
+					continue;
+
+				if ((rectResult = input[colIdx][rowIdx] ^ input[colIdx + length][rowIdx]))
+					continue;
+
+				if ((rectResult = input[colIdx][rowIdx] ^ input[colIdx][rowIdx + length]))
+					continue;
+
+				if (length > max)
+					max = length;
+			}
+		}
+	}
+
+	max += 1;
+	std::cout << max * max;
+}
+
 void ExecuteBaekjoonMathProblems()
 {
-	Problem_2475();
+	Problem_1051();
+	//Problem_2475();
 	//Problem_10039();
 	//Problem_1037();
 	//Problem_10950();
