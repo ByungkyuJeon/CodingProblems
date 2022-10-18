@@ -2660,9 +2660,89 @@ void Problem_1051()
 	std::cout << max * max;
 }
 
+#include <unordered_set>
+void Problem_1269()
+{
+	int c = 10;
+	while (c-- > 0)
+	{
+		double timeChecker = TimeChecker::CheckTime([]() {
+
+			std::ios_base::sync_with_stdio(false);
+			std::cin.tie(nullptr);
+
+			int m, n;
+
+			std::cin >> m >> n;
+			std::unordered_set<int> aSet(200000);
+
+			int count = m, input;
+			while (count-- > 0)
+			{
+				std::cin >> input;
+				aSet.emplace(input);
+			}
+
+			int duplicatedElemCount = 0;
+			count = n;
+			while (count-- > 0)
+			{
+				std::cin >> input;
+				if (aSet.find(input) != aSet.end())
+					duplicatedElemCount++;
+			}
+
+			std::cout << m + n - duplicatedElemCount - duplicatedElemCount;
+		});
+
+		std::cout << std::endl << timeChecker << std::endl;
+	}
+}
+
+#include <array>
+void Problem_1269_vector()
+{
+	int c = 10;
+	while (c-- > 0)
+	{
+		double timeChecker = TimeChecker::CheckTime([]() {
+
+			std::ios_base::sync_with_stdio(false);
+			std::cin.tie(nullptr);
+
+			int m, n;
+
+			std::cin >> m >> n;
+
+			std::array<bool, 100000000>* aSet = new std::array<bool, 100000000>();
+
+			int count = m, input;
+			while (count-- > 0)
+			{
+				std::cin >> input;
+				(*aSet)[input] = true;
+			}
+
+			int duplicatedElemCount = 0;
+			count = n;
+			while (count-- > 0)
+			{
+				std::cin >> input;
+				if ((*aSet)[input])
+					duplicatedElemCount++;
+			}
+
+			std::cout << m + n - duplicatedElemCount - duplicatedElemCount;
+		});
+
+		std::cout << std::endl << timeChecker << std::endl;
+	}
+}
+
 void ExecuteBaekjoonMathProblems()
 {
-	Problem_1051();
+	Problem_1269_vector();
+	//Problem_1051();
 	//Problem_2475();
 	//Problem_10039();
 	//Problem_1037();
