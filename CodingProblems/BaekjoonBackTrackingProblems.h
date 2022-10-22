@@ -340,7 +340,7 @@ void Problem_14888()
 */
 
 // PROBLEM 14889
-
+/*
 int N, maxNum, teamNumA, min = 1000000;
 int data[20][20];
 bool teamed[20];
@@ -372,6 +372,7 @@ int calcSum(int num, Oper op)
 
 	return ret;
 }
+
 
 void process(int num)
 {
@@ -412,6 +413,7 @@ void Problem_14889()
 	process(0);
 	std::cout << min;	
 }
+*/
 
 void ExecuteBackTracking()
 {
@@ -422,5 +424,5 @@ void ExecuteBackTracking()
 	//Problem_9663();
 	//Problem_2580();
 	//Problem_14888();
-	Problem_14889();
+	//Problem_14889();
 }

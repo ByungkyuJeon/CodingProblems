@@ -943,8 +943,31 @@ void Problem_18870()
 }
 */
 
+// PRBLEM 25305
+void Problem_25305()
+{
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+
+    int N, k;
+    std::cin >> N >> k;
+
+    std::vector<unsigned short> scores(N);
+
+    int count = N, input;
+    while (count > 0)
+    {
+        std::cin >> input;
+        scores[N - count--] = input;
+    }
+
+    std::sort(scores.begin(), scores.end(), [](const unsigned short& lhs, const unsigned short& rhs) {return lhs > rhs; });
+    std::cout << scores[k - 1];
+}
+
 void ExecuteSort()
 {
+    Problem_25305();
     //Problem_1377();
     //Problem_1377_Test();
     //Problem_1377();

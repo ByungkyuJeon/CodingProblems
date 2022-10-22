@@ -2545,13 +2545,6 @@ void Problem_10950()
 }
 */
 
-// PROBLEM 1271
-
-void Problem_1271()
-{
-
-}
-
 // PROBLEM 1037
 /*
 void Problem_1037()
@@ -2594,7 +2587,7 @@ void Problem_10039()
 */
 
 // PROBLEM 2475
-
+/*
 void Problem_2475()
 {
 	int num, sum = 0;
@@ -2659,9 +2652,11 @@ void Problem_1051()
 	max += 1;
 	std::cout << max * max;
 }
+*/
 
 #include <unordered_set>
-void Problem_1269()
+// PROBLEM 1269
+/*void Problem_1269()
 {
 	int c = 10;
 	while (c-- > 0)
@@ -2699,7 +2694,6 @@ void Problem_1269()
 	}
 }
 
-#include <array>
 void Problem_1269_vector()
 {
 	int c = 10;
@@ -2710,38 +2704,56 @@ void Problem_1269_vector()
 			std::ios_base::sync_with_stdio(false);
 			std::cin.tie(nullptr);
 
-			int m, n;
+			int result = 0;
+			std::string input;
+			std::getline(std::cin, input);
+			std::vector<bool> aSet(100000000);
 
-			std::cin >> m >> n;
+			std::getline(std::cin, input);
 
-			std::array<bool, 100000000>* aSet = new std::array<bool, 100000000>();
 
-			int count = m, input;
-			while (count-- > 0)
+			std::string::iterator last = input.begin();
+			auto itr = input.begin();
+			while (++itr != input.end())
 			{
-				std::cin >> input;
-				(*aSet)[input] = true;
+				if (*itr == ' ')
+				{
+					aSet[std::stoi(input.substr(last - input.begin(), itr - last))] = true;
+					last = itr + 1;
+					result++;
+				}
 			}
+			aSet[std::stoi(input.substr(last - input.begin(), input.end() - last))] = true;
 
-			int duplicatedElemCount = 0;
-			count = n;
-			while (count-- > 0)
+
+			std::getline(std::cin, input);
+
+			last = input.begin();
+			itr = input.begin();
+			while (++itr != input.end())
 			{
-				std::cin >> input;
-				if ((*aSet)[input])
-					duplicatedElemCount++;
+				if (*itr == ' ')
+				{
+					if (aSet[std::stoi(input.substr(last - input.begin(), itr - last))])
+						result -= 2;
+					last = itr + 1;
+					result++;
+				}
 			}
+			if (aSet[std::stoi(input.substr(last - input.begin(), input.end() - last))])
+				result -= 2;
 
-			std::cout << m + n - duplicatedElemCount - duplicatedElemCount;
+			std::cout << result + 2;
 		});
 
 		std::cout << std::endl << timeChecker << std::endl;
 	}
 }
+*/
 
 void ExecuteBaekjoonMathProblems()
 {
-	Problem_1269_vector();
+	//Problem_1269_vector();
 	//Problem_1051();
 	//Problem_2475();
 	//Problem_10039();

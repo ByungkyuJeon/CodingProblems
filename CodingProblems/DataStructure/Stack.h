@@ -228,7 +228,7 @@ void Problem_17298()
 */
 
 // PRBOLEM 2493
-
+/*
 int ret[500000];
 int data[500000];
 
@@ -261,6 +261,7 @@ void Problem_2493()
 	}
 	std::cout << outputStr;
 }
+*/
 
 void ExecuteStack()
 {
@@ -269,5 +270,5 @@ void ExecuteStack()
 	//Problem_9012();
 	//Problem_4949();
 	//Problem_17298();
-	Problem_2493();
+	//Problem_2493();
 }

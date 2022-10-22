@@ -486,7 +486,7 @@ void Problem_1365()
 */
 
 // PROBLEM 1920
-
+/*
 int data[100001];
 
 void Problem_1920()
@@ -514,6 +514,7 @@ void Problem_1920()
 	
 	std::cout << outputStr;
 }
+*/
 
 
 // PROBLEM 10816
@@ -611,7 +612,7 @@ void ExecuteBinarySearch()
 	//Problem_2568();
 	//Problem_17441();
 	//Problem_1365();
-	Problem_1920();
+	//Problem_1920();
 	//Problem_10816();
 	//Problem_1300();
 }
