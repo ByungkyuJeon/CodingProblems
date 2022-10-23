@@ -943,7 +943,8 @@ void Problem_18870()
 }
 */
 
-// PRBLEM 25305
+// PROBLEM 25305
+/*
 void Problem_25305()
 {
     std::ios_base::sync_with_stdio(false);
@@ -964,10 +965,41 @@ void Problem_25305()
     std::sort(scores.begin(), scores.end(), [](const unsigned short& lhs, const unsigned short& rhs) {return lhs > rhs; });
     std::cout << scores[k - 1];
 }
+*/
+
+// PROBLEM 11659
+void Problem_11659()
+{
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+
+    int N, M;
+    std::cin >> N >> M;
+    std::vector<int> sumTable(N + 1);
+    int count = N, input, sum = 0;
+    while (count > 0)
+    {
+        std::cin >> input;
+        sum += input;
+        sumTable[sumTable.size() - count--] = sum;
+    }
+
+    count = M;
+    int input2;
+    std::string output;
+    while (count-- > 0)
+    {
+        std::cin >> input >> input2;
+        output += std::to_string(sumTable[input2] - sumTable[input - 1]) + '\n';
+    }
+
+    std::cout << output;
+}
 
 void ExecuteSort()
 {
-    Problem_25305();
+    Problem_11659();
+    //Problem_25305();
     //Problem_1377();
     //Problem_1377_Test();
     //Problem_1377();
