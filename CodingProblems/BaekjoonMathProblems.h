@@ -2751,6 +2751,70 @@ void Problem_1269_vector()
 }
 */
 
+// PROBLEM 1111
+/*
+void Problem_1111()
+{
+	std::ios_base::sync_with_stdio(false);
+	std::cin.tie(nullptr);
+
+	int N;
+	std::cin >> N;
+
+	std::vector<int> nums(N);
+	bool isAllSame = true;
+	for (int i = 0; i < N; ++i)
+	{
+		std::cin >> nums[i];
+		if (i != 0 && nums[i] != nums[i - 1])
+			isAllSame = false;
+	}
+
+	if (N < 2)
+	{
+		std::cout << "A";
+		return 0;
+	}
+
+	bool validation = true;
+	long long A = 0, B = 0, result = 0;
+	if (isAllSame)
+	{
+		result = nums[0];
+	}
+	else if (N < 3)
+	{
+		std::cout << "A";
+		return 0;
+	}
+	else
+	{
+		if (nums[1] != nums[0])
+		{
+			A = (nums[2] - nums[1]) / (nums[1] - nums[0]);
+			B = nums[1] - nums[0] * A;
+			result = nums[N - 1] * A + B;
+
+			for (int i = 1; i < N; ++i)
+			{
+				if (nums[i - 1] * A + B != nums[i])
+				{
+					validation = false;
+					break;
+				}
+			}
+		}
+		else
+			validation = false;
+	}
+
+	if (validation)
+		std::cout << result;
+	else
+		std::cout << "B";
+}
+*/
+
 void ExecuteBaekjoonMathProblems()
 {
 	//Problem_1269_vector();
@@ -2828,4 +2892,5 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_1081();
 	//Problem_1929_TEST();
 	//Problem_1225();
+	//Problem_1111();
 }
