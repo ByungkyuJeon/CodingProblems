@@ -2815,6 +2815,98 @@ void Problem_1111()
 }
 */
 
+// PROBLEM_2239
+/*
+char BoardData[9][9];
+
+bool ProcessFunc(const std::vector<std::pair<char, char>>& emptySpotData, int index)
+{
+	if (emptySpotData.size() <= index)
+		return true;
+
+	const std::pair<char, char>& targetSpot = emptySpotData[index];
+
+	int candidatesFlag = 0;
+	for (int i = 1; i <= 9; ++i)
+		candidatesFlag |= 1 << i;
+
+	for (int i = 0; i < 9; ++i)
+	{
+		if (BoardData[targetSpot.first][i])
+			candidatesFlag &= ~(1 << BoardData[targetSpot.first][i]);
+
+		if (BoardData[i][targetSpot.second])
+			candidatesFlag &= ~(1 << BoardData[i][targetSpot.second]);
+	}
+
+	int start = targetSpot.first - (targetSpot.first % 3);
+	int end = targetSpot.second - (targetSpot.second % 3);
+
+	for (int i = start; i < start + 3; ++i)
+	{
+		for (int j = end; j < end + 3; ++j)
+		{
+			if (BoardData[i][j])
+				candidatesFlag &= ~(1 << BoardData[i][j]);
+		}
+	}
+
+	for (int i = 1; i <= 9; ++i)
+	{
+		if (candidatesFlag & 1 << i)
+		{
+			BoardData[targetSpot.first][targetSpot.second] = i;
+			bool result = ProcessFunc(emptySpotData, index + 1);
+			if (result)
+				return true;
+
+			BoardData[targetSpot.first][targetSpot.second] = 0;
+		}
+	}
+
+	return false;
+}
+
+void Problem_2239()
+{
+	std::ios_base::sync_with_stdio(false);
+	std::cin.tie(nullptr);
+
+	std::string inputStr;
+	std::vector<std::pair<char, char>> emptySpots;
+
+	for (int i = 0; i < 9; ++i)
+	{
+		std::getline(std::cin, inputStr);
+
+		for (int j = 0; j < 9; ++j)
+		{
+			BoardData[i][j] = inputStr[j] - '0';
+			if (!BoardData[i][j])
+				emptySpots.emplace_back(std::pair<char, char>(i, j));
+		}
+	}
+
+	bool result = ProcessFunc(emptySpots, 0);
+
+	if (result == false)
+		return 0;
+
+	std::string outputStr;
+	for (int i = 0; i < 9; ++i)
+	{
+		if (i != 0)
+			outputStr += '\n';
+		for (int j = 0; j < 9; ++j)
+		{
+			outputStr += std::to_string(BoardData[i][j]);
+		}
+	}
+
+	std::cout << outputStr;
+}
+*/
+
 void ExecuteBaekjoonMathProblems()
 {
 	//Problem_1269_vector();
@@ -2893,4 +2985,5 @@ void ExecuteBaekjoonMathProblems()
 	//Problem_1929_TEST();
 	//Problem_1225();
 	//Problem_1111();
+	//Problem_2239();
 }
